@@ -45,4 +45,40 @@ Services define the events they emit as triggers, and developers define the acti
 
 Developers only need to care about implementing the desired application logic - the system handles the rest.
 
-# TODO
+# Prepare your engine!
+
+A few important notes before you start:
+*	When working through the lab you may see slightly different responses being returned from your CLI than those printed as part of these instructions.<br/>You do not need to worry about this. The reason is that you may use a different namespace than the one we used when generating this document; the differences will be minor and only result in some name-prefixing.
+*	To ease your life you can download a digital copy of this document from here: https://ibm.box.com/v/serverlessconf-austin-17-ws
+* Important remark: In case you have trouble with copying & pasting those code snippets longer than a single or a few lines (marked with snippet xx in the instructions, where xx corresponds to a number and defines the file name under which the snippet was stored) you can find copies of them here – easiest is to download the file all_snippets.zip: https://ibm.box.com/v/serverlessconf-austin-17-code
+* Important remark for Windows users: Windows users are strongly advised to download Git (https://git-for-windows.github.io/) and to work from the Git bash. They are also advised to download cURL for Windows (https://curl.haxx.se/download.html)
+
+In order to use OpenWhisk proceed as follows:
+1. Open a browser window
+2. Navigate to https://console.ng.bluemix.net/openwhisk/
+3. Log-in with your Bluemix account
+ Create one if you do not yet have one by clicking the sign-up link or by directly navigating to https://console.ng.bluemix.net/registration/
+4. Click the  Download OpenWhisk CLI button
+5. Follow steps 1 & 2 (you do not need to perform step 3), i.e. download the CLI for your particular platform and configure it by specifying your namespace and authorization key
+
+# Start your engine!
+
+The CLI (command line interface) allows you to work with OpenWhisk’s basic entities, i.e. to create actions, triggers, rules, and sequences. Hence, let’s learn how to work with the CLI.
+Actions
+Actions are small stateless pieces of code that run on the OpenWhisk platform. 
+Creating and invoking JavaScript actions
+An action can be a simple JavaScript function that accepts and returns a JSON object.
+
+First, use your editor of choice (for instance, download the Atom editor from https://atom.io/) to create a file called hello.js with the following content (snippet 01):
+function main() {
+    return { message: "Hello world" };
+}
+Save the file to wherever you want.
+
+Next, open a terminal window, navigate to the directory where you stored the file hello.js and create an OpenWhisk action called hello referencing the function in hello.js:
+$ wsk action create hello hello.js
+ok: created action hello
+Notice that you can always list the actions you have already created like this:
+$ wsk action list
+actions
+hello                                        private nodejs:6
