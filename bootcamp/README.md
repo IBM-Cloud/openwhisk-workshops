@@ -75,34 +75,35 @@ An action can be a simple JavaScript function that accepts and returns a JSON ob
 
 First, use your editor of choice (for instance, download the Atom editor from https://atom.io/) to create a file called `hello.js` with the following content (snippet 01):
 
-```
+<pre>
 function main() {
     return { message: "Hello world" };
 }
-```
+</pre>
 
 Save the file to wherever you want.
 
 Next, open a terminal window, navigate to the directory where you stored the file `hello.js` and create an OpenWhisk action called `hello` referencing the function in `hello.js`:
 
-```
+<pre>
 $ wsk action create hello hello.js
 ok: created action hello
-```
+</pre>
 
 Notice that you can always list the actions you have already created like this:
 
-```$ wsk action list
+<pr>
+$ wsk action list
 actions
 hello                                        private nodejs:6
-```
+</pre>
 
 To run an action use the ```wsk action invoke``` command. 
 A blocking (i.e. synchronous) invocation waits until the action has completed and returned a result. It is indicated by the ```--blocking``` option (or ```-b``` for short):
 
-```
+<pre>
 $ wsk action invoke --blocking hello
-ok: invoked hello with id dde9212e686f413bb90f22e79e12df74
+<b>ok:</b> invoked hello with id dde9212e686f413bb90f22e79e12df74
 [...]
 "response": {
     "result": {
@@ -112,7 +113,7 @@ ok: invoked hello with id dde9212e686f413bb90f22e79e12df74
     "success": true
 },
 [...]
-```
+</pre>
 
 The above command outputs two important pieces of information:
 *	the ```activation id``` (```dde9212e686f413bb90f22e79e12df74```)
@@ -120,12 +121,12 @@ The above command outputs two important pieces of information:
 
 The ```activation id``` can be used to retrieve the logs or the result of an (asynchronous) invocation at a future point in time. In case you forgot to note down an activation id you can retrieve the list of activations at any time:
 
-```
+<pre>
 $ wsk activation list
 activations
 dde9212e686f413bb90f22e79e12df74             hello                                   
 eee9212e686f413bb90f22e79e12df74             hello
-```
+</pre>
                                  
 Notice that the list of ```activation ids``` is ordered with the most recent one first.
 
@@ -133,9 +134,9 @@ To obtain the result of a particular action invocation enter (notice that you ne
 
 To obtain the result of a particular action invocation enter (notice that you need to replace the ```activation id``` shown below with the ```id``` you have received during the previous step):
 
-```
+<pre>
 $ wsk activation get dde9212e686f413bb90f22e79e12df74
-ok: got activation dde9212e686f413bb90f22e79e12df74
+<b>ok:</b> got activation dde9212e686f413bb90f22e79e12df74
 [...]
 "response": {
     "status": "success",
@@ -146,24 +147,24 @@ ok: got activation dde9212e686f413bb90f22e79e12df74
     }
 },
 [...]
-```
+</pre>
 
 You can delete an action like this:
 
-```
+<pre>
 $ wsk action delete hello
 ok: deleted action hello
-```
+</pre>
 
 You can check whether an action was successfully deleted like this:
 
-```
+<pre>
 $ wsk list
 entities in namespace: default
-packages
-actions
-triggers
-**rules**
-```
+<b>packages</b>
+<b>actions</b>
+<b>triggers</b>
+<b>rules</b>
+</pre>
 
 # TODO
