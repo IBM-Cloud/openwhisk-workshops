@@ -167,4 +167,53 @@ entities in namespace: <b>default</b>
 <b>rules</b>
 </pre>
 
-# TODO
+# Creating and invoking asynchronous actions
+
+JavaScript functions that run asynchronously need to return the activation result after the `main` function has returned. This can be accomplished by returning a `Promise`.
+
+Again, use your editor of choice to create a file called `asyncAction.js` with the following content (snippet 02):
+
+<pre>
+function main(msg) {
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+            resolve({ message: "Hello world" });
+        }, 2000);
+    })
+}
+</pre>
+
+Notice that the `main` function returns a `Promise` which indicates that the activation has not completed yet, but is expected to in the future.
+
+In this particular example the `setTimeout()` function waits for two seconds before calling the callback function. This represents the asynchronous code and goes inside the `Promise's` callback function.
+
+The `Promise's` callback takes two arguments, `resolve` and `reject`, which are both functions. The call to `resolve` fulfills the `Promise` and indicates that the activation has completed normally.
+
+A call to `reject` can be used to reject the `Promise` and signal that the activation has completed abnormally.
+
+Next, run the following commands to create the action and invoke it:
+
+<pre>
+$ wsk action create asyncAction asyncAction.js
+ok: created action asyncAction
+$ wsk action invoke --blocking --result asyncAction
+{
+    "message": "Hello world" 
+}
+</pre>
+
+Finally, run the following commands to fetch the activation log to see how long the activation took to complete:
+
+<pre>
+$ wsk activation list --limit 1 asyncAction
+activations
+b066ca51e68c4d3382df2d8033265db0             asyncAction
+$ wsk activation get b066ca51e68c4d3382df2d8033265db0
+{
+    "start": 1455881628103,
+    "end":   1455881648126,
+    ...
+}
+</pre>
+
+By comparing the start and end timestamps in the activation record, you can see that this activation took slightly over two seconds to complete.
