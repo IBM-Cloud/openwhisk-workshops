@@ -167,7 +167,7 @@ entities in namespace: <b>default</b>
 <b>rules</b>
 </pre>
 
-# Creating and invoking asynchronous actions
+### Creating and invoking asynchronous actions
 
 JavaScript functions that run asynchronously need to return the activation result after the `main` function has returned. This can be accomplished by returning a `Promise`.
 
@@ -219,3 +219,98 @@ $ wsk activation get b066ca51e68c4d3382df2d8033265db0
 </pre>
 
 By comparing the start and end timestamps in the activation record, you can see that this activation took slightly over two seconds to complete.
+
+### Passing parameters to actions
+
+Actions may be invoked with several named parameters.
+
+Change (and save) your `hello` action as follows (snippet 03):
+
+```javascript
+function main(msg) {
+    return { message: "Hello, " + msg.name + " from " + msg.place };
+}
+```
+
+Again, create the action:
+
+<pre>
+$ wsk action create hello hello.js
+<b>ok:</b> created action <b>hello</b>
+</pre>
+
+You can pass named parameters as JSON payload or via the CLI:
+
+<pre>
+$ wsk action invoke -b hello -p name "Bernie" -p place "Vermont" --result
+{
+    "message": "Hello, Bernie from Vermont"
+}
+</pre>
+
+Notice the use of the `--result` parameter (or `-r` for short; available for blocking invocations only) to immediately print the result of the action invocation without the need of an `activation id`.
+
+### Setting default parameters
+
+Recall that the `hello` action above took two parameters: the name of a person, and the place where he or she is from.
+
+Rather than passing all the parameters to an action every time, you can *bind* certain parameters. Let’s bind the `place` parameter above so we have an action that defaults to the place `Vermont, CT`:
+
+<pre>
+$ wsk action create helloBindParams hello.js --param place "Vermont, CT"
+<b>ok:</b> created action <b>helloBindParams</b>
+
+$ wsk action invoke -b helloBindParams --param name "Bernie" --result
+{
+    "message": "Hello, Bernie from Vermont, CT"
+}
+</pre>
+
+Notice that we did not need to specify the `place` parameter anymore when invoking the action. Moreover, bound parameters can still be overwritten by specifying the parameter value at invocation time. 
+
+### Using actions to call an external API
+
+So far, the examples have been self-contained functions. You can also create an action that calls an external API, of course.
+
+The following example invokes the Yahoo Weather service to get the current conditions at a specific location.
+
+Again, use your editor of choice to create a file called `weather.js` with the following content (snippet 04):
+var request = require("request");
+
+```javascript
+function main(msg) {
+    var location = msg.location || "Vermont";
+    var url = "https://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + location + "')&format=json";
+
+    return new Promise(function(resolve, reject) {
+        request.get(url, function(error, response, body) {
+            if (error) {
+                reject(error);
+            }
+            else {
+                var condition = JSON.parse(body).query.results.channel.item.condition;
+                var text = condition.text;
+                var temperature = condition.temp;
+                var output = "It is " + temperature + " degrees in " + location + " and " + text;
+
+                resolve({msg: output});
+            }
+        });
+    });
+}
+```
+
+Notice that the action above uses the JavaScript request library to make an HTTP request to the Yahoo Weather API and to extract certain fields from the JSON result.
+
+The example also shows the need for asynchronous actions. The action returns a Promise to indicate that the result of this action is not available yet when the function returns. Instead, the result is available in the callback after the HTTP call completes, and is passed as an argument to the `resolve` function just as we have seen it earlier.
+
+Now, run the following commands to create the action and invoke it:
+
+<pre>
+$ wsk action create yahooWeather weather.js
+<b>ok:</b> created action <b>yahooWeather</b>
+$ wsk action invoke --blocking --result yahooWeather --param location "Brooklyn, NY"
+{
+    "msg": "It is 28 degrees in Brooklyn, NY and Cloudy"
+}
+</pre>
