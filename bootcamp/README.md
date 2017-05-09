@@ -173,7 +173,7 @@ JavaScript functions that run asynchronously need to return the activation resul
 
 Again, use your editor of choice to create a file called `asyncAction.js` with the following content (snippet 02):
 
-<pre>
+```javascropt
 function main(msg) {
     return new Promise(function(resolve, reject) {
         setTimeout(function() {
@@ -181,7 +181,7 @@ function main(msg) {
         }, 2000);
     })
 }
-</pre>
+```
 
 Notice that the `main` function returns a `Promise` which indicates that the activation has not completed yet, but is expected to in the future.
 
