@@ -185,7 +185,7 @@ function main(msg) {
 
 Notice that the `main` function returns a `Promise` which indicates that the activation has not completed yet, but is expected to in the future.
 
-In this particular example the `setTimeout()` function waits for two seconds before calling the callback function. This represents the asynchronous code and goes inside the `Promise's` callback function.
+In this particular example the `setTimeout` function waits for two seconds before calling the callback function. This represents the asynchronous code and goes inside the `Promise's` callback function.
 
 The `Promise's` callback takes two arguments, `resolve` and `reject`, which are both functions. The call to `resolve` fulfills the `Promise` and indicates that the activation has completed normally.
 
@@ -314,3 +314,228 @@ $ wsk action invoke --blocking --result yahooWeather --param location "Brooklyn,
     "msg": "It is 28 degrees in Brooklyn, NY and Cloudy"
 }
 </pre>
+
+### Working with packages and sequencing actions
+
+You can also create a composite action that chains together a *sequence* of actions.
+
+This time we will use a set of actions that are shipped with OpenWhisk in a package called `/whisk.system/util`.
+
+Generally, to reveal which packages are available out of the box run the following command:
+
+<pre>
+$ wsk package list /whisk.system
+<b>packages</b>
+/whisk.system/cloudant                 shared
+/whisk.system/alarms                   shared
+/whisk.system/watson                   shared
+/whisk.system/websocket                shared
+/whisk.system/weather                  shared
+/whisk.system/system                   shared
+/whisk.system/utils                    shared
+/whisk.system/slack                    shared
+/whisk.system/samples                  shared
+/whisk.system/github                   shared
+/whisk.system/pushnotifications        shared 
+</pre>
+
+Next, to reveal the list of entities in the `/whisk.system/cloudant` package run the following command:
+
+<pre>
+$ wsk package get --summary /whisk.system/cloudant
+<b>package</b> /whisk.system/cloudant: Cloudant database service
+   (<b>parameters</b>: BluemixServiceName host username password dbname includeDoc overwrite)
+<b>action<b> /whisk.system/cloudant/read: Read document from database
+<b>action</b> /whisk.system/cloudant/write: Write document to database
+<b>feed</b> /whisk.system/cloudant/changes: Database change feed
+[...]
+</pre>
+
+This output shows that the Cloudant package provides multiple actions, e.g. `read` and `write`, and a trigger feed called `changes`. The `changes` feed causes triggers to be fired when documents are added to the specified Cloudant database.
+
+The Cloudant package also defines the parameters `username`, `password`, `host`, and `port`. These parameters must be specified for the actions and feeds to be meaningful. The parameters allow the actions to operate on a specific Cloudant account.
+
+One way to access the actions in this package is by binding to them (you could alternatively access the package directly, of course). Bindings create a reference to the given package in your namespace. The advantage is that they allow you to access actions by typing `myUtil/actionName` instead of `/whisk.system/utils/actionName` every time.
+
+Just run the following command:
+
+<pre>
+$ wsk package bind /whisk.system/utils myUtil
+<b>ok:</b> created binding <b>myUtil</b>
+</pre>
+
+You now have access to the following actions:
+* `myUtil/cat`: Action to transform lines of text into a JSON array
+* `myUtil/head`: Action to return the first element in an array
+* `myUtil/sort`: Action to sort an array of text
+
+Let’s now create a composite action that is a sequence of the above actions, so that the result of one action is passed as arguments to the next action:
+
+<pre>
+$ wsk action create myAction --sequence myUtil/sort,myUtil/head
+<b>ok:</b> created action <b>myAction</b>
+</pre>
+
+The composite action above will return the first element of a sorted array:
+
+<pre>
+$ wsk action invoke -b myAction -p lines '["c","b","a"]' --result
+{
+    "lines": [
+        "a"
+    ],
+    "num": 1
+}
+</pre>
+
+You can see that the first element of the sorted array is returned.
+
+For learning how to create our own packages to enable services refer to the official documentation available here:
+https://github.com/openwhisk/openwhisk/blob/master/docs/packages.md#creating-and-using-package-bindings
+
+## Triggers and rules
+
+*Triggers* represent a named "channel" for a stream of events.
+
+Let’s create a trigger to send user location updates:
+
+<pre>
+$ wsk trigger create locationUpdate
+<b>ok:</b> created trigger <b>locationUpdate</b>
+</pre>
+
+You can check that the trigger has been created like this:
+
+<pre>
+$ wsk trigger list
+<b>triggers</b>
+locationUpdate                         private
+</pre>
+
+So far we have only created a named channel to which events can be fired.
+
+Let’s now fire a trigger by specifying its name and parameters:
+
+<pre>
+$ wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
+<b>ok:</b> triggered <b>locationUpdate</b> with id <b>11ca88d404ca456eb2e76357c765ccdb</b>
+</pre>
+
+Events you fire to the `locationUpdate` trigger currently do not do anything. To be useful, we need to create a rule that associates the trigger with an action.
+
+## Using rules to associate triggers and actions
+
+*Rules* are used to associate a trigger with an action. Hence, every time a trigger event is fired, the action is invoked together with the events' parameters.
+
+Let’s create a rule that calls the `hello` action whenever a location update is posted; required parameters are the name of the rule, the trigger, and the action:
+
+<pre>
+$ wsk rule create myRule locationUpdate hello
+<b>ok:</b> created rule <b>myRule</b>
+</pre>
+
+Now, every time we fire a location update event, the `hello` action will be called with the corresponding event parameters:
+
+<pre>
+$ wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
+<b>ok:</b> triggered <b>locationUpdate</b> with id <b>12ca88d404ca456eb2e76357c765ccdb</b>
+</pre>
+
+We can check that the action was really invoked by checking the most recent activations:
+
+<pre>
+$ wsk activation list hello
+<b>activations</b>
+12ca88d404ca456eb2e76357c765ccdb       hello
+11ca88d404ca456eb2e76357c765ccdb       hello
+</pre>
+
+Notice that the use of the optional argument `hello` filters the result so that only invocations of the `hello` action are being displayed.
+
+Again, to obtain the result of the particular action invocation enter (notice that you once again need to replace the `activation id` with the `id`you have received during the previous step):
+
+<pre>
+$ wsk activation result 12ca88d404ca456eb2e76357c765ccdb
+{
+    "result": "Hello, Donald from Washington, D.C."
+}
+</pre>
+
+We can finally see that the `hello` action received the event payload and returned the expected string.
+
+## Uploading dependencies
+
+As an alternative to writing all your action code in a single JavaScript source file, you can implement an action as an `npm` package.
+
+The structure is supposed to look as follows:
+
+First, define a `package.json` like this (snippet 05):
+
+```json
+{
+    "name": "my-action",
+    "version": "1.0.0",
+    "main": "index.js",
+    "dependencies" : {
+     "left-pad" : "1.1.3"
+    }
+}
+```
+
+Next, define an `index.js` like this (snippet 06):
+
+```javascript
+function myAction(args) {
+    const leftPad = require("left-pad");
+    const lines = args.lines || [];
+
+    return { padded: lines.map(l => leftPad(l, 30, ".")) }
+}
+
+exports.main = myAction;
+```
+
+Notice that the action is exposed through `exports.main`; hence, the action handler itself can have any name, as long as it conforms to the usual signature of accepting an object and returning an object (or a `Promise` of an object).
+
+Then, to create an OpenWhisk action from this package follow the following procedure:
+
+First, install all dependencies locally:
+
+```shell
+$ npm install
+```
+
+Next, create a .zip archive containing all files (including all dependencies):
+
+<pre>
+$ zip -r action.zip *
+</pre>
+
+Next, create the action:
+
+<pre>
+$ wsk action create packageAction --kind nodejs:6 action.zip
+ok: created action packageAction
+</pre>
+
+ok: created action packageAction
+Notice that when creating an action from a .zip archive using the CLI tool, you must explicitly provide a value for the `--kind` flag.
+
+You can finally invoke the action like any other:
+
+<pre>
+$ wsk action invoke --blocking --result packageAction --param lines '["and now", "for something completely", "different"]'
+{
+    "padded": [
+        ".......................and now",
+        "......for something completely",
+        ".....................different"
+    ]
+}
+</pre>
+
+Finally, notice that while most npm packages install JavaScript sources on npm install, some also install and compile binary artifacts. The archive file upload currently does not support binary dependencies but rather only JavaScript dependencies. Action invocations may fail if the archive includes binary dependencies.
+
+
+
+
