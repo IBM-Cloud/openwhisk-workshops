@@ -87,14 +87,14 @@ Next, open a terminal window, navigate to the directory where you stored the fil
 
 <pre>
 $ wsk action create hello hello.js
-ok: created action hello
+<b>ok:</b> created action <b>hello</b>
 </pre>
 
 Notice that you can always list the actions you have already created like this:
 
-<pr>
+<pre>
 $ wsk action list
-actions
+<b>actions</b>
 hello                                        private nodejs:6
 </pre>
 
@@ -103,7 +103,7 @@ A blocking (i.e. synchronous) invocation waits until the action has completed an
 
 <pre>
 $ wsk action invoke --blocking hello
-<b>ok:</b> invoked hello with id dde9212e686f413bb90f22e79e12df74
+<b>ok:</b> invoked <b>hello</b> with id <b>dde9212e686f413bb90f22e79e12df74</b>
 [...]
 "response": {
     "result": {
@@ -123,7 +123,7 @@ The ```activation id``` can be used to retrieve the logs or the result of an (as
 
 <pre>
 $ wsk activation list
-activations
+<b>activations</b>
 dde9212e686f413bb90f22e79e12df74             hello                                   
 eee9212e686f413bb90f22e79e12df74             hello
 </pre>
@@ -136,7 +136,7 @@ To obtain the result of a particular action invocation enter (notice that you ne
 
 <pre>
 $ wsk activation get dde9212e686f413bb90f22e79e12df74
-<b>ok:</b> got activation dde9212e686f413bb90f22e79e12df74
+<b>ok:</b> got activation <b>dde9212e686f413bb90f22e79e12df74</b>
 [...]
 "response": {
     "status": "success",
@@ -153,14 +153,14 @@ You can delete an action like this:
 
 <pre>
 $ wsk action delete hello
-ok: deleted action hello
+<b>ok:</b> deleted action <b>hello</b>
 </pre>
 
 You can check whether an action was successfully deleted like this:
 
 <pre>
 $ wsk list
-entities in namespace: default
+entities in namespace: <b>default</b>
 <b>packages</b>
 <b>actions</b>
 <b>triggers</b>
