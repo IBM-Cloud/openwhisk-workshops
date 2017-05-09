@@ -85,7 +85,8 @@ Save the file to wherever you want.
 
 Next, open a terminal window, navigate to the directory where you stored the file `hello.js` and create an OpenWhisk action called `hello` referencing the function in `hello.js`:
 
-```$ wsk action create hello hello.js
+```
+$ wsk action create hello hello.js
 ok: created action hello
 ```
 
@@ -96,4 +97,73 @@ actions
 hello                                        private nodejs:6
 ```
 
-### Test
+To run an action use the ```wsk action invoke``` command. 
+A blocking (i.e. synchronous) invocation waits until the action has completed and returned a result. It is indicated by the ```--blocking``` option (or ```-b``` for short):
+
+```
+$ wsk action invoke --blocking hello
+ok: invoked hello with id dde9212e686f413bb90f22e79e12df74
+[...]
+"response": {
+    "result": {
+        "message": "Hello world"
+    }, 
+    "status": "success",
+    "success": true
+},
+[...]
+```
+
+The above command outputs two important pieces of information:
+*	the ```activation id``` (```dde9212e686f413bb90f22e79e12df74```)
+*	the ```activation response``` which includes the result
+
+The ```activation id``` can be used to retrieve the logs or the result of an (asynchronous) invocation at a future point in time. In case you forgot to note down an activation id you can retrieve the list of activations at any time:
+
+```
+$ wsk activation list
+activations
+dde9212e686f413bb90f22e79e12df74             hello                                   
+eee9212e686f413bb90f22e79e12df74             hello
+```
+                                 
+Notice that the list of ```activation ids``` is ordered with the most recent one first.
+
+To obtain the result of a particular action invocation enter (notice that you need to replace the ```activation id``` shown below with the ```id``` you have received during the previous step):
+
+To obtain the result of a particular action invocation enter (notice that you need to replace the ```activation id``` shown below with the ```id``` you have received during the previous step):
+
+```
+$ wsk activation get dde9212e686f413bb90f22e79e12df74
+ok: got activation dde9212e686f413bb90f22e79e12df74
+[...]
+"response": {
+    "status": "success",
+    "statusCode": 0,
+    "success": true,
+    "result": {
+        "message": "Hello world"
+    }
+},
+[...]
+```
+
+You can delete an action like this:
+
+```
+$ wsk action delete hello
+ok: deleted action hello
+```
+
+You can check whether an action was successfully deleted like this:
+
+```
+$ wsk list
+entities in namespace: default
+packages
+actions
+triggers
+**rules**
+```
+
+# TODO
