@@ -345,7 +345,7 @@ Next, to reveal the list of entities in the `/whisk.system/cloudant` package r
 $ wsk package get --summary /whisk.system/cloudant
 <b>package</b> /whisk.system/cloudant: Cloudant database service
    (<b>parameters</b>: BluemixServiceName host username password dbname includeDoc overwrite)
-<b>action<b> /whisk.system/cloudant/read: Read document from database
+<b>action</b> /whisk.system/cloudant/read: Read document from database
 <b>action</b> /whisk.system/cloudant/write: Write document to database
 <b>feed</b> /whisk.system/cloudant/changes: Database change feed
 [...]
@@ -501,9 +501,9 @@ Then, to create an OpenWhisk action from this package follow the following proce
 
 First, install all dependencies locally:
 
-```shell
+<pre>
 $ npm install
-```
+</pre>
 
 Next, create a .zip archive containing all files (including all dependencies):
 
@@ -518,7 +518,6 @@ $ wsk action create packageAction --kind nodejs:6 action.zip
 ok: created action packageAction
 </pre>
 
-ok: created action packageAction
 Notice that when creating an action from a .zip archive using the CLI tool, you must explicitly provide a value for the `--kind` flag.
 
 You can finally invoke the action like any other:
@@ -534,7 +533,7 @@ $ wsk action invoke --blocking --result packageAction --param lines '["and now",
 }
 </pre>
 
-Finally, notice that while most npm packages install JavaScript sources on npm install, some also install and compile binary artifacts. The archive file upload currently does not support binary dependencies but rather only JavaScript dependencies. Action invocations may fail if the archive includes binary dependencies.
+Finally, notice that while most `npm` packages install JavaScript sources on `npm install`, some also install and compile binary artifacts. The archive file upload currently does not support binary dependencies but rather only JavaScript dependencies. Action invocations may fail if the archive includes binary dependencies.
 
 
 
