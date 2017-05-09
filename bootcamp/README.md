@@ -4,8 +4,9 @@ TODO
 
 # Preface
 
-During this workshop you will learn how to develop serverless applications composed of loosely coupled microservice-like functions. You'll explore OpenWhisk's latest CLI and UI and become an OpenWhisk star by implementing a weather bot using IBM's Weather Company Data service and Slack. You will also investigate how to use the recently added API Gateway and web actions capabilities. Finally, you will find out how to package and deploy your entire serverless application together using the Serverless Framework
-We wish you a lot of fun and success…
+During this workshop you will learn how to develop serverless applications composed of loosely coupled microservice-like functions. You'll explore OpenWhisk's latest CLI and UI and become an OpenWhisk star by implementing a weather bot using IBM's Weather Company Data service and Slack. You will also investigate how to use the recently added API Gateway and web actions capabilities. Finally, you will find out how to package and deploy your entire serverless application together using the Serverless Framework.
+
+We wish you a lot of fun and success...
 
 You can also find a PDF version of this workshop here: TODO
 
