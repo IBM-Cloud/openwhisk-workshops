@@ -95,7 +95,7 @@ Notice that you can always list the actions you have already created like this:
 <pre>
 $ wsk action list
 <b>actions</b>
-hello                                        private nodejs:6
+hello                                  private nodejs:6
 </pre>
 
 To run an action use the ```wsk action invoke``` command. 
@@ -195,7 +195,8 @@ Next, run the following commands to create the action and invoke it:
 
 <pre>
 $ wsk action create asyncAction asyncAction.js
-ok: created action asyncAction
+<b>ok:</b> created action <b>asyncAction</b>
+
 $ wsk action invoke --blocking --result asyncAction
 {
     "message": "Hello world" 
@@ -206,8 +207,9 @@ Finally, run the following commands to fetch the activation log to see how long 
 
 <pre>
 $ wsk activation list --limit 1 asyncAction
-activations
-b066ca51e68c4d3382df2d8033265db0             asyncAction
+<b>activations</b>
+b066ca51e68c4d3382df2d8033265db0       asyncAction
+
 $ wsk activation get b066ca51e68c4d3382df2d8033265db0
 {
     "start": 1455881628103,
