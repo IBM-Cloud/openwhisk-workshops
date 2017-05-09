@@ -64,21 +64,36 @@ In order to use OpenWhisk proceed as follows:
 # Start your engine!
 
 The CLI (command line interface) allows you to work with OpenWhisk’s basic entities, i.e. to create actions, triggers, rules, and sequences. Hence, let’s learn how to work with the CLI.
-Actions
-Actions are small stateless pieces of code that run on the OpenWhisk platform. 
-Creating and invoking JavaScript actions
+
+## Actions
+
+*Actions* are small stateless pieces of code that run on the OpenWhisk platform.
+
+### Creating and invoking JavaScript actions
+
 An action can be a simple JavaScript function that accepts and returns a JSON object.
 
-First, use your editor of choice (for instance, download the Atom editor from https://atom.io/) to create a file called hello.js with the following content (snippet 01):
+First, use your editor of choice (for instance, download the Atom editor from https://atom.io/) to create a file called `hello.js` with the following content (snippet 01):
+
+```
 function main() {
     return { message: "Hello world" };
 }
+```
+
 Save the file to wherever you want.
 
-Next, open a terminal window, navigate to the directory where you stored the file hello.js and create an OpenWhisk action called hello referencing the function in hello.js:
-$ wsk action create hello hello.js
+Next, open a terminal window, navigate to the directory where you stored the file `hello.js` and create an OpenWhisk action called `hello` referencing the function in `hello.js`:
+
+```$ wsk action create hello hello.js
 ok: created action hello
+```
+
 Notice that you can always list the actions you have already created like this:
-$ wsk action list
+
+```$ wsk action list
 actions
-hello                                        private nodejs:6
+hello                                        private nodejs:6
+```
+
+### Test
