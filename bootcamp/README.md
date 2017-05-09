@@ -75,11 +75,11 @@ An action can be a simple JavaScript function that accepts and returns a JSON ob
 
 First, use your editor of choice (for instance, download the Atom editor from https://atom.io/) to create a file called `hello.js` with the following content (snippet 01):
 
-<pre>
+```javascript
 function main() {
     return { message: "Hello world" };
 }
-</pre>
+```
 
 Save the file to wherever you want.
 
@@ -173,7 +173,7 @@ JavaScript functions that run asynchronously need to return the activation resul
 
 Again, use your editor of choice to create a file called `asyncAction.js` with the following content (snippet 02):
 
-```javascropt
+```javascript
 function main(msg) {
     return new Promise(function(resolve, reject) {
         setTimeout(function() {
