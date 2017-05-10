@@ -546,30 +546,83 @@ First, open a browser window, navigate to https://console.ng.bluemix.net/openwhi
 
 The OpenWhisk UI is comprised of the following sections:
 
-1.	My Actions
-   The My Actions section lists all actions you have created previously.  
+1.	`My Actions`
+   The `My Actions` section lists all actions you have created previously.  
    Clicking an action loads its code into the code editor.  
    Hovering over an action lets a trash bin appear allowing to delete the action.  
    At this point in time you should at least see the hello action we have created earlier.  
 
-2.	My Sequences  
-   The My Sequences section lists all the sequences you have created previously.  
+2.	`My Sequences`  
+   The vMy Sequences` section lists all the sequences you have created previously.  
    Clicking a sequence loads its model into the visual modeler.  
    Hovering over a sequence lets a trash bin appear allowing to delete the sequence.  
 
-3.	My Rules  
-   The My Rules section lists all the rules you have created previously.  
+3.	`My Rules` 
+   The `My Rules` section lists all the rules you have created previously.  
    Clicking a rule loads its model into the visual modeler.  
    Hovering over a rule lets a trash bin appear allowing to delete the rule.  
    At this point in time you should at least see the myRule rule we have created earlier.  
 
-4.	My Triggers  
-   The My Triggers section lists all the triggers you have created previously.  
+4.	`My Triggers`  
+   The `My Triggers` section lists all the triggers you have created previously.  
    Hovering over a trigger lets a flash icon appear allowing to fire the trigger as well as a trash bin allowing to delete the trigger.
 
+## Actions
 
+Let's start exploring the UI by creating some simple first actions similar to the ones we have created before when having used the CLI.
 
-xxx
+First, click the `Create An Action` button.
+Next, specify a name (e.g. `helloUI`) by entering it into the text field prefilled with the text `Choose a name for your new action`; leave everything else as-is and click the `Create Action` button at the bottom of the screen.
+Notice that even though you did not change any configuration options, you would have had the option to change the language you want to implement your action in as well as the memory quota and the time limit. Click the `Learn more` links for additional details and feel free to play around with these options on your own.
+
+Copy the following code snippet (snippet 01) into the code editor replacing any existing code:
+
+```javascript
+function main() {
+    return { message: "Hello world" };
+}
+```
+
+Next, click the `Run This Action` button to test the action directly from within your browser. Before being able to run your action you need to make it live, hence click the `Make It Live` button when being prompted to do so.	Afterwards click the `Run With this Value` button.
+
+Notice that you do not need to specify any JSON input as the action is not expecting any parameters to be handed over.
+
+You should see the following result:
+
+```
+{
+    "message": "Hello world"
+}
+```
+
+Next, to see how things work when working with an action accepting parameters click the `Create An Action` button again. Then, once again, specify a name (e.g. `helloUI2`) and click the `Create Action` button.
+
+Next, copy the following code snippet (snippet 03) into the code editor replacing any existing code:
+
+```javascript
+function main(msg) {
+    return { message: "Hello, " + msg.name + " from " + msg.place };
+}
+```
+
+Once again, click the `Run This Action` button and follow the same procedure as before to test this action directly from within your browser. 
+
+Notice that you this time need to specify some JSON input to specify proper parameter values. For instance, you could specify the following input (snippet 07):
+
+```json
+{
+    "name": "Andreas",
+    "place": "Stuttgart, Germany"
+}
+```
+
+You should see the following result: 
+
+```
+{
+    "message": "Hello, Andreas from Stuttgart, Germany"
+}
+```
 
 
 
