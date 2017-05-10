@@ -589,11 +589,11 @@ Notice that you do not need to specify any JSON input as the action is not expec
 
 You should see the following result:
 
-```
+<pre>
 {
     "message": "Hello world"
 }
-```
+</pre>
 
 Next, to see how things work when working with an action accepting parameters click the `Create An Action` button again. Then, once again, specify a name (e.g. `helloUI2`) and click the `Create Action` button.
 
@@ -618,11 +618,293 @@ Notice that you this time need to specify some JSON input to specify proper para
 
 You should see the following result: 
 
-```
+<pre>
 {
     "message": "Hello, Andreas from Stuttgart, Germany"
 }
+</pre>
+
+## Invoking actions via REST calls
+
+Actions cannot only be invoked via the CLI or the OpenWhisk UI, they can also be invoked via simple REST API calls. All you need to do is to `POST` against the correct REST API endpoint.
+
+To find out about the correct REST API endpoint for a particular action, select the action, e.g. the `helloUI` action we have created earlier, and click the `View REST Endpoint` link at the bottom right of the code editor.
+
+To test this use the `cURL URL`; just click the `Copy` button displayed next to the `cURL URL` shown and submit it.
+
+For instance, to invoke the `helloUI` action we have created earlier submit a call like this:
+
+<pre>
+$ curl -d "{\"arg\":\"value\"}" "https://openwhisk.ng.bluemix.net/api/v1/namespaces/andreas.nauerz%40de.ibm.com_dev/actions/helloUI?blocking=true" -XPOST -H "Content-Type: application/json" -H "Authorization: Basic xxx="
+</pre>
+
+You should see the following result:
+
+<pre>
+[...]
+"response": {
+    "result": {
+        "message": "Hello world"
+    },
+    "success": true,
+    "status": "success"
+},
+[...]
+</pre>
+
+## Invoking actions via web actions
+
+Web actions are OpenWhisk actions annotated to quickly enable you to build web based applications. This allows you to program backend logic which your web application can access anonymously without requiring an OpenWhisk authentication key. It is up to the action developer to implement their own desired authentication and authorization (i.e. `OAuth` flow).
+
+Web action activations will be associated with the user that created the action. This actions defers the cost of an action activation from the caller to the owner of the action. To allow the previously created hello action to be called as a web action enter:
+
+<pre>
+$ wsk action update hello --web true
+<b>ok:</b> updated action <b>hello</b>
+</pre>
+
+Once enabled your action is supposed to be accessible as a web action via a new REST interface.
+
+The URL is structured as follows: `https://{APIHOST}/api/v1/web/{QUALIFIED ACTION NAME}.{EXT}`. The fully qualified name of an action consists of three parts: the namespace, the package name, and the action name. The fully qualified name of a web action must include its package name, which is `default` if the action is not in a named package. The last part of the URI called the extension which is typically `.http` or .`json`. The web action API path may be used with `curl` or `wget` without an API key. It may even be entered directly in your browser.
+
+Try opening `https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/hello.json?name=Andreas&place=Stuttgart` in your web browser after having replaced the namespace `andreas.nauerz@de.ibm.com_dev` with your namespace.
+
+Notice that you can also enable any action as a web action using the OpenWhisk UI. There you can also find out about the correct URL to invoke your web actions.
+
+We leave this as a voluntary exercise for you – will you find the right place?
+
+### Web action responses 
+
+Web actions can also be used to implement HTTP handlers that respond with `headers`, `statusCode`, and `body` content of different types. The web action must still return a JSON object, but the OpenWhisk system (namely its `controller`) will treat a web action differently if its result includes one or more of the following as top level JSON properties:
+*	`headers`: a JSON object where the keys are header-names and the values are string values for those headers (default is no headers)
+* `statusCode`: a valid HTTP status code (default is 200 OK)
+* `body`: a string which is either plain text or a base64 encoded string (for binary data)
+
+The `controller` will pass along the action-specified headers, if any, to the HTTP client when terminating the request/response. Similarly, the controller will respond with the given status code when present. Lastly, the body is passed along as the body of the response. Unless a content-type header is declared in the action result’s headers, the body is passed along as is if it’s a string (or results in an error otherwise). When the content-type is defined, the controller will determine if the response is binary data or plain text and decode the string using a base64 decoder as needed. Should the body fail to decode correctly, an error is returned to the caller.
+
+Notice that a JSON object or array is treated as binary data and must be base64 encoded.
+
+Now, let’s make use of the `headers` and `statusCode` property to send a redirect. To do so create an action named `webAction` like this (snippet 27):
+
+```javascript
+function main() {
+    return { 
+        headers: { location: "http://openwhisk.org" },
+        statusCode: 302
+  }
+}
 ```
 
+Enable the action as web action:
+
+<pre>
+$ wsk action update webAction --web true
+<b>ok:</b> updated action <b>webAction</b>
+</pre>
+
+Try opening
+`https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz%40de.ibm.com_dev/default/webAction.http` in your browser (again after having replaced the namespace with yours). You should be redirected to the openwhisk.org site.
+
+Next, let’s make use of the `headers`, `status` and `body` properties to respond with an image. To do so update the previously created web action like this (snippet 28):
+
+```javascript
+function main() {
+    let png = "<COPY FROM SNIPPET>"
+    return { headers: { "Content-Type": "image/png" },
+             statusCode: 200,
+             body: png };
+}
+```
+
+Again, invoke the web action via your browser. You should see the OpenWhisk logo. 
+
+Finally, let’s make use of the `headers`, `status` and `body` properties to respond with simple HTML. To do so update the previously created web action like this (snippet 29):
+
+```javascript
+function main() {
+    let html = "<html><body>Hello World!</body></html>"
+    return { headers: { "Content-Type": "text/html" },
+             statusCode: 200,
+             body: html };
+}
+```
+
+Again, invoke the web action via your browser. You should see the the message Hello World!.
+
+## Invoking actions periodically
+
+Also, actions cannot only be invoked in a blocking (synchronous) or non-blocking (asynchronous) fashion as explained before, they can also be invoked periodically.
+
+To test this open the OpenWhisk UI and select the `helloUI` action we have created earlier.
+Next, click the `Automate This Action` button at the bottom right of the code editor.
+Next, from the next screen appearing select the `Periodic` icon.
+Next, create a new trigger aka alarm by clicking the `New Alarm` icon.
+To keep things simple select the `:MM minutes` icon and specify `N` to be `1` so that they action is supposed to be executed every minute. Specify a name for the periodic trigger and click the `Create Periodic Trigger` button.
+Finally, click `Next`, then `This Looks Good`, and then `Save Rule`.
+
+To see the result click the `View Activity` button which redirects you to the dashboard. You should see a periodic invocation every minute – to stop this you have to disable the rule that has been created – will you find out how this can be done?
+
+## Logging
+
+Of course, OpenWhisk allows you to add custom log statements to your actions, too.
+
+To see how logging works click the `Create An Action` button again. Then, once again, specify a name (e.g. `helloLogging`) and click the `Create action` button.
+
+Next, copy the following code snippet (snippet 08) into the code editor replacing any existing code:
+
+```javascript
+function main(msg) {
+    console.log("Running helloLogging... ");
+    return { message: "Hello world!" };
+}
+```
+
+Once again, click the `Run This Action` button and follow the same procedure as before to test this action directly from within your browser. 
+
+You should see the following result: 
+
+<pre>
+{
+    "message": "Hello world"
+}
+</pre>
+
+To review the log you can click the `Show Logs` link after having invoked the action.
+
+You should a log statement like this: 
+
+<pre>
+2016-10-18T08:36:34.472273207Z stdout: Running helloLogging...
+</pre>
+
+At this point feel free to create your own little action, maybe one you implement using a different programming language. To learn how to do the latter refer to the official documentation available here:
+
+https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-python-actions
+https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-swift-actions
+https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-java-actions
+https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-docker-actions
+
+## Working with packages
+
+As you have already seen before, OpenWhisk provides you, out of the box, with a shared collection of actions and triggers as part of so called packages. The OpenWhisk UI makes it even easier to explore and test available packages. Let’s learn how to do so now.
+
+First, click the `Browse Public Packages` button at the top right of the screen.
+You'll be presented with a set of packages, represented by some icons, being available.
+
+Click the `Samples` package.
+At the left of the screen you will be shown a short description of the functionality this package provides you with. At the top center of the screen you can access the different actions and triggers the package provides you with (notice that the samples package provides you only with actions). 
+You can choose between the following actions: `curl`, `greeting`, `helloWorld`, `wordCount`. For each action a short description and sample input you can feed it with as well as sample output you can expect to get when invoking the action is being provided.
+
+Let's play with the `wordCount` action.
+Hence, select the `wordCount` action and read the description to understand its purpose. Also review the sample input to understand how to properly feed the action when invoking it as well as the sample output to understand what you can expect after having invoked it.
+Click the `Run This Action` button.
+
+Based on the sample input you have been shown before, specify the following input (snippet 09) and click the `Run With This Value` button:
+
+```json
+{
+    "payload": "OpenWhisk is simply super cool"
+}
+```
+
+You should see the following result: 
+
+<pre>
+{
+    "count": "5"
+}
+</pre>
+
+Instead of just reusing a package-provided action as-is you can also view its code (which you may want to use as a basis for your own action).
+
+Let’s review the code of the curl action.
+Hence, navigate back to the catalog (to do so you probably want to click the Close button to close the invocation console) and click the Samples package again.
+This time select the curl action and read the description to understand its purpose. 
+Next, click the View Source button to (re)view and understand the action’s code.
+At this point feel free play with the other packages being available.
+Sequencing actions
+Next, let’s visually model a simple sequence similar to the one we have created earlier when having used the CLI.
+Therefore, let’s first create a very simple action (name it echo) the same way you learned to create actions before (snippet 10):
+function main(msg) {
+	return { payload: "Life is " + msg.payload };
+}
+Obviously the action does nothing else than returning the text you have handed-over via the input parameter called payload.
+Now, let’s assume you want to define a sequence that allows any text you hand over to the action echo to be translated from English to French.
+To make this happen, let’s make use of the translate action part of the Watson package.
+Hence, we first need to create an instance of the Watson Language Translator service.
+To do so click the Catalog (not the Browse Public Packages) link at the top right of the screen.
+From the menu appearing on the left of the screen select Watson.
+Next, click Language Translator.
+Leave all settings as they are and click the Create button at the bottom right of the screen.
+Next, switch to the Service Credentials tab and click the View Credentials link.
+Note down username and password.
+Let’s now try to understand how the mentioned package and action work.
+Hence, navigate back to the OpenWhisk UI and its catalog (Browse Public Packages) and click the Watson Translator package.
+Click the translator action and read the description as well as the sample input and output to understand its purpose. 
+Next, to be able to use Watson, we need to create a binding. Hence, click the New Binding button at the left of the screen. Then, specify an arbitrary name and select the Language Translator instance you have created before (or specify an arbitrary name and the username and password you noted down before) and click Save Configuration. 
+Next, select the binding (if not already selected), make sure that the translator action is still being selected, and click Run This Action.
+Specify the following input (snippet 11) and click the Run With This Value (you may need to click Make it Live before) button:
+{
+    "translateTo": "fr",
+    "payload": "Wonderful",
+    "username": "xxx",
+    "translateFrom": "en",
+    "password": "xxx"
+}
+Notice that you need to replace the values for username and password with the values you specified when you created the binding. Alternatively, you can remove the parameters username and password entirely which causes the default bound parameters to be used.
+You should see the following result: 
+
+{
+  "payload": " Merveilleux"
+}
+Let’s now chain the two actions together as a sequence.
+Hence, select the echo action you have created earlier.
+Click the Link into a Sequence button from the bottom right of the screen.
+Then, from the next screen appearing select the Watson Translator package and the translator action as well as the binding you have created earlier.
+Then, click the Add To Sequence button and then the This Looks Good button. Finally, specify a name for your sequence (optional) and click the Save Action Sequence and afterwards the Done button.
+To test the sequence select it and click the Run This Sequence button.
+Specify the following input (snippet 12) and click the Run With This Value button:
+{
+    "translateTo": "fr",
+    "payload": "wonderful",
+    "translateFrom": "en"
+}
+You should see the following result: 
+
+{
+  "payload": "La vie est belle"
+}
+Triggers
+You can also work with triggers using the OpenWhisk UI.
+Let’s assume you want to invoke the hello action you have created earlier as soon as something changes in a particular Github repository.
+First, select the hello action.
+Next, click the Automate This Action button at the bottom right of the screen.
+Next, click the Github icon.
+Then, click the New Trigger icon.
+Notice that you need a Github account to proceed. In case you do not have an account sign-up now.
+Specify your Github username, the access token and the name of the repository you want to watch.
+Notice that in Github your username is shown when looking at what is shown under Signed in as… when being logged-in. Your access token is shown under Settings → Personal access tokens. You probably have to create a new one by clicking the Generate new token button and by specifying a name and selecting the repo checkbox. Similarly, you may have to create a test repository to play around with.
+Also notice that you can select the right repository from a pull-down menu after having specified your Gihub username and the access token.
+For events simply specify * to listen to all events.
+Once you have filled out all input fields click the Save Configuration button.
+Select the trigger you have just created (if not already selected) and click the Next button.
+Next, click the This Looks Good button and, finally, the Save Rule button.
+For testing purposes let’s first fire the trigger manually.
+To be able to observe what’s going in click the View Activity button to open the monitoring dashboard (details about this will be explained further below). At the top right you can see triggers that fired as well as actions that have been invoked. The view updates itself periodically. You can also refresh it manually by clicking the refresh icon.
+To continue with the test select the browser tab showing your actions, triggers, and rules and hover over the trigger you have just created and click the lightning icon followed by the Run With This Value button to fire it. 
+In the next screen appearing click the Run With This Value button.
+Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the hello action been invoked.
+Finally, open another browser tab and log into Github.
+Navigate to your repository and add a file or change a file’s content and commit your change.
+Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the hello action been invoked.
+Rules
+Within the OpenWhisk UI rules are created in a similar way than sequences. You first select an action supposed to become part of the rule. Then you click the Automate This Action aka Create a Rule button just the way we already did it earlier.
+Similarly than triggers rules can be manually invoked by clicking the Fire This Trigger button after having selected the rule. Alternatively, you can invoke the action part of a rule only by clicking the Run Only the Action button after having selected the rule. Try it out using the rules we have already created earlier.
+Monitoring
+The monitoring dashboard that we have already used earlier allows you to observe your system’s behavior. 
+At the top left the dashboard visualizes the invocation counts per action or rule. This allows you to see how often particular actions or rules have been invoked and which actions or rules have been and are invoked most often. As part of the bar chart successful invocations are displayed in green, failed invocations in red.
+At the top right the dashboard displays the recent activities, e.g. triggers that have fired or actions that have been invoked along with output being produced as well as some metadata like invocation times etc. Successful activities are displayed in green, failed ones in red. You can click an activation id to retrieve more details about a particular activation.
+At the center the dashboard visualizes the invocation counts over time representing load as this reveals how many invocations took place at a certain point in time. Again, as part of the bar chart successful invocations are displayed in green, failed invocations in red.
+Play around with the actions, triggers, etc., you have created before, i.e. fire triggers, invoke actions and have a look at the monitoring dashboard while doing so.
 
 
