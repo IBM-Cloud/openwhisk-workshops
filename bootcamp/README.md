@@ -547,25 +547,27 @@ First, open a browser window, navigate to https://console.ng.bluemix.net/openwhi
 The OpenWhisk UI is comprised of the following sections:
 
 1.	My Actions
-   The My Actions section lists all actions you have created previously.
-   Clicking an action loads its code into the code editor.
-   Hovering over an action lets a trash bin appear allowing to delete the action.
-   At this point in time you should at least see the hello action we have created earlier.
+   The My Actions section lists all actions you have created previously.  
+   Clicking an action loads its code into the code editor.  
+   Hovering over an action lets a trash bin appear allowing to delete the action.  
+   At this point in time you should at least see the hello action we have created earlier.  
 
-2.	My Sequences
-   The My Sequences section lists all the sequences you have created previously.
-   Clicking a sequence loads its model into the visual modeler.
-   Hovering over a sequence lets a trash bin appear allowing to delete the sequence.
+2.	My Sequences  
+   The My Sequences section lists all the sequences you have created previously.  
+   Clicking a sequence loads its model into the visual modeler.  
+   Hovering over a sequence lets a trash bin appear allowing to delete the sequence.  
 
-3.	My Rules
-   The My Rules section lists all the rules you have created previously.
-   Clicking a rule loads its model into the visual modeler.
-   Hovering over a rule lets a trash bin appear allowing to delete the rule.
-   At this point in time you should at least see the myRule rule we have created earlier.
+3.	My Rules  
+   The My Rules section lists all the rules you have created previously.  
+   Clicking a rule loads its model into the visual modeler.  
+   Hovering over a rule lets a trash bin appear allowing to delete the rule.  
+   At this point in time you should at least see the myRule rule we have created earlier.  
 
-4.	My Triggers
-   The My Triggers section lists all the triggers you have created previously.
+4.	My Triggers  
+   The My Triggers section lists all the triggers you have created previously.  
    Hovering over a trigger lets a flash icon appear allowing to fire the trigger as well as a trash bin allowing to delete the trigger.
+
+
 
 xxx
 
