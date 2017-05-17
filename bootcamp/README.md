@@ -1,6 +1,69 @@
 # TOC
 
-TODO
+- [Preface](#preface)
+- [Serverless Computing](#serverless-computing)
+- [Prepare your engine!](#prepare-your-engine-)
+- [Start your engine!](#start-your-engine-)
+  * [Actions](#actions)
+    + [Creating and invoking JavaScript actions](#creating-and-invoking-javascript-actions)
+    + [Creating and invoking asynchronous actions](#creating-and-invoking-asynchronous-actions)
+    + [Passing parameters to actions](#passing-parameters-to-actions)
+    + [Setting default parameters](#setting-default-parameters)
+    + [Using actions to call an external API](#using-actions-to-call-an-external-api)
+    + [Working with packages and sequencing actions](#working-with-packages-and-sequencing-actions)
+  * [Triggers and rules](#triggers-and-rules)
+  * [Using rules to associate triggers and actions](#using-rules-to-associate-triggers-and-actions)
+  * [Uploading dependencies](#uploading-dependencies)
+- [Boost your engine!](#boost-your-engine-)
+  * [Getting started with the OpenWhisk UI](#getting-started-with-the-openwhisk-ui)
+  * [Actions](#actions-1)
+  * [Invoking actions via REST calls](#invoking-actions-via-rest-calls)
+  * [Invoking actions via web actions](#invoking-actions-via-web-actions)
+    + [Web action responses](#web-action-responses)
+  * [Invoking actions periodically](#invoking-actions-periodically)
+  * [Logging](#logging)
+  * [Working with packages](#working-with-packages)
+    + [Sequencing actions](#sequencing-actions)
+  * [Triggers](#triggers)
+  * [Rules](#rules)
+  * [Monitoring](#monitoring)
+- [Build a weather engine!](#build-a-weather-engine-)
+  * [Address to locations service](#address-to-locations-service)
+  * [Forecast from location service](#forecast-from-location-service)
+  * [Sending messages to Slack](#sending-messages-to-slack)
+  * [Creating the weather bot using sequences](#creating-the-weather-bot-using-sequences)
+  * [Bot forecasts](#bot-forecasts)
+  * [Connecting to triggers](#connecting-to-triggers)
+  * [Morning forecasts](#morning-forecasts)
+- [Build a serverless microservice backend!](#build-a-serverless-microservice-backend-)
+  * [Your first API](#your-first-api)
+    + [Mapping actions to endpoints](#mapping-actions-to-endpoints)
+  * [The Serverless Book Management Application](#the-serverless-book-management-application)
+    + [Creating a Cloudant Instance](#creating-a-cloudant-instance)
+    + [Creating a Database](#creating-a-database)
+  * [Expose your weather services](#expose-your-weather-services)
+- [IBM App Connect & Message Hub](#ibm-app-connect---message-hub)
+- [Special fuel for your engine!](#special-fuel-for-your-engine-)
+  * [Developing with VS Code](#developing-with-vs-code)
+  * [Developing with the Serverless Framework](#developing-with-the-serverless-framework)
+  * [Installing the Serverless Framework](#installing-the-serverless-framework)
+    + [Working with Actions](#working-with-actions)
+    + [Working with Sequences](#working-with-sequences)
+    + [Connecting API Endpoints](#connecting-api-endpoints)
+    + [Working with Triggers and Rules](#working-with-triggers-and-rules)
+    + [Packaging your weather services](#packaging-your-weather-services)
+- [Node-RED and OpenWhisk](#node-red-and-openwhisk)
+  * [Installing Node-RED](#installing-node-red)
+  * [Starting Node-RED](#starting-node-red)
+  * ["Hello World" with Node-RED](#-hello-world--with-node-red)r)
+  * [Adding Nodes to Node-RED](#adding-nodes-to-node-red)
+  * [Invoking OpenWhisk actions from Node-RED](#invoking-openwhisk-actions-from-node-red)
+  * [Invoking OpenWhisk Triggers from NodeRED](#invoking-openwhisk-triggers-from-nodered)
+- [The coolest engines out there!](#the-coolest-engines-out-there-)
+  * [Vision App](#vision-app)
+  * [Dark Vision](#dark-vision)
+  * [Skylink](#skylink)
+- [Learning more](#learning-more)
 
 # Preface
 
@@ -1387,7 +1450,7 @@ $ wsk action invoke fibonacci -p num 5 -b -r
 }
 </pre>
 
-## Mapping actions to endpoints
+### Mapping actions to endpoints
 
 Now, let’s examine how a specific action can be associated with an API endpoint/verb. Using the OpenWhisk CLI, you must specify an API path, a verb (`get`, `post`, `put`, `delete`), and the action.
 
@@ -1870,7 +1933,7 @@ It also has a vibrant ecosystem of third-party plugins to extend the functionali
 
 With the aforementioned integration developers using the framework can now choose to deploy their serverless applications to any OpenWhisk platform instance. Multi-provider support also means moving applications between platforms is much easier and developers can even develop multi-cloud serverless applications.
 
-## Installing the Serverless Framework
+### Installing the Serverless Framework
 
 First, let’s retrieve the boilerplate repository from Github:
 
@@ -1906,7 +1969,7 @@ Serverless: Deployment successful!
 Test Service
 </pre>
 
-## Working with Actions
+### Working with Actions
 
 First open the `serverless.yaml` file and try to understand its basic structure which is pretty self-explanatory. It defines some of the OpenWhisk entities you have learned about before. For instance, it defines the name of your service (which represents the collection of all your artifacts), some functions (aka actions) and properties of these (like the handlers containing their code) and so forth. It also defines that you are working with OpenWhisk as your serverless engine.
 
@@ -1930,7 +1993,7 @@ $ serverless invoke --function hello_world --data '{"name": "OpenWhisk"}'
 }
 </pre>
 
-## Working with Sequences
+### Working with Sequences
 
 Open the `serverless.yml` file and let’s define a sequence by reusing the actions `myUtil/sort` and `myUtil/head` again. To define the sequence simply extend the functions section like this (snippet 24 contains all the extension being applied as part this chapter):
 
@@ -1957,7 +2020,7 @@ $ serverless invoke --function mySequence --data '{"lines":["c","b","a"]}'
 }
 </pre>
 
-## Connecting API Endpoints
+### Connecting API Endpoints
 
 Open the `serverless.yaml` file and define an API endpoint for the `hello_world` action we have worked with prior. To define the endpoint simply extend the functions section like this:
 
@@ -1987,7 +2050,7 @@ $ curl --request GET <endpoint_URL>
 }
 </pre>
 
-## Working with Triggers and Rules
+### Working with Triggers and Rules
 
 Open the `serverless.yaml` file and define an triggers and rules for the `hello_world` action we have worked with prior. To define the endpoint simply extend the functions section like this:
 
@@ -2011,7 +2074,7 @@ $ serverless deploy
 Test the trigger and rule the same way you did earlier.
 You can learn more about using the Serverless Framework here: https://github.com/serverless/serverless-openwhisk 
 
-## Packaging your weather services
+### Packaging your weather services
 
 At this point it may be a good exercise to package together the previously implemented weather services using the Serverless Framework – we leave this as a voluntary exercise for you.
 
