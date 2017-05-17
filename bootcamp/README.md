@@ -1,4 +1,4 @@
-# TOC
+# Table of Content
 
 - [Preface](#preface)
 - [Serverless Computing](#serverless-computing)
