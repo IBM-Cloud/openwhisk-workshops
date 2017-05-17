@@ -817,33 +817,51 @@ You should see the following result:
 
 Instead of just reusing a package-provided action as-is you can also view its code (which you may want to use as a basis for your own action).
 
-Let’s review the code of the curl action.
-Hence, navigate back to the catalog (to do so you probably want to click the Close button to close the invocation console) and click the Samples package again.
-This time select the curl action and read the description to understand its purpose. 
-Next, click the View Source button to (re)view and understand the action’s code.
+Let’s review the code of the `curl` action.
+Hence, navigate back to the catalog (to do so you probably want to click the `Close` button to close the invocation console) and click the `Samples` package again.
+This time select the `curl` action and read the description to understand its purpose. 
+Next, click the `View Source` button to (re)view and understand the action’s code.
+
 At this point feel free play with the other packages being available.
-Sequencing actions
+
+### Sequencing actions
+
 Next, let’s visually model a simple sequence similar to the one we have created earlier when having used the CLI.
 Therefore, let’s first create a very simple action (name it echo) the same way you learned to create actions before (snippet 10):
+
+```javascript
 function main(msg) {
-	return { payload: "Life is " + msg.payload };
+    return { payload: "Life is " + msg.payload };
 }
-Obviously the action does nothing else than returning the text you have handed-over via the input parameter called payload.
-Now, let’s assume you want to define a sequence that allows any text you hand over to the action echo to be translated from English to French.
-To make this happen, let’s make use of the translate action part of the Watson package.
-Hence, we first need to create an instance of the Watson Language Translator service.
-To do so click the Catalog (not the Browse Public Packages) link at the top right of the screen.
-From the menu appearing on the left of the screen select Watson.
-Next, click Language Translator.
-Leave all settings as they are and click the Create button at the bottom right of the screen.
-Next, switch to the Service Credentials tab and click the View Credentials link.
-Note down username and password.
-Let’s now try to understand how the mentioned package and action work.
-Hence, navigate back to the OpenWhisk UI and its catalog (Browse Public Packages) and click the Watson Translator package.
-Click the translator action and read the description as well as the sample input and output to understand its purpose. 
-Next, to be able to use Watson, we need to create a binding. Hence, click the New Binding button at the left of the screen. Then, specify an arbitrary name and select the Language Translator instance you have created before (or specify an arbitrary name and the username and password you noted down before) and click Save Configuration. 
-Next, select the binding (if not already selected), make sure that the translator action is still being selected, and click Run This Action.
-Specify the following input (snippet 11) and click the Run With This Value (you may need to click Make it Live before) button:
+```
+
+Obviously the action does nothing else than returning the text you have handed-over via the input parameter called `payload`.
+
+Now, let’s assume you want to define a sequence that allows any text you hand over to the action `echo` to be translated from English to French.
+
+To make this happen, let’s make use of the `translate` action part of the `Watson` package.
+
+Hence, we first need to create an instance of the `Watson Language Translator` service.
+To do so click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
+From the menu appearing on the left of the screen select `Watson`.
+Next, click `Language Translator`.
+Leave all settings as they are and click the `Create button` at the bottom right of the screen.
+Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
+Note down `username` and `password`.
+
+Now, let's try to understand how the mentioned package and action works.
+Hence, navigate back to the OpenWhisk UI and its catalog (`Browse Public Packages`) and click the `Watson Translator` package.
+Click the `translator` action and read the description as well as the sample input and output to understand its purpose. 
+
+Next, to be able to use Watson, we need to create a binding. 
+Hence, click the `New Binding` button at the left of the screen. 
+Then, specify an arbitrary name and select the `Language Translator` instance you have created before (or specify an arbitrary name and the `username` and `password` you noted down before) and click `Save Configuration`. 
+
+Next, select the binding (if not already selected), make sure that the `translator` action is still being selected, and click `Run This Action`.
+
+Specify the following input (snippet 11) and click the `Run With This Value` (you may need to click `Make it Live` before) button:
+
+```json
 {
     "translateTo": "fr",
     "payload": "Wonderful",
@@ -851,60 +869,97 @@ Specify the following input (snippet 11) and click the Run With This Value (you 
     "translateFrom": "en",
     "password": "xxx"
 }
-Notice that you need to replace the values for username and password with the values you specified when you created the binding. Alternatively, you can remove the parameters username and password entirely which causes the default bound parameters to be used.
+```
+
+Notice that you need to replace the values for `username` and `password` with the values you specified when you created the binding. Alternatively, you can remove the parameters `username` and `password` entirely which causes the default bound parameters to be used.
+
 You should see the following result: 
 
+```json
 {
-  "payload": " Merveilleux"
+    "payload": " Merveilleux"
 }
-Let’s now chain the two actions together as a sequence.
-Hence, select the echo action you have created earlier.
-Click the Link into a Sequence button from the bottom right of the screen.
-Then, from the next screen appearing select the Watson Translator package and the translator action as well as the binding you have created earlier.
-Then, click the Add To Sequence button and then the This Looks Good button. Finally, specify a name for your sequence (optional) and click the Save Action Sequence and afterwards the Done button.
-To test the sequence select it and click the Run This Sequence button.
-Specify the following input (snippet 12) and click the Run With This Value button:
+```
+
+Now, let's chain the two actions together as a sequence.
+Hence, select the `echo` action you have created earlier.
+Click the `Link into a Sequence` button from the bottom right of the screen.
+Then, from the next screen appearing select the `Watson Translator` package and the `translator` action as well as the binding you have created earlier.
+Then, click the `Add To Sequence` button and then the `This Looks Good` button. 
+Finally, specify a `name` for your sequence (optional) and click the `Save Action Sequence` and afterwards the `Done` button.
+To test the sequence select it and click the `Run This Sequence` button.
+
+Specify the following input (snippet 12) and click the `Run With This Value` button:
+
+```json
 {
     "translateTo": "fr",
     "payload": "wonderful",
     "translateFrom": "en"
 }
+```
+
 You should see the following result: 
 
+```json
 {
-  "payload": "La vie est belle"
+    "payload": "La vie est belle"
 }
-Triggers
+```
+
+## Triggers
+
 You can also work with triggers using the OpenWhisk UI.
+
 Let’s assume you want to invoke the hello action you have created earlier as soon as something changes in a particular Github repository.
-First, select the hello action.
-Next, click the Automate This Action button at the bottom right of the screen.
-Next, click the Github icon.
-Then, click the New Trigger icon.
+
+First, select the `hello` action.
+Next, click the `Automate This Action` button at the bottom right of the screen.
+Next, click the `Github` icon.
+Then, click the `New Trigger` icon.
+
 Notice that you need a Github account to proceed. In case you do not have an account sign-up now.
-Specify your Github username, the access token and the name of the repository you want to watch.
-Notice that in Github your username is shown when looking at what is shown under Signed in as… when being logged-in. Your access token is shown under Settings → Personal access tokens. You probably have to create a new one by clicking the Generate new token button and by specifying a name and selecting the repo checkbox. Similarly, you may have to create a test repository to play around with.
-Also notice that you can select the right repository from a pull-down menu after having specified your Gihub username and the access token.
-For events simply specify * to listen to all events.
-Once you have filled out all input fields click the Save Configuration button.
-Select the trigger you have just created (if not already selected) and click the Next button.
-Next, click the This Looks Good button and, finally, the Save Rule button.
+
+Specify your Github `username`, the `access token` and the `name` of the repository you want to watch.
+
+Notice that in Github your `username` is shown when looking at what is shown under `Signed in as...` when being logged-in. Your access token is shown under `Settings → Personal access tokens`. You probably have to create a new one by clicking the `Generate new token` button and by specifying a `name` and selecting the `repo` checkbox. Similarly, you may have to create a test repository to play around with.
+
+Also notice that you can select the right repository from a pull-down menu after having specified your Gihub `username` and the `access token`.
+
+For events simply specify `*` to listen to all events.
+
+Once you have filled out all input fields click the `Save Configuration` button.
+Select the trigger you have just created (if not already selected) and click the `Next` button.
+Next, click the `This Looks Good` button and, finally, the `Save Rule `button.
+
 For testing purposes let’s first fire the trigger manually.
-To be able to observe what’s going in click the View Activity button to open the monitoring dashboard (details about this will be explained further below). At the top right you can see triggers that fired as well as actions that have been invoked. The view updates itself periodically. You can also refresh it manually by clicking the refresh icon.
-To continue with the test select the browser tab showing your actions, triggers, and rules and hover over the trigger you have just created and click the lightning icon followed by the Run With This Value button to fire it. 
-In the next screen appearing click the Run With This Value button.
-Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the hello action been invoked.
+
+To be able to observe what’s going on click the `View Activity` button to open the monitoring dashboard (details about this will be explained further below). At the top right you can see triggers that fired as well as actions that have been invoked. The view updates itself periodically. You can also refresh it manually by clicking the `refresh` icon.
+To continue with the test select the browser tab showing your actions, triggers, and rules and hover over the trigger you have just created and click the `lightning` icon followed by the `Run With This Value` button to fire it. 
+In the next screen appearing click the `Run With This Value` button.
+Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.
+
 Finally, open another browser tab and log into Github.
+
 Navigate to your repository and add a file or change a file’s content and commit your change.
-Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the hello action been invoked.
-Rules
-Within the OpenWhisk UI rules are created in a similar way than sequences. You first select an action supposed to become part of the rule. Then you click the Automate This Action aka Create a Rule button just the way we already did it earlier.
-Similarly than triggers rules can be manually invoked by clicking the Fire This Trigger button after having selected the rule. Alternatively, you can invoke the action part of a rule only by clicking the Run Only the Action button after having selected the rule. Try it out using the rules we have already created earlier.
-Monitoring
-The monitoring dashboard that we have already used earlier allows you to observe your system’s behavior. 
+Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.
+
+## Rules
+
+Within the OpenWhisk UI rules are created in a similar way than sequences. You first select an action supposed to become part of the rule. Then you click the `Automate This Action` aka `Create a Rule` button just the way we already did it earlier.
+
+Similarly than triggers rules can be manually invoked by clicking the `Fire This Trigger` button after having selected the rule. Alternatively, you can invoke the action part of a rule only by clicking the `Run Only the Action` button after having selected the rule. Try it out using the rules we have already created earlier.
+
+## Monitoring
+
+The monitoring dashboard that we have already used earlier allows you to observe your system’s behavior.
+
 At the top left the dashboard visualizes the invocation counts per action or rule. This allows you to see how often particular actions or rules have been invoked and which actions or rules have been and are invoked most often. As part of the bar chart successful invocations are displayed in green, failed invocations in red.
+
 At the top right the dashboard displays the recent activities, e.g. triggers that have fired or actions that have been invoked along with output being produced as well as some metadata like invocation times etc. Successful activities are displayed in green, failed ones in red. You can click an activation id to retrieve more details about a particular activation.
+
 At the center the dashboard visualizes the invocation counts over time representing load as this reveals how many invocations took place at a certain point in time. Again, as part of the bar chart successful invocations are displayed in green, failed invocations in red.
+
 Play around with the actions, triggers, etc., you have created before, i.e. fire triggers, invoke actions and have a look at the monitoring dashboard while doing so.
 
 
