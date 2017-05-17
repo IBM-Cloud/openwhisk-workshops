@@ -119,7 +119,6 @@ Developers only need to care about implementing the desired application logic - 
 
 A few important notes before you start:
 *	When working through the lab you may see slightly different responses being returned from your CLI than those printed as part of these instructions.<br/>You do not need to worry about this. The reason is that you may use a different namespace than the one we used when generating this document; the differences will be minor and only result in some name-prefixing.
-*	To ease your life you can download a digital copy of this document from here: https://ibm.box.com/v/serverlessconf-austin-17-ws
 * Important remark for Windows users: Windows users are strongly advised to download Git (https://git-for-windows.github.io/) and to work from the Git bash. They are also advised to download cURL for Windows (https://curl.haxx.se/download.html)
 
 In order to use OpenWhisk proceed as follows:
@@ -420,7 +419,7 @@ $ wsk package get --summary /whisk.system/cloudant
 [...]
 </pre>
 
-This output shows that the Cloudant package provides multiple actions, e.g. `read` and `write`, and a trigger feed called `changes`. The `changes` feed causes triggers to be fired when documents are added to the specified Cloudant database.
+This output shows that the Cloudant package provides multiple actions, e.g. `read` and `write`, and a trigger *feed* called `changes`. The `changes` feed causes triggers to be fired when documents are added to the specified Cloudant database.
 
 The Cloudant package also defines the parameters `username`, `password`, `host`, and `port`. These parameters must be specified for the actions and feeds to be meaningful. The parameters allow the actions to operate on a specific Cloudant account.
 
@@ -1356,7 +1355,7 @@ Let's now "configure" the trigger to fire automatically whenever a new external 
 
 As said, triggers bind to external event sources during creation by passing in a reference to the external trigger feed to connect to. OpenWhisk's public packages contain a number of trigger feeds that we can use for external event sources.
 
-One of those public trigger feeds is in the `alarm` package we already used earlier. As seen, this alarm *feed* executes triggers at pre-specified intervals. Using this feed with our weather bot trigger, we could set it up to execute every morning for a particular address and tell us the forecast every for London before we set off for work.
+One of those public trigger feeds is in the `alarm` package we already used earlier. As seen, this alarm feed executes triggers at pre-specified intervals. Using this feed with our weather bot trigger, we could set it up to execute every morning for a particular address and tell us the forecast every for London before we set off for work.
 
 Let's do that now:
 
