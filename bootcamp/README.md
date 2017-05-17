@@ -1313,3 +1313,706 @@ Okay, that's great but let's turn off this alarm before it drives us mad:
 $ wsk rule disable regular_forecast_rule
 <b>ok:</b> rule <b>regular_forecast_rule</b> is <b>inactive</b>
 </pre>
+
+# Build a serverless microservice backend!
+
+As actions can be seen as flexible and independently deployable microservices they are perfectly suited to build up entirely serverless microservice backends that expose functions via simply *APIs* (Application Programming Interfaces).
+API Gateway Integration
+
+In this context APIs are the digital glue that links services, applications, sensors and mobile devices to create compelling customer experiences and help businesses tap into new market opportunities. They allow you to bring new digital services to market, open revenue channels and exceed customer expectations.
+
+OpenWhisk’s API Gateway integration is a new feature that enables you to easily expose your OpenWhisk actions as RESTful endpoints. You can assign actions to specific endpoints, and even have verbs (`get`, `put`, `post`, `delete`) from the same endpoint assigned to different actions.
+
+There are two different approaches to expose your actions with the API gateway:
+*	Assigning API endpoint/verb combinations to specific actions individually
+*	Using a Swagger config file to map API endpoints to actions
+
+You can define your APIs using our CLI or using our UI – in the following we will make use of both.
+
+Notice that actions exposed via OpenWhisk’s API Gateway integration are currently treated like web actions; hence once can make use of the properties `headers`, `status`, or `body` as seen before.
+
+## Your first API
+
+Let’s examine how to expose an action able to generate Fibonacci numbers as a REST API.
+
+Therefore, let’s first have a look at the action (snippet 15) itself:
+It’s a relatively simple action that generates numbers in a Fibonacci sequence, where every number after the first two is the sum of the two preceding values. When invoking this action from the command line, you specify a `num` parameter (for the n-th place in the sequence), and it will return the value, the complete sequence, and the number of recursive invocations of the Fibonacci method:
+
+```javascript
+var sequence = [1];
+var invocations = 0;
+
+function main(params) {
+    invocations = 0;
+    var int = parseInt(params.num);
+    
+    //num is a zero-based index
+    return { 
+        body: "n: " + int + ", value: " + fibonacci(int) + ", sequence: " + sequence.slice(0,int+1) + ", invocations: " + invocations
+    }
+}
+
+function fibonacci(num) {
+    invocations ++;
+    var result = 0;
+
+    if (sequence[num] != undefined) {
+        return sequence[num];
+    }
+
+    if (num <= 1 || isNaN(num)) {
+        result = 1;
+    } else {
+        result = fibonacci(num-1) + fibonacci(num-2);
+    }
+
+    if (num >= 0) {
+        sequence[num] = result;
+    }
+
+    return result;
+}
+```
+
+Next, let’s deploy and invoke the action:
+
+<pre>
+$ wsk action create fibonacci fibonacci.js
+<b>ok:</b> created action <b>fibonacci</b>
+
+$ wsk action invoke fibonacci -p num 5 -b -r
+<b>ok:</b>  invoked action <b>fibonacci</b> with id <b>dde9212e686f413bb90f22e79e12df75</b>
+{
+  "body": "n: 5, value: 8, sequence: 1,1,2,3,5,8, invocations: 9"
+}
+</pre>
+
+## Mapping actions to endpoints
+
+Now, let’s examine how a specific action can be associated with an API endpoint/verb. Using the OpenWhisk CLI, you must specify an API path, a verb (`get`, `post`, `put`, `delete`), and the action.
+
+Notice that you may have to issue the following command and select the proper namespace before able to proceed:
+
+<pre>
+$ wsk bluemix login --user <user> --password <password>
+</pre>
+
+Now, we need to enable the action as web action:
+
+<pre>
+$ wsk action update fibonacci --web true
+<b>ok:</b> updated action <b>fibonacci</b>
+</pre>
+
+Next, let’s use the API path `/fibonacci`, and the verb `get` to point to the action `fibonacci`:
+
+<pre>
+$ wsk api create /fibonacci get fibonacci
+<b>ok:</b> created API /fibonacci GET for action <b>/_/fibonacci</b>
+https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/fibonacci 
+</pre>
+
+So, let’s try it out:
+
+<pre>
+$ curl --request GET https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/fibonacci?num=10
+n: 10, value: 89, sequence: 1,1,2,3,5,8,13,21,34,55,89, invocations: 19
+</pre>
+
+Notice that parameters that are passed via the query string will be available in the `params` object passed into the action’s `main` function.
+
+## The Serverless Book Management Application
+
+Now let’s do something a bit more powerful: Let's say you want to expose a set of actions for managing books you have read etc. Therefore, you need to implement a couple of actions forming a serverless microservices backend for creating, reading, updating, and deleting books.
+
+In the following we strongly recommend to use a REST client like *Insomnia*
+(https://insomnia.rest/) to invoke the API endpoints that will be defined – otherwise you may get annoyed by escaping efforts.
+
+### Creating a Cloudant Instance
+
+Let’s assume you want to store the books in Cloudant as this would make things very easy as OpenWhisk already provides you with a Cloudant package that allows you to work with Cloudant without the need to write code.
+
+From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
+From the menu on the left-side select `Data & Analytics`.
+Click `Cloudant NoSQL DB`.
+As service name specify `bookStore`, leave everything else as-is and click the `Create` button.
+
+Once the instance has been created switch to the `Service Credentials` tab and click the `View Credentials` link. You will need the `username`, `password` and `host` shown there throughout the rest of this chapter, hence leave this browser tab open.
+
+### Creating a Database
+
+Now that you have created a Cloudant instance, let’s create a database for storing the books in.
+
+OpenWhisk can automatically create package bindings for your (Bluemix) Cloudant service instances:
+
+<pre>
+$ wsk package refresh
+_ refreshed successfully
+created bindings:
+Bluemix_bookStore_Credentials-1
+[...]
+</pre>
+
+The refresh automatically creates a package binding for the Cloudant service instance that you created. To verify this:
+
+<pre>
+$ wsk package list
+<b>packages</b>
+/andreas.nauerz@de.ibm.com_dev/Bluemix_bookStore_Credentials-1        private
+[...]
+</pre>
+
+Once again, to reveal the list of entities in the `/whisk.system/cloudant` package run the following command:
+
+<pre>
+$ wsk package get --summary Bluemix_bookStore_Credentials-1
+<b>package</b> /whisk.system/cloudant: Cloudant database service
+   (<b>parameters</b>: BluemixServiceName host username password dbname includeDoc overwrite)
+<b>action</b> /whisk.system/cloudant/read: Read document from database
+<b>action</b> /whisk.system/cloudant/write: Write document to database
+<b>feed</b>   /whisk.system/cloudant/changes: Database change feed
+[...]
+</pre>
+
+As before, to avoid the need to pass in the same parameters to the package’s actions every time, let’s bind certain parameters:
+
+<pre>
+$ wsk package bind /whisk.system/cloudant myBookStore -p username <username> -p password <password> -p host <host>
+<b>ok:</b> created binding <b>myBookStore</b>
+</pre>
+
+One of the actions available is called `create-database`.
+Let’s use that one to create our database:
+
+<pre>
+$ wsk action invoke myBookStore/create-database -p dbname books
+<b>ok:</b> invoked <b>/_/myBookStore/create-database</b> with id <b>3f67a23daa8b44efa35725fc22585f9</b>
+</pre>
+
+Now, we could easily store books into this database using the above package’s `write` action. Alternatively, we could first map an API endpoint to this and other useful actions part of the package.
+
+Before doing so let’s update the binding so that we do not even need to pass in the `dbname` anymore:
+
+<pre>
+$ wsk package update myBookStore -p username <username> -p password <password> -p host <host> -p dbname books
+<b>ok:</b> updated package <b>myBookStore</b>
+</pre>
+
+Before mapping our actions, let’s create a `query index` for the field `name` so we can query books by name later on:
+
+<pre>
+$ wsk action invoke myBookStore/create-query-index -p index "{\"index\": {},\"type\":\"text\"}" --blocking
+<b>ok:</b> invoked <b>/_/myBookStore/create-query-index</b> with id <b>4g67a23daa8b44efa35725fc22585f0</b>
+</pre>
+
+As we currently do not allow package bound actions to be enabled as web actions and as we, at the same time, require an action to be a web action in order to be able to expose it via our API Gateway we have to perform a little trick: We have to implement a simply proxy action that can be enabled as web action and simply calls the package bound action holding all the previously defined parameters using sequencing. But this is not a trick only, executing such proxy actions before and after the actual action is often even required: The action supposed to be executed before the actual action often has to take care of things like authentication while the one supposed to be executed after the actual action often has to perform data transformations.
+
+Hence, create an action named `proxy` like this (snippet 30):
+
+```javascript
+function main(params) {
+    return params;
+}
+```
+
+Next, we create 3 sequences and enable them as web actions:
+
+<pre>
+$ wsk action create endpoint_get --sequence proxy,myBookStore/exec-query-find --web true
+<b>ok:</b> created action <b>endpoint_get</b>
+
+$ wsk action create endpoint_post --sequence proxy,myBookStore/write --web true
+<b>ok:</b> created action <b>endpoint_post</b>
+
+$ wsk action create endpoint_delete --sequence proxy,myBookStore/delete-document --web true
+<b>ok:</b> created action <b>endpoint_delete</b>
+</pre>
+
+Next, let’s map API endpoints to actions:
+
+<pre>
+$ wsk api create /books GET endpoint_get
+<b>ok:</b> created API /books GET for action <b>/_/endpoint_get</b>
+https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/books
+
+$ wsk api create /books POST endpoint_post
+<b>ok:</b> created API /books POST for action <b>/_/endpoint_post</b>
+https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/books
+
+$ wsk api create /books DELETE endpoint_delete
+<b>ok:</b> created API /books DELETE for action <b>/_/endpoint_delete</b>
+https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/books
+</pre>
+
+Now, let’s store some books.
+To do so use your REST client to submit a `POST` against the endpoint you have created prior.
+
+Make sure to hand-over the following JSON data (you can use snippets 16 and 17):
+
+```json
+{
+    "doc": {
+        "name":"firstBook"
+    }
+}
+```
+
+Output:
+
+```json
+{
+   "ok": true,
+   "id": "1d6e1a830c5a9c4bc62db7f14b1e91e0",
+   "rev": "1-5cb5fef5b2fc44f78cb181f6ace8f8db"
+}
+```
+
+And then:
+
+```json
+{
+    "doc": {
+        "name":"secondBook"
+    }
+}
+```
+
+Output:
+
+```json
+{
+   "ok": true,
+   "id": "2e6e1a830c5a9c4bc62db7f14b1e91e0",
+   "rev": "2-6cb5fef5b2fc44f78cb181f6ace8f8db"
+}
+```
+
+Next, let’s query all books.
+To do so use your REST client to submit a `GET` against the endpoint you have created prior.
+
+Hand-over the following query parameter to define the selector (you can use snippet 18):
+
+```json
+{
+    "selector":{
+        "name":{
+            "$regex":".*"
+        }
+    },
+    "sort":[
+        {
+            "name":"asc"
+        }
+    ]
+}
+```
+
+Output:
+
+```json
+{
+   	"docs": [
+		  {        
+		     	"_id": "d67e49d6a85d20e9e2ec45710d12d816",
+			     "_rev": "1-f4e3fbffab0b7dfcf8677c68689bf9c3",
+			     "name": "firstBook"
+		  },
+		  {
+			     "_id": "26a38a8193722046b2cac60e66dbb0f5",
+			     "_rev": "1-3db09f4b6275c63cafca157112bb01d0",
+			     "name": "secondBook"
+		  }
+],
+[...]
+```
+
+Next, let’s query a particular book.
+To do so use your REST client to submit a `GET` again.
+
+Hand-over the following query parameter to define the selector (you can use snippet 20):
+
+```json
+{
+    "selector":{
+        "name":{
+            "$eq":"firstBook"
+        }
+    },
+    "sort":[
+        {
+            "name":"asc"
+        }
+    ]
+}
+```
+
+
+Output:
+
+```json
+{
+	   "docs": [
+		      {
+			         "_id": "d67e49d6a85d20e9e2ec45710d12d816",
+			         "_rev": "1-f4e3fbffab0b7dfcf8677c68689bf9c3",
+			         "name": "firstBook"
+		      }
+	   ],
+[...]
+```
+
+Now, let’s delete the book we just queried.
+To do so use your REST client to submit a `DELETE`.
+Hand-over the `docid` and `docrev` of the book you just queried as query parameter.
+
+Again, query all books to validate that the book has been properly deleted.
+
+## Expose your weather services
+
+Now, let’s make the previously implemented weather services (functions) accessible via some simple APIs, too. This time we will use the UI (instead of the CLI) to define these APIs.
+
+Again, open the OpenWhisk UI.
+Select the `API` tab.
+Click the `Create an OpenWhisk API` button (only visible if you haven’t created any API before).
+As `API name` specify `weatherAPI`.
+Leave everything else as-is and click the `Save` button at the bottom of the screen.
+
+On the next screen select the `Definition` tab from the navigation on the left of the screen.
+Click the `Create Operation` button.
+As `path` specify `location_to_latlong`.
+As `action` select the `location_to_latlong` action.
+Leave everything else as-is and click the `Save` button at the bottom of the screen.
+Click the `Save` button at the bottom of the screen.
+
+To find out the `URL` to be used to invoke this operation switch to the `API Explorer` tab.
+From the list at the left select the `getLocationtolatlong` entry and copy the `GET URL` shown.
+Open a browser window and append they query parameter `?location=London`.
+You should be presented the latitude and longitude of London.
+
+Switch back to the `Definition` tab and, based on what you just learned, expose the `forecast_from_latlong` action by adding another operation, too.
+
+At this point feel free to play around with other features of our API Gateway integration.
+
+# IBM App Connect & Message Hub
+
+*IBM AppConnect* allows you to connect different applications to make your business more efficient. It allows you to set up automation flows to direct how events in one application trigger actions in another. It also allows you to map the information you want to share between them. 
+
+IBM Message Hub is an IBM Bluemix managed Apache Kafka, a scalable, high-throughput message bus service for building real-time data pipelines and streaming applications. It allows you to wire together micro-services using open protocols, to connect stream data to analytics to realize powerful insights, to feed event data to multiple applications to react in real time. It allows you to bridge to your on-premise messaging infrastructure to create a hybrid cloud messaging solution.
+
+In the following we will show you can use AppConnect to post data to a dedicated IBM Message Hub topic which then causes an OpenWhisk trigger to fire to invoke an action.
+
+First, let’s set up a Message Hub instance and a topic:
+
+From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
+From the menu appearing on the left of the screen select `Application Services`.
+Click `Message Hub`.
+Leave all settings as they are and click the `Create` button at the bottom right of the screen.
+Switch to the `Manage` tab and click the `+` icon to create a new topic. As topic name specify `openwhisk`. Leave all other settings as they are and click the `Create topic` button.
+
+Second, let’s set up an App Connect instance:
+Open a new browser tab.
+From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
+From the menu appearing on the left of the screen select `Integrate`.
+Click `App Connect`.
+Leave all settings as they are and click the `Create` button at the bottom right of the screen.
+
+Now, sign-up for a *Salesforce* test account as we would like App Connect to post something to Message Hub (then causing the OpenWhisk trigger to fire and the action to be invoked) as soon as a new contact is being created:
+
+Open a new browser tab and navigate to `https://www.salesforce.com/form/signup/freetrial-sales.jsp`
+Fill out all fields shown on the right-hand side and click the `Start free trial` button.
+
+Navigate back to the browser tab showing your App Connect instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Apps` and then `Dashboard`).
+If necessary click the `Launch App Connect` button and skip the dialogs offering initial help. 
+Click the `New` button and select `Create an event-driven flow` button.
+Click `Salesforce` and `New Contact`.
+Click the `Connect to Salesforce` button.
+In the new browser tab appearing click the `Allow` button.
+Back in the App Connect view click `Message Hub` and `Send Message`.
+Click the `Connect to Message Hub` button.
+Now, navigate back to the browser tab showing your Message Hub instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Services` and then `Dashboard`).
+Switch to the `Service Credentials` tab and click the `View Credentials` link.
+Click the icon that allows you to copy the entire JSON being shown.
+Next, navigate back to the browser tab showing your App Connect instance and paste the entire JSON you have just copied into the field labeled `Message Hub Service Credentials` and click the `Connect` button.
+As topic specify `openwhisk`.
+As payload select (after having clicked the little helper icon next to the input field) `lastname` for instance.
+Finally, click the `Exit and switch on button` at the top right of the screen.
+
+Now, let’s make sure a trigger fires whenever something is being posted to the Message Hub topic we just created:
+
+In the OpenWhisk UI switch to the Develop tab if not already there.
+Create a new action (name it `newContact`) the way you learned it before containing the following code (snippet 26):
+
+```javascript
+function main(msg) {
+    return { "message": "New Salesforce contact data: " + msg.message };
+}
+```
+
+Click the `Automate this Action` button at the bottom right of the screen to make sure it gets fired by a trigger.
+Click `Messaging`.
+Click `New Trigger`.
+Provide all the details being asked for (which you can get by navigating back to the browser tab showing your Message Hub instance and having a look at the service credentials).
+Click the `Save Configuration` button.
+Click the `This Looks Good` and the `Save Rule` buttons.
+Finally, switch to the `Monitor` tab to see what’s going on.
+
+Navigate back to the browser tab showing the Salesforce application.
+From the main menu click `Contacts`.
+Click the `New` button at the top right of the screen.
+Provide at least a `given` and `family name` and click `Save`.
+
+When navigating back to the OpenWhisk UI monitoring should reveal that the action we just created has been invoked with information about the Salesforce contact that has just been created.
+
+To summarize, the App Connect flow took care of posting to a dedicated Message Hub topic once a new Salesforce contact has been created. That caused the OpenWhisk Messaging trigger to fire which caused the associated action to be invoked.
+
+# Special fuel for your engine!
+
+OpenWhisk also integrates with other (3rd party) tools to provide developers with a great developer experience. In the following we have picked two simple samples to demonstrate such kind of integration.
+
+## Developing with VS Code
+
+Many, especially JavaScript/NodeJS, developers use *VS Code* to develop their code.
+We have recently developed a prototypical extension (not yet officially supported) for VS Code that enables complete round trip cycles for authoring OpenWhisk actions inside the editor.
+
+The key point for this extension is that it has full round trip for OpenWhisk actions (*list, create new local, create new remote, update, import from remote system, invoke, etc.*) without the need to leave the IDE which makes development cycles far shorter and easier. The extension works for action written in different languages (like JS and Swift) and on different platforms (like Windows, Mac, and Linux).
+
+In the future we plan to provide more such plug-ins for additional IDEs (this is no official commitment) and hence seek for early feedback.
+
+First, download VS Code for your platform from here: `https://code.visualstudio.com/`
+Next, download the extension from here: `https://github.com/openwhisk/openwhisk-vscode#downloads`
+
+To install the extension open VS Code and switch to the extensions view (`View → Extensions`). 
+Click the `more` menu (represented by the `•••` icon at the very top) and select `install from VSIX...` 
+Point to the `VSIX file` you downloaded.
+
+Once you have the extension installed, you will have to run `wsk property set` inside of VS Code to set the `apihost`, `auth`, and `namespace` values the same way you did configure your local CLI at the very beginning of this workshop:
+
+Open the command palette via `View → Command Palette` or by pressing `F1` and entering:
+`wsk property set`
+
+When prompted select the option `apihiost` and press `enter`.
+Next enter the correct value for the apihost property.
+
+In the console you should see a result like this:
+
+<pre>
+$ wsk property set apiHost openwhisk.ng.bluemix.net
+set config: apiHost=openwhisk.ng.bluemix.net
+Configuration saved in C:\Users\IBM_ADMIN\.openwhisk\vscode-config.json
+</pre>
+
+Repeat this procedure to set the proper values for the `auth` and `namespace` properties.
+
+Notice that you can, once again, retrieve the correct values from here: https://new-console.ng.bluemix.net/openwhisk/cli
+
+Now switch to the explorer (`View → Explorer`), implement the following action (snippet 23) and save the file (name it `helloFromVSCode.js`):
+
+```javascript
+function main() {
+    return { message: "Hello from VS Code" };
+}
+```
+
+Press `F1` to open the command palette and enter:
+
+<pre>
+wsk action create
+</pre>
+
+When prompted enter an identifier for your action like `helloFromVSCode`.
+
+In the console you should see a result like this:
+
+<pre>
+$ wsk action create helloFromVSCode
+Creating a new action using the currently open document: file:///c%3A/Users/IBM_ADMIN/Downloads/helloFromVSCode.js
+OpenWhisk action created: andreas.nauerz@de.ibm.com_dev/helloFromVSCode
+</pre>
+
+Finally, invoke the action by opening the command palette (`F1`) again and entering:
+
+<pre>
+wsk action invoke
+</pre>
+
+From the pull-down menu appearing select the action to be invoke – in our case the one named `helloFromVSCode`.
+
+In the console you should see a result like this:
+
+<pre>
+$ wsk action invoke helloFromVSCode 
+......
+{
+    "result": {
+        "message": "Hello from VS Code"
+    },
+    "success": true,
+    "status": "success"
+}
+>> completed in 1855ms
+</pre>
+
+Feel free to experiment with the extension a bit on your own and provide us with any feedback you have.
+
+## Developing with the Serverless Framework
+
+Very recently we have announced our integration with the Serverless Framework (https://serverless.com/framework/). Hence, developers can now use the framework to build applications for the OpenWhisk platform.
+
+The Serverless Framework is the most popular open-source framework for building serverless applications. Launching back in 2015, under a different name, the framework has experienced tremendous growth and now has over fourteen thousands stars on Github.
+
+Thousands of developers are using the tool to build serverless applications every day.
+
+Using a simple manifest file, developers can define serverless functions, connect them to event sources and declare cloud services needed by their application.
+
+The framework handles deploying these serverless applications to the cloud provider. It also allows developers to monitor services in production, roll-out updates and assist debugging issues.
+
+It also has a vibrant ecosystem of third-party plugins to extend the functionality of the framework.
+
+With the aforementioned integration developers using the framework can now choose to deploy their serverless applications to any OpenWhisk platform instance. Multi-provider support also means moving applications between platforms is much easier and developers can even develop multi-cloud serverless applications.
+
+## Installing the Serverless Framework
+
+First, let’s retrieve the boilerplate repository from Github:
+
+<pre>
+$ git clone https://github.com/jthomas/serverless-openwhisk-boilerplate
+$ cd serverless-openwhisk-boilerplate
+</pre>
+
+<pre>
+Next, let’s install project dependencies:
+$ sudo npm install --global serverless serverless-openwhisk
+$ npm install
+</pre>
+
+Finally, let’s deploy (the boilerplate includes an example that can be deployed without modification):
+
+<pre>
+$ serverless deploy
+</pre>
+
+If the deployment succeed, the following messages will be printed to the console:
+
+<pre>
+$ serverless deploy
+Serverless: Packaging service...
+Serverless: Compiling Functions...
+Serverless: Compiling Rules...
+Serverless: Compiling Triggers & Feeds...
+Serverless: Deploying Functions...
+Serverless: Deploying Triggers...
+Serverless: Deploying Rules...
+Serverless: Deployment successful!
+Test Service
+</pre>
+
+## Working with Actions
+
+First open the `serverless.yaml` file and try to understand its basic structure which is pretty self-explanatory. It defines some of the OpenWhisk entities you have learned about before. For instance, it defines the name of your service (which represents the collection of all your artifacts), some functions (aka actions) and properties of these (like the handlers containing their code) and so forth. It also defines that you are working with OpenWhisk as your serverless engine.
+
+One of the functions defined in the serverless.yaml is called `hello_world`. The corresponding code lives in the file `hello_world.js` and, to be more precise, in a function the handler is pointing to (which is the function `main`).
+
+Now, let’s use the `invoke` command to test your newly deployed service:
+
+<pre>
+$ serverless invoke --function hello_world
+{
+    "payload": "Hello, World!"
+}
+</pre>
+
+And once again with parameters:
+
+<pre>
+$ serverless invoke --function hello_world --data '{"name": "OpenWhisk"}'
+{
+    "payload": "Hello, OpenWhisk!"
+}
+</pre>
+
+## Working with Sequences
+
+Open the `serverless.yml` file and let’s define a sequence by reusing the actions `myUtil/sort` and `myUtil/head` again. To define the sequence simply extend the functions section like this (snippet 24 contains all the extension being applied as part this chapter):
+
+<pre>
+functions:
+    [...]
+    mySequence:
+        sequence:
+            - /_/myUtil/sort
+            - /_/myUtil/head
+</pre>
+
+Next, redeploy the service:
+
+<pre>
+$ serverless deploy
+Next, test the sequence:
+$ serverless invoke --function mySequence --data '{"lines":["c","b","a"]}'
+{
+    "lines": [
+        "a"
+    ],
+    "num": 1
+}
+</pre>
+
+## Connecting API Endpoints
+
+Open the `serverless.yaml` file and define an API endpoint for the `hello_world` action we have worked with prior. To define the endpoint simply extend the functions section like this:
+
+<pre>
+functions:
+    [...]
+    hello_world:
+        handler: hello_world.handler
+        events:
+            - http: GET /api-demo/hello_world
+</pre>
+
+Next, redeploy the service:
+
+<pre>
+$ serverless deploy
+</pre>
+
+Watch the output of the redeployment.
+
+Use the shown endpoint’s `URL` to invoke the `hello_world` action:
+
+<pre>
+$ curl --request GET <endpoint_URL>
+{
+  "payload": "Hello, World!"
+}
+</pre>
+
+## Working with Triggers and Rules
+
+Open the `serverless.yaml` file and define an triggers and rules for the `hello_world` action we have worked with prior. To define the endpoint simply extend the functions section like this:
+
+<pre>
+functions:
+    [...]
+    hello_world:
+        handler: hello_world.handler
+        events:
+            - http: GET /api-demo/hello_world
+            - trigger: myHelloWorldTrigger
+            - rule: myHelloWorldRule
+</pre>
+
+Next, redeploy the service:
+
+<pre>
+$ serverless deploy
+</pre>
+
+Test the trigger and rule the same way you did earlier.
+You can learn more about using the Serverless Framework here: https://github.com/serverless/serverless-openwhisk 
+
+## Packaging your weather services
+
+At this point it may be a good exercise to package together the previously implemented weather services using the Serverless Framework – we leave this as a voluntary exercise for you.
+
+# Node-RED and OpenWhisk
