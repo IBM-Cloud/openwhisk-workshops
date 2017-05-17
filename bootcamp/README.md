@@ -2016,3 +2016,260 @@ You can learn more about using the Serverless Framework here: https://github.com
 At this point it may be a good exercise to package together the previously implemented weather services using the Serverless Framework – we leave this as a voluntary exercise for you.
 
 # Node-RED and OpenWhisk
+
+Especially IoT applications are often held up as a great use-case for serverless platforms.
+
+Serverless platforms are ideally suited to building solutions for the Internet Of Things. IoT applications are inherently event-driven and come with unpredictable traffic patterns. Often, applications involve listening for data from externally connected devices and passing it through to an internally data store after applying some transformations.
+
+In this section, we’re going to look at using a popular open-source tool for integrating IoT devices, APIs and online services with OpenWhisk.
+
+Node-RED describes itself as a "visual tool for wiring the Internet Of Things". It comes with a browser-based editor that allows you to visually build up “message flows”, connecting devices to online APIs and services. Once the message flow has been developed, developers can deploy that flow to the backend service to make it live. Node-RED represents devices, online services and APIs as individual “nodes”. The tool has a huge community of 3rd nodes for almost every kind of hardware device, APIs and third-party services.
+
+OpenWhisk recently released nodes for Node-RED to represent actions and triggers. These nodes allow to create and invoke those resources through the Node-RED runtime. Using Node-RED with the OpenWhisk nodes allows you to easily build IoT applications that integrate with a serverless platform.
+
+## Installing Node-RED
+
+Let’s start by getting Node-RED installed locally.
+
+Notice that Node-RED uses the `Node.js` runtime and the `Node Package Manager` to allow developers to install the tool as a command-line utility. If you haven’t got Node.js installed locally, please get the environment running first (https://nodejs.org/en/).
+
+Running this command will install Node-RED as a command-line utility available to all users:
+
+<pre>
+$ npm install -g node-red
+</pre>
+
+This command will take a while to install Node-RED with all its dependencies. NPM will generate lots of log messages during this process but this is normal. If the command finishes without an error, we can start to use the application.
+
+## Starting Node-RED
+Once Node-RED is installed, the tool can be started with the following command: 
+
+<pre>
+$ node-red
+</pre>
+
+You should see the following output:
+
+<pre>
+Welcome to Node-RED
+===================
+24 Oct 10:33:00 - [info] Node-RED version: v0.15.1
+24 Oct 10:33:00 - [info] Node.js  version: v6.2.2
+24 Oct 10:33:00 - [info] Darwin 16.0.0 x64 LE
+24 Oct 10:33:00 - [info] Loading palette nodes
+24 Oct 10:33:01 - [info] Settings file  : /Users/andreas/.node-red/settings.js
+24 Oct 10:33:01 - [info] User directory : /Users/andreas/.node-red
+24 Oct 10:33:01 - [info] Flows file     : /Users/andreas/.node-red/flows.json
+24 Oct 10:33:01 - [info] Server now running at http://127.0.0.1:1880/
+24 Oct 10:33:01 - [info] Starting flows
+24 Oct 10:33:01 - [info] Started flows
+</pre>
+
+Once you have started Node-RED, the server is running on port 1880. 
+Open a web browser and visit the following URL to open the editor: http://localhost:1880
+
+*Nodes* are available in the palette on the left-hand side of the screen. Users build “message” flows by dragging the nodes from the left-hand panel and dropping them on the grid. Nodes on the grid can be connected together with “wires” to exchange messages.
+
+Notice that if you want more documentation for Node-RED, the project website has excellent information here: http://nodered.org/docs/
+
+## "Hello World" with Node-RED
+
+Let’s start by building a "Hello World" example to get you started: 
+
+### Add an Inject node
+
+The `Inject` node allows you to inject messages into a flow, either by clicking the button on the node, or setting a time interval between injects.
+
+Drag one onto the workspace from the palette.
+Next, open the sidebar (`Ctrl-Space`, or via the dropdown menu) and select the `Info` tab.
+Then, select the newly added `Inject` node to see information about its properties and a description of what it does.
+
+### Add a Debug node
+
+The `Debug` node causes any message to be displayed in the debug sidebar. By default, it just displays the payload of the message, but it is possible to display the entire message object.
+
+Drag one onto the workspace from the palette.
+
+### Wire the two together
+
+Connect the `Inject` and `Debug` nodes together by dragging between the output port of one to the input port of the other.
+
+### Deploy
+
+At this point, the nodes only exist in the editor and must be deployed to the server.
+Therefore, click the `Deploy` button - simple as that.
+
+With the debug sidebar tab selected, click the (little left rectangle of the) Inject button. You should see numbers appear in the sidebar. By default, the `Inject` node uses the number of milliseconds since January 1st, 1970 as its payload. Let’s do something more useful with that.
+
+### Add a Function node
+
+The `Function` node allows you to pass each message though a JavaScript function.
+
+Wire the `Function` node in between the `Inject` and `Debug` nodes. You may need to delete the existing wire (select it and hit `delete` on the keyboard).
+
+Next, double-click on the `Function` node to bring up the edit dialog. 
+Copy the following code into the function field (snippet 25):
+
+```javascript
+// Create a Date object from the payload
+var date = new Date(msg.payload);
+// Change the payload to be a formatted Date string
+msg.payload = date.toString();
+// Return the message so it can be sent on
+return msg;
+```
+
+Next, click `Done` button to close the edit dialog and then click the `Deploy` button.
+Now, when you click the `Inject` button again, the messages in the sidebar will be more readable time stamps.
+
+That example should give you an idea about how to use the editor to connect nodes together to build flows and deploy them to the Node-RED runtime. 
+
+Feel free to have a play around with the other nodes in the palette and build more complex flows.
+
+## Adding Nodes to Node-RED
+
+Node-RED has a huge community of external developers who publish nodes for connecting to thousands of 3rd party devices, APIs and online services. 
+
+This website catalogues all the available nodes: http://flows.nodered.org/ 
+
+Let’s look at installing the OpenWhisk nodes into Node-RED:
+If you type `openwhisk` into the search box, we see there are two entities that can be installed. 
+
+We want to install the result named `node-red-node-openwhisk`, which contains the officially supported OpenWhisk nodes for Node-RED:
+
+So, if you go back into the Node-RED editor and click the menu icon in the top-right of the screen, it presents a menu including the `Manage palette` item. 
+
+Selecting this option will bring up the node installation dialoge in the left-hand panel. This panel shows you the list of installed nodes and also allows you to install extra nodes. We’re going to use this to install the OpenWhisk nodes.
+
+Select the `Install` tab and type in `node-red-node-openwhisk`. 
+Click the `install` button.
+
+Now, once you return to the main palette menu, you should see the OpenWhisk nodes.
+
+### Invoking OpenWhisk actions from Node-RED
+
+Now that we have the nodes installed, let’s start by creating a flow which invokes an OpenWhisk action: 
+
+First, drag the OpenWhisk `action` node onto the flow panel. 
+Make sure you drag the `action` node (not the `trigger` node) that has both input and output ports. The input port receives messages that triggers the action and (optionally) passes in parameters for the invocation. The output port returns the activation response message.
+
+Next, double-click the node icon to open the editor panel. 
+This editor panel allows us to define the name and namespace for the action to invoke when messages are received on the flow. These parameters can be overridden at runtime by passing parameters in as properties on the message object.
+
+But, before we can invoke the action, we need to setup the OpenWhisk platform that Node-RED will talk to.
+
+Click on the `pencil` icon next to the service configuration drop-down:
+
+Fill in the form with the following details:
+* `API URL`: `https://openwhisk.ng.bluemix.net/api/v1`
+* `Auth Key`: Once again the auth key you can obtain when clicking Use the CLI (https://console.ng.bluemix.net/openwhisk/cli)
+* `Name`: `OpenWhisk`
+
+Finally, click the `Add` button to add this service to Node-RED. 
+
+Now, we can fill in the `action name` and `namespace` values (which you can, once again, obtain when clicking Use the CLI) for the action we want to invoke. 
+Let’s try it with the `hello` action you defined in the previous exercises. 
+Then, once again, add an `Inject` node and a `Debug` node to the flow grid (unless you still have them because you haven’t deleted them earlier). Wire up both nodes to the OpenWhisk action node.
+Then, deploy the flow using the `Deploy` button on the top-right hand corner.
+Now, once you click the `Inject` node a few times, it should trigger our action and print the results of the invocation to the debug panel:
+
+<pre>
+{"message: "Hello, undefined from undefined"}
+</pre>
+
+Next, let’s update the flow to include a `name` parameter in the incoming message generated by the `Inject` node. Therefore, open the `Inject` node’s editor panel and change the payload type to JSON. 
+
+Add the following field value:
+
+<pre>
+{"name": "Bernie"}
+</pre>
+
+Now, save the `Inject` node configuration, deploy the flow and try injecting a few messages again. It should return the response message with the name `Bernie Sanders` included in the greeting:
+
+<pre>
+{"message: "Hello, Bernie from undefined"}
+</pre>
+
+Hopefully that worked fine, so add a parameter for `place` on your own before you move onto firing triggers using Node-RED.
+
+## Invoking OpenWhisk Triggers from NodeRED
+
+Drag the OpenWhisk `trigger` node onto the flow panel.
+
+The `trigger` node has a single input port which receives messages that fires the trigger and (optionally) passes in parameters for the invocation. 
+
+Now, double-click the node icon to open the editor panel. 
+This editor panel allows us to define the `name` and `namespace` for the trigger to fire when messages are received on the flow. These parameters can be overridden at runtime by passing parameters in as properties on the message object.
+Once again, we can fill in the `service`, `name` and `namespace` values for the trigger we want to invoke. Since we have already setup the service credentials for OpenWhisk in the previous task, we don’t need to this again. 
+
+Let’s try it with the `locationUpdate` trigger you defined in the previous exercises:
+
+First, save your node configuration before returning to the flow editor screen. 
+Next, connect the `Inject` node on the screen to the `trigger` node you have just created. 
+Next, deploy the flow using the `Deploy` button on the top-right hand corner.
+Now, test out this new invocation by clicking the `Inject` node a few times.
+
+If you check the invocation logs using the `wsk` command-line utility, do you see the activations appear? 
+
+### Creating New OpenWhisk Actions from Node-RED
+
+The OpenWhisk nodes also allow you to define new actions through the Node-RED editor panels. Using the code editor within the configuration panel, you can create and update the source for existing and new actions. 
+
+Let’s try updating the source code for our existing `hello` action:
+
+First, double-click the OpenWhisk `action` node to reveal the editor panel. 
+The source code for the action should automatically be displayed. 
+Next, let’s change the greeting string that the action returns. 
+Therefore, select the `Allow Edits` checkbox.
+Modify the greeting string to be:
+
+<pre>
+"Salutations " + msg.name + "!"
+</pre>
+
+Now, add a new parameter with key (`name`) and value (`Donald`).
+Next, click `Done` to save your changes. 
+Before we update the flow, let’s set the payload of the `Inject` node back to timestamp, so that the action uses the default parameter.
+Finally, once you have done this, deploy the flow and check out the results in the console. This time it should return us the new message with the update greeting and default parameter. 
+
+# The coolest engines out there!
+
+At this point in time we would like to show you four publicly available samples illustrating what you can build with OpenWhisk.
+
+## Vision App
+
+Details about Vision App can be found here:
+https://github.com/IBM-Bluemix/openwhisk-visionapp
+
+Vision App is a sample iOS application to automatically tag images and detect faces by using IBM visual recognition technologies. It allows you to take a photo or select an existing picture to let the application generate a list of tags and detect people, buildings, objects in the picture. It then allows you to share the results with your (social) network.
+
+## Dark Vision
+
+Details about Dark Vision can be found here:
+https://github.com/IBM-Bluemix/openwhisk-darkvisionapp
+
+Dark Vision processes videos to discover dark data. By analyzing video frames with IBM Watson Visual Recognition, Dark Vision builds a summary with a set of tags and famous people or building detected in the video. Use this summary to enhance video search and categorization.
+
+## Skylink
+
+Details about Skylink can be found here:
+https://github.com/IBM-Bluemix/skylink
+
+Skylink is a sample application that lets you connect a DJI drone aircraft to the IBM Cloud with near realtime image analysis leveraging IBM Cloudant, OpenWhisk, IBM Watson, and Alchemy Vision.
+
+# Learning more
+
+Important resources:
+
+* IBM Bluemix OpenWhisk: https://www.ibm.com/cloud-computing/bluemix/de/openwhisk
+* Apache OpenWhisk: https://openwhisk.org
+* OpenWhisk on Github: https://github.com/openwhisk/openwhisk/
+* OpenWhisk on Twitter: https://twitter.com/openwhisk
+* OpenWhisk on Medium: https://medium.com/openwhisk
+* OpenWhisk additional material on Slideshare: http://www.slideshare.net/OpenWhisk
+* OpenWhisk additional material on Youtube: https://www.youtube.com/channel/UCbzgShnQk8F43NKsvEYA1SA
+* OpenWhisk on Slack: http://slack.openwhisk.org/
+* Other OpenWhisk material: https://github.com/openwhisk/awesome-openwhisk
+* The Serverless Framework: https://github.com/serverless/serverless-openwhisk
+* Node-RED: https://nodered.org/
