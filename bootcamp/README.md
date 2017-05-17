@@ -962,4 +962,354 @@ At the center the dashboard visualizes the invocation counts over time represent
 
 Play around with the actions, triggers, etc., you have created before, i.e. fire triggers, invoke actions and have a look at the monitoring dashboard while doing so.
 
+# Build a weather engine!
 
+Before starting with the free-style session, let’s build, based on all you learned, a more reasonable and useful demo.
+
+The demo creates a bot for *Slack* that can help notify users about weather forecasts. Users can ask the bot for a forecast for a specific location by sending a chat message. The bot can also be configured to send the forecast for a location at regular intervals, e.g. every day at 8am.
+
+The bot needs to perform a few functions, e.g. convert addresses to locations, retrieve weather forecasts for locations and integrate with Slack. Rather than implementing the bot as a monolithic application, containing the logic for all of these features, we want to go and deploy it as separate services.
+
+Later, we'll look at using sequences to bind them together to create our bot without writing any code.
+
+Notice that you can create (most of) the artifacts discussed below using either the CLI (as shown further below) or the OpenWhisk UI – up to you.
+
+## Address to locations service
+
+This service handles retrieving `latitude` and `longitude` coordinates for addresses using an external Geocoding API.
+
+The action (microservice) implements the application logic within a single function (main) just the way we have learned it earlier. The same way we did it before, parameters are passed in as an object argument (params) to the function call. The service makes an API call to the Google Geocoding API, returning the results from the call’s response for the first address match.
+
+Notice that returning a `Promise` from the function means we can return the service response asynchronously.
+
+Let’s first create the action (name it `location_to_latlong`) using the following code (snippet 13b). As said before, you can create it using the CLI or the OpenWhisk UI just the way you have learned it earlier:
+
+```javascript
+var request = require("request");
+
+function main(params) {
+    var options = {
+        url: "https://maps.googleapis.com/maps/api/geocode/json",
+        qs: {address: params.text},
+        json: true
+    };
+
+    return new Promise(function (resolve, reject) {
+        request(options, function (err, resp) {
+            if (err) {
+                console.log(err);
+                return reject({err: err})
+            }
+
+            if (resp.body.status !== "OK") {
+                console.log(resp.body.status);
+                return reject({err: resp.body.status})
+            }
+
+            resolve(resp.body.results[0].geometry.location);
+        });
+    });
+};
+```
+
+Next, let’s deploy the action the way you learned it earlier:
+
+<pre>
+$ wsk action create location_to_latlong location_to_latlong.js
+<b>ok:</b> created action <b>location_to_latlong</b>
+</pre>
+
+Next, let’s test the action:
+
+<pre>
+$ wsk action invoke location_to_latlong -b -r -p text "London"
+{
+    "lat": 51.5073509,
+    "lng": -0.1277583
+}
+</pre>
+
+## Forecast from location service
+
+Now, let’s implement the service for finding forecasts for locations.
+
+The service uses an external API to retrieve weather forecasts for locations, returning the text description for weather in the next 24 hours.
+
+Hence, we first need to create an instance of the `Weather Company Data` service.
+To do so click the `Catalog` link at the top right of the screen.
+From the menu appearing on the left of the screen select `Data & Analytics`.
+Next, click `Weather Company Data`.
+Leave all settings as they are and click the `Create button` at the bottom right of the screen.
+Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
+Note down `username` and `password`.
+
+Again, let’s create the action (name it `forecast_from_latlong`) using the following code (snippet 14):
+
+```javascript
+var request = require("request");
+
+function main(params) {
+    if (!params.lat) return Promise.reject("Missing latitude");
+    if (!params.lng) return Promise.reject("Missing longitude");
+    if (!params.username || !params.password) return Promise.reject("Missing credentials");
+
+    var url = "https://twcservice.mybluemix.net/api/weather/v1/geocode/"+params.lat+"/"+params.lng+"/forecast/daily/3day.json";
+
+    var options = { 
+        url: url,
+        json: true,
+        auth: {
+            user: params.username,
+            password: params.password
+        }
+      };
+
+      return new Promise(function (resolve, reject) {
+          request(options, function (err, resp) {
+          if (err) {
+              return reject({err: err})
+           }
+           resolve({text: resp.body.forecasts[0].narrative});
+        });
+    });
+}
+```
+
+Next, let’s deploy the action again:
+
+<pre>
+$ wsk action create forecast_from_latlong forecast_from_latlong.js
+<b>ok:</b> created action <b>forecast_from_latlong</b>
+</pre>
+
+Notice that the service expects four parameters, `latitude` and `longitude` coordinates along with the `API credentials` (the ones you noted down before). Passing in `API credentials` as parameters means you don't have to embed them within the code and can change them dynamically at runtime.
+
+Let’s test the action again:
+
+<pre>
+$ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p username <username> -p password <password> -b -r
+{
+    "text": "Partly cloudy. Lows overnight in the low 60s."
+}
+</pre>
+
+Since we do not want to pass in the `API credentials` with every request, let's bind them as default aka bound parameters to the action. This means we only need to invoke the service with the `latitude` and `longitude` parameters.
+
+Let’s update the action and bind said parameters:
+
+<pre>
+$ wsk action update forecast_from_latlong -p username <username> -p password <password>
+<b>ok:</b> updated action <b>forecast_from_latlong</b>
+</pre>
+
+Let’s test the action again:
+
+<pre>
+$ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
+{
+    "text": "Partly cloudy. Lows overnight in the low 60s."
+}
+</pre>
+
+## Sending messages to Slack
+
+Once we have a forecast, we need to send it to Slack as a message from our bot. Slack provides an easy method for writing simple bots using their *webhook* integration. Incoming webhooks provide applications with `URLs` to send data to using normal HTTP requests. The contents of the JSON request body will be posted into the channel as a bot message.
+
+First, create a new team on Slack by navigating to `https://slack.com/` and clicking the `Create new team` link at the very top of the screen.
+
+Just follow the instructions to create a team:
+Provide your `mail address` and click the `Next` button.
+Provide the `confirmation code` you have been send via mail.
+Provide your `first name`, `last name`, and `username` and click the `Continue to password` button.
+Specify a `password` and click the `Continue to Team Info` button.
+Select an option like `Shared interest group` to specify what you will use Slack for and click the `Continue to Group Name` button.
+Provide an arbitrary `group name` and click the `Continue to Team URL` button.
+Provide an arbitrary `team URL` and click the `Create Team` button.
+Skip the process for sending invitations by clicking the `Skip for Now` button, then click the `Explore Slack` button to get started. 
+Finally, type something into the text field at the very bottom to get started.
+
+To create a communication channel proceed as follows:
+Click the little `+` icon next to the text `CHANNELS` on the left of the screen.
+Then, simply provide the name `weather` for your channel and click the `Create Channel` button.
+
+Slack is set up.
+
+We could now write another action (microservice) to handle sending these HTTP requests but, as you already know, OpenWhisk comes with integrations (provided by packages) for a number of third-party systems meaning we don't have to.
+
+Let’s once again review which packages are available:
+
+<pre>
+$ wsk package list /whisk.system
+<b>packages</b>
+/whisk.system/cloudant                 shared
+/whisk.system/alarms                   shared
+/whisk.system/watson                   shared
+/whisk.system/websocket                shared
+/whisk.system/weather                  shared
+/whisk.system/system                   shared
+/whisk.system/utils                    shared
+/whisk.system/slack                    shared
+/whisk.system/samples                  shared
+/whisk.system/github                   shared
+/whisk.system/pushnotifications        shared 
+</pre>
+
+The package potentially being of interest is the `Slack` package; so let’s see what’s in there:
+
+<pre>
+$ wsk package get --summary /whisk.system/slack
+<b>package</b> /whisk.system/slack: This package interacts with the Slack messaging service
+   (<b>parameters</b>: username url channel token)
+ <b>action</b> /whisk.system/slack/post: Post a message to Slack
+</pre>
+
+We can invoke the action to post messages to Slack without writing any code.
+
+Notice that you first have to replace the incoming webhook `URL` with yours. To find out about yours proceed as follows:
+
+Click on your team’s name at top left of the screen.
+From the menu appearing select `Customize Slack`.
+Click the `hamburger` icon and the top left of the screen and select `Configure apps`.
+Click `Custom integrations`.
+Click `Incoming WebHooks`, then the `edit` (pencil) icon the and copy the `URL` being shown under `Webhook URL`.
+
+<pre>
+$ wsk action invoke /whisk.system/slack/post -p url https://hooks.slack.com/services/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 -p channel weather -p text "Hello"
+<b>ok:</b> invoked <b>/whisk.system/slack/post</b> with id <b>78070fe2acb54c70ae49c0fa047aee51</b>
+</pre>
+
+The fact that we can now see the message popping up in your Slack channel verifies that this has worked out.
+
+Again, we would like to bind default parameters for the action but this isn't (yet) supported without copying global packages to your local namespace first.
+
+So, let's do this now:
+
+<pre>
+$ wsk action create --copy webhook /whisk.system/slack/post -p url https://hooks.slack.com/services/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 -p channel weather -p username "Weather Bot" -p icon_emoji ":sun_with_face:"
+<b>ok:</b> created action <b>webhook</b>
+</pre>
+
+This customized Slack service can be invoked with just the `text` parameter and gives us a friendly bot message in the `weather` channel:
+
+<pre>
+$ wsk action invoke webhook -p text "Hello again"
+<b>ok:</b> invoked <b>webhook</b> with id <b>a4044f7192544d69bc179a991a970559</b>
+</pre>
+
+## Creating the weather bot using sequences
+
+Right, we have the three actions (microservices) to handle the logic in our bot. Now let’s create a sequence to chain these three pieces together just the way we have learned it earlier:
+
+Let's define a new sequence for our bot to join these services together.
+
+<pre>
+$ wsk action create location_forecast --sequence location_to_latlong,forecast_from_latlong,webhook
+ok: created action location_forecast
+</pre>
+
+With this meta-service defined, we can invoke the `location_forecast` action with the input parameter for the first service (`text`). As a result the forecast for that location should appear in Slack.
+
+Let’s test this.
+The result should look similar to this:
+
+<pre>
+$ wsk action invoke location_forecast -p text "London" -b	
+<b>ok:</b> invoked <b>location_forecast</b> with id <b>d63b40bb36c54cfbaf8262b6f7e5c2e9</b>
+{
+    "activationId": "d63b40bb36c54cfbaf8262b6f7e5c2e9",
+    "annotations": [],
+    "end": 1473179750086,
+    "logs": [],
+    "name": "location_forecast",
+    "namespace": "andreas.nauerz@de.ibm.com",
+    "publish": false,
+    "response": {
+        "result": {},
+        "status": "success",
+        "success": true
+    },
+    "start": 1473179746914,
+    "subject": "andreas.nauerz@de.ibm.com",
+    "version": "0.0.1"
+}
+</pre>
+
+To enable the action to be called as a web action finally enter:
+
+<pre>
+$ wsk action update location_forecast --web true
+<b>ok:</b> updated action <b>location_forecast</b>
+</pre>
+
+## Bot forecasts
+At this point the question is how we can ask the bot for forecasts about a location?
+
+Slack provides outgoing webhooks that will post JSON messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say weather london and have the bot respond.
+
+Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel via have created prior.
+
+To make that happen proceed as follows:
+When being in the channel just created click the `Gear` icon at the very top and select the `Add an app or integration` link from the menu appearing.
+On the new screen enter the word `outgoing` into the search field, then select the entry `Outgoing WebHooks`.
+Next, click the `Add Configuration` and the `Add Outgoing WebHooks integration` buttons.
+As `channel` select the channel we have just created before.
+As `trigger` word specify `weather`.
+As `URL` specify the `web action URL` pointing to the `location_forecast` action – like this:
+`https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/location_forecast.json`
+Then click the `Save Settings` button.
+
+Now, navigate back to the browser tab showing your channels and enter the following into the channel’s messaging field:
+`weather: london`
+
+## Connecting to triggers
+
+As you learned earlier, triggers are used to represent event streams from the external world into OpenWhisk. They can be invoked manually, through the REST API, or automatically, after connecting to trigger feeds. Actions can be bound to triggers using rules. When a trigger is fired, the action is invoked together with the request parameters. Multiple actions can listen to the same trigger.
+
+Let's now look at binding the bot service to a sample trigger and invoke it indirectly by firing that trigger:
+
+<pre>
+$ wsk trigger create forecast
+<b>ok:</b> created trigger <b>forecast</b>
+
+$ wsk rule create forecast_rule forecast location_forecast
+<b>ok:<b> created rule <b>forecast_rule</b>
+
+$ wsk trigger fire forecast -p text "London"
+<b>ok:<b> triggered <b>forecast</b> with id <b>49914a20416d416d8c90282d59eebee3</b>
+</pre>
+
+Once we fired the trigger, passing in the `text` parameter, the bot was automatically invoked and posted the forecast for `London` to the channel.
+
+Now let's look at invoking the bot every morning to tell us the forecast before we set off for work.
+
+## Morning forecasts
+
+Let’s now "configure" the trigger to fire automatically whenever a new external event occurs. This will cause all actions bound to this trigger via a rule to be invoked, too.
+
+As said, triggers bind to external event sources during creation by passing in a reference to the external trigger feed to connect to. OpenWhisk's public packages contain a number of trigger feeds that we can use for external event sources.
+
+One of those public trigger feeds is in the `alarm` package we already used earlier. As seen, this alarm *feed* executes triggers at pre-specified intervals. Using this feed with our weather bot trigger, we could set it up to execute every morning for a particular address and tell us the forecast every for London before we set off for work.
+
+Let's do that now:
+
+<pre>
+$ wsk package get /whisk.system/alarms --summary
+<b>package</b> /whisk.system/alarms: Alarms and periodic utility
+   (<b>parameters</b>: cron trigger_payload)
+ </b>feed<b>   /whisk.system/alarms/alarm: Fire trigger when alarm occurs
+
+$ wsk trigger create regular_forecast --feed /whisk.system/alarms/alarm -p cron "*/10 * * * * *" -p trigger_payload "{\"text\":\"London\"}"
+<b>ok:</b> created trigger <b>feed regular_forecast</b>
+
+$ wsk rule create regular_forecast_rule regular_forecast location_forecast
+<b>ok:</b> created rule <b>regular_forecast_rule</b>
+</pre>
+
+The trigger schedule is provided by the `cron` parameter, which we've set up to run every ten seconds to test it out. By binding this new trigger to our bot service, the forecast for London starts to appear in the channel.
+
+Okay, that's great but let's turn off this alarm before it drives us mad:
+
+<pre>
+$ wsk rule disable regular_forecast_rule
+<b>ok:</b> rule <b>regular_forecast_rule</b> is <b>inactive</b>
+</pre>
