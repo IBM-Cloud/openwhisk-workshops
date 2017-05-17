@@ -46,7 +46,7 @@
 - [Special fuel for your engine!](#special-fuel-for-your-engine-)
   * [Developing with VS Code](#developing-with-vs-code)
   * [Developing with the Serverless Framework](#developing-with-the-serverless-framework)
-  * [Installing the Serverless Framework](#installing-the-serverless-framework)
+    + [Installing the Serverless Framework](#installing-the-serverless-framework)
     + [Working with Actions](#working-with-actions)
     + [Working with Sequences](#working-with-sequences)
     + [Connecting API Endpoints](#connecting-api-endpoints)
@@ -55,10 +55,16 @@
 - [Node-RED and OpenWhisk](#node-red-and-openwhisk)
   * [Installing Node-RED](#installing-node-red)
   * [Starting Node-RED](#starting-node-red)
-  * ["Hello World" with Node-RED](#-hello-world--with-node-red)r)
+  * ["Hello World" with Node-RED](#-hello-world--with-node-red)
+    + [Add an Inject node](#add-an-inject-node)
+    + [Add a Debug node](#add-a-debug-node)
+    + [Wire the two together](#wire-the-two-together)
+    + [Deploy](#deploy)
+    + [Add a Function node](#add-a-function-node)
   * [Adding Nodes to Node-RED](#adding-nodes-to-node-red)
-  * [Invoking OpenWhisk actions from Node-RED](#invoking-openwhisk-actions-from-node-red)
+    + [Invoking OpenWhisk actions from Node-RED](#invoking-openwhisk-actions-from-node-red)
   * [Invoking OpenWhisk Triggers from NodeRED](#invoking-openwhisk-triggers-from-nodered)
+    + [Creating New OpenWhisk Actions from Node-RED](#creating-new-openwhisk-actions-from-node-red)
 - [The coolest engines out there!](#the-coolest-engines-out-there-)
   * [Vision App](#vision-app)
   * [Dark Vision](#dark-vision)
@@ -127,7 +133,7 @@ In order to use OpenWhisk proceed as follows:
 
 # Start your engine!
 
-The CLI (command line interface) allows you to work with OpenWhisk’s basic entities, i.e. to create actions, triggers, rules, and sequences. Hence, let’s learn how to work with the CLI.
+The CLI (command line interface) allows you to work with OpenWhisk's basic entities, i.e. to create actions, triggers, rules, and sequences. Hence, let's learn how to work with the CLI.
 
 ## Actions
 
@@ -318,7 +324,7 @@ Notice the use of the `--result` parameter (or `-r` for short; available for blo
 
 Recall that the `hello` action above took two parameters: the name of a person, and the place where he or she is from.
 
-Rather than passing all the parameters to an action every time, you can *bind* certain parameters. Let’s bind the `place` parameter above so we have an action that defaults to the place `Vermont, CT`:
+Rather than passing all the parameters to an action every time, you can *bind* certain parameters. Let's bind the `place` parameter above so we have an action that defaults to the place `Vermont, CT`:
 
 <pre>
 $ wsk action create helloBindParams hello.js --param place "Vermont, CT"
@@ -433,7 +439,7 @@ You now have access to the following actions:
 * `myUtil/head`: Action to return the first element in an array
 * `myUtil/sort`: Action to sort an array of text
 
-Let’s now create a composite action that is a sequence of the above actions, so that the result of one action is passed as arguments to the next action:
+Let's now create a composite action that is a sequence of the above actions, so that the result of one action is passed as arguments to the next action:
 
 <pre>
 $ wsk action create myAction --sequence myUtil/sort,myUtil/head
@@ -461,7 +467,7 @@ https://github.com/openwhisk/openwhisk/blob/master/docs/packages.md#creating-and
 
 *Triggers* represent a named "channel" for a stream of events.
 
-Let’s create a trigger to send user location updates:
+Let's create a trigger to send user location updates:
 
 <pre>
 $ wsk trigger create locationUpdate
@@ -478,7 +484,7 @@ locationUpdate                         private
 
 So far we have only created a named channel to which events can be fired.
 
-Let’s now fire a trigger by specifying its name and parameters:
+Let's now fire a trigger by specifying its name and parameters:
 
 <pre>
 $ wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
@@ -491,7 +497,7 @@ Events you fire to the `locationUpdate` trigger currently do not do anything. To
 
 *Rules* are used to associate a trigger with an action. Hence, every time a trigger event is fired, the action is invoked together with the events' parameters.
 
-Let’s create a rule that calls the `hello` action whenever a location update is posted; required parameters are the name of the rule, the trigger, and the action:
+Let's create a rule that calls the `hello` action whenever a location update is posted; required parameters are the name of the rule, the trigger, and the action:
 
 <pre>
 $ wsk rule create myRule locationUpdate hello
@@ -601,7 +607,7 @@ Finally, notice that while most `npm` packages install JavaScript sources on `np
 
 # Boost your engine!
 
-As an alternative to the CLI, you can also use the OpenWhisk UI, esp. the visual code editor, to work with OpenWhisk’s basic entities, i.e. to create actions, triggers, rules, and sequences. Hence, let’s learn how to work with the OpenWhisk UI.
+As an alternative to the CLI, you can also use the OpenWhisk UI, esp. the visual code editor, to work with OpenWhisk's basic entities, i.e. to create actions, triggers, rules, and sequences. Hence, let's learn how to work with the OpenWhisk UI.
 
 ## Getting started with the OpenWhisk UI
 
@@ -743,11 +749,11 @@ Web actions can also be used to implement HTTP handlers that respond with `heade
 * `statusCode`: a valid HTTP status code (default is 200 OK)
 * `body`: a string which is either plain text or a base64 encoded string (for binary data)
 
-The `controller` will pass along the action-specified headers, if any, to the HTTP client when terminating the request/response. Similarly, the controller will respond with the given status code when present. Lastly, the body is passed along as the body of the response. Unless a content-type header is declared in the action result’s headers, the body is passed along as is if it’s a string (or results in an error otherwise). When the content-type is defined, the controller will determine if the response is binary data or plain text and decode the string using a base64 decoder as needed. Should the body fail to decode correctly, an error is returned to the caller.
+The `controller` will pass along the action-specified headers, if any, to the HTTP client when terminating the request/response. Similarly, the controller will respond with the given status code when present. Lastly, the body is passed along as the body of the response. Unless a content-type header is declared in the action results' headers, the body is passed along as is if it's a string (or results in an error otherwise). When the content-type is defined, the controller will determine if the response is binary data or plain text and decode the string using a base64 decoder as needed. Should the body fail to decode correctly, an error is returned to the caller.
 
 Notice that a JSON object or array is treated as binary data and must be base64 encoded.
 
-Now, let’s make use of the `headers` and `statusCode` property to send a redirect. To do so create an action named `webAction` like this (snippet 27):
+Now, let's make use of the `headers` and `statusCode` property to send a redirect. To do so create an action named `webAction` like this (snippet 27):
 
 ```javascript
 function main() {
@@ -768,7 +774,7 @@ $ wsk action update webAction --web true
 Try opening
 `https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz%40de.ibm.com_dev/default/webAction.http` in your browser (again after having replaced the namespace with yours). You should be redirected to the openwhisk.org site.
 
-Next, let’s make use of the `headers`, `status` and `body` properties to respond with an image. To do so update the previously created web action like this (snippet 28):
+Next, let's make use of the `headers`, `status` and `body` properties to respond with an image. To do so update the previously created web action like this (snippet 28):
 
 ```javascript
 function main() {
@@ -781,7 +787,7 @@ function main() {
 
 Again, invoke the web action via your browser. You should see the OpenWhisk logo. 
 
-Finally, let’s make use of the `headers`, `status` and `body` properties to respond with simple HTML. To do so update the previously created web action like this (snippet 29):
+Finally, let's make use of the `headers`, `status` and `body` properties to respond with simple HTML. To do so update the previously created web action like this (snippet 29):
 
 ```javascript
 function main() {
@@ -849,7 +855,7 @@ https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-dock
 
 ## Working with packages
 
-As you have already seen before, OpenWhisk provides you, out of the box, with a shared collection of actions and triggers as part of so called packages. The OpenWhisk UI makes it even easier to explore and test available packages. Let’s learn how to do so now.
+As you have already seen before, OpenWhisk provides you, out of the box, with a shared collection of actions and triggers as part of so called packages. The OpenWhisk UI makes it even easier to explore and test available packages. Let's learn how to do so now.
 
 First, click the `Browse Public Packages` button at the top right of the screen.
 You'll be presented with a set of packages, represented by some icons, being available.
@@ -880,17 +886,17 @@ You should see the following result:
 
 Instead of just reusing a package-provided action as-is you can also view its code (which you may want to use as a basis for your own action).
 
-Let’s review the code of the `curl` action.
+Let's review the code of the `curl` action.
 Hence, navigate back to the catalog (to do so you probably want to click the `Close` button to close the invocation console) and click the `Samples` package again.
 This time select the `curl` action and read the description to understand its purpose. 
-Next, click the `View Source` button to (re)view and understand the action’s code.
+Next, click the `View Source` button to (re)view and understand the action's code.
 
 At this point feel free play with the other packages being available.
 
 ### Sequencing actions
 
-Next, let’s visually model a simple sequence similar to the one we have created earlier when having used the CLI.
-Therefore, let’s first create a very simple action (name it echo) the same way you learned to create actions before (snippet 10):
+Next, let's visually model a simple sequence similar to the one we have created earlier when having used the CLI.
+Therefore, let's first create a very simple action (name it echo) the same way you learned to create actions before (snippet 10):
 
 ```javascript
 function main(msg) {
@@ -900,9 +906,9 @@ function main(msg) {
 
 Obviously the action does nothing else than returning the text you have handed-over via the input parameter called `payload`.
 
-Now, let’s assume you want to define a sequence that allows any text you hand over to the action `echo` to be translated from English to French.
+Now, let's assume you want to define a sequence that allows any text you hand over to the action `echo` to be translated from English to French.
 
-To make this happen, let’s make use of the `translate` action part of the `Watson` package.
+To make this happen, let's make use of the `translate` action part of the `Watson` package.
 
 Hence, we first need to create an instance of the `Watson Language Translator` service.
 To do so click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
@@ -974,7 +980,7 @@ You should see the following result:
 
 You can also work with triggers using the OpenWhisk UI.
 
-Let’s assume you want to invoke the hello action you have created earlier as soon as something changes in a particular Github repository.
+Let's assume you want to invoke the hello action you have created earlier as soon as something changes in a particular Github repository.
 
 First, select the `hello` action.
 Next, click the `Automate This Action` button at the bottom right of the screen.
@@ -995,16 +1001,16 @@ Once you have filled out all input fields click the `Save Configuration` button.
 Select the trigger you have just created (if not already selected) and click the `Next` button.
 Next, click the `This Looks Good` button and, finally, the `Save Rule `button.
 
-For testing purposes let’s first fire the trigger manually.
+For testing purposes let's first fire the trigger manually.
 
-To be able to observe what’s going on click the `View Activity` button to open the monitoring dashboard (details about this will be explained further below). At the top right you can see triggers that fired as well as actions that have been invoked. The view updates itself periodically. You can also refresh it manually by clicking the `refresh` icon.
+To be able to observe what's going on click the `View Activity` button to open the monitoring dashboard (details about this will be explained further below). At the top right you can see triggers that fired as well as actions that have been invoked. The view updates itself periodically. You can also refresh it manually by clicking the `refresh` icon.
 To continue with the test select the browser tab showing your actions, triggers, and rules and hover over the trigger you have just created and click the `lightning` icon followed by the `Run With This Value` button to fire it. 
 In the next screen appearing click the `Run With This Value` button.
 Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.
 
 Finally, open another browser tab and log into Github.
 
-Navigate to your repository and add a file or change a file’s content and commit your change.
+Navigate to your repository and add a file or change a file's content and commit your change.
 Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.
 
 ## Rules
@@ -1015,7 +1021,7 @@ Similarly than triggers rules can be manually invoked by clicking the `Fire This
 
 ## Monitoring
 
-The monitoring dashboard that we have already used earlier allows you to observe your system’s behavior.
+The monitoring dashboard that we have already used earlier allows you to observe your systems' behavior.
 
 At the top left the dashboard visualizes the invocation counts per action or rule. This allows you to see how often particular actions or rules have been invoked and which actions or rules have been and are invoked most often. As part of the bar chart successful invocations are displayed in green, failed invocations in red.
 
@@ -1027,7 +1033,7 @@ Play around with the actions, triggers, etc., you have created before, i.e. fire
 
 # Build a weather engine!
 
-Before starting with the free-style session, let’s build, based on all you learned, a more reasonable and useful demo.
+Before starting with the free-style session, let's build, based on all you learned, a more reasonable and useful demo.
 
 The demo creates a bot for *Slack* that can help notify users about weather forecasts. Users can ask the bot for a forecast for a specific location by sending a chat message. The bot can also be configured to send the forecast for a location at regular intervals, e.g. every day at 8am.
 
@@ -1041,11 +1047,11 @@ Notice that you can create (most of) the artifacts discussed below using either 
 
 This service handles retrieving `latitude` and `longitude` coordinates for addresses using an external Geocoding API.
 
-The action (microservice) implements the application logic within a single function (main) just the way we have learned it earlier. The same way we did it before, parameters are passed in as an object argument (params) to the function call. The service makes an API call to the Google Geocoding API, returning the results from the call’s response for the first address match.
+The action (microservice) implements the application logic within a single function (main) just the way we have learned it earlier. The same way we did it before, parameters are passed in as an object argument (params) to the function call. The service makes an API call to the Google Geocoding API, returning the results from the calls' response for the first address match.
 
 Notice that returning a `Promise` from the function means we can return the service response asynchronously.
 
-Let’s first create the action (name it `location_to_latlong`) using the following code (snippet 13b). As said before, you can create it using the CLI or the OpenWhisk UI just the way you have learned it earlier:
+Let's first create the action (name it `location_to_latlong`) using the following code (snippet 13b). As said before, you can create it using the CLI or the OpenWhisk UI just the way you have learned it earlier:
 
 ```javascript
 var request = require("request");
@@ -1075,14 +1081,14 @@ function main(params) {
 };
 ```
 
-Next, let’s deploy the action the way you learned it earlier:
+Next, let's deploy the action the way you learned it earlier:
 
 <pre>
 $ wsk action create location_to_latlong location_to_latlong.js
 <b>ok:</b> created action <b>location_to_latlong</b>
 </pre>
 
-Next, let’s test the action:
+Next, let's test the action:
 
 <pre>
 $ wsk action invoke location_to_latlong -b -r -p text "London"
@@ -1094,7 +1100,7 @@ $ wsk action invoke location_to_latlong -b -r -p text "London"
 
 ## Forecast from location service
 
-Now, let’s implement the service for finding forecasts for locations.
+Now, let's implement the service for finding forecasts for locations.
 
 The service uses an external API to retrieve weather forecasts for locations, returning the text description for weather in the next 24 hours.
 
@@ -1106,7 +1112,7 @@ Leave all settings as they are and click the `Create button` at the bottom right
 Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
 Note down `username` and `password`.
 
-Again, let’s create the action (name it `forecast_from_latlong`) using the following code (snippet 14):
+Again, let's create the action (name it `forecast_from_latlong`) using the following code (snippet 14):
 
 ```javascript
 var request = require("request");
@@ -1138,7 +1144,7 @@ function main(params) {
 }
 ```
 
-Next, let’s deploy the action again:
+Next, let's deploy the action again:
 
 <pre>
 $ wsk action create forecast_from_latlong forecast_from_latlong.js
@@ -1147,7 +1153,7 @@ $ wsk action create forecast_from_latlong forecast_from_latlong.js
 
 Notice that the service expects four parameters, `latitude` and `longitude` coordinates along with the `API credentials` (the ones you noted down before). Passing in `API credentials` as parameters means you don't have to embed them within the code and can change them dynamically at runtime.
 
-Let’s test the action again:
+Let's test the action again:
 
 <pre>
 $ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p username <username> -p password <password> -b -r
@@ -1158,14 +1164,14 @@ $ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p usern
 
 Since we do not want to pass in the `API credentials` with every request, let's bind them as default aka bound parameters to the action. This means we only need to invoke the service with the `latitude` and `longitude` parameters.
 
-Let’s update the action and bind said parameters:
+Let's update the action and bind said parameters:
 
 <pre>
 $ wsk action update forecast_from_latlong -p username <username> -p password <password>
 <b>ok:</b> updated action <b>forecast_from_latlong</b>
 </pre>
 
-Let’s test the action again:
+Let's test the action again:
 
 <pre>
 $ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
@@ -1199,7 +1205,7 @@ Slack is set up.
 
 We could now write another action (microservice) to handle sending these HTTP requests but, as you already know, OpenWhisk comes with integrations (provided by packages) for a number of third-party systems meaning we don't have to.
 
-Let’s once again review which packages are available:
+Let's once again review which packages are available:
 
 <pre>
 $ wsk package list /whisk.system
@@ -1217,7 +1223,7 @@ $ wsk package list /whisk.system
 /whisk.system/pushnotifications        shared 
 </pre>
 
-The package potentially being of interest is the `Slack` package; so let’s see what’s in there:
+The package potentially being of interest is the `Slack` package; so let's see what's in there:
 
 <pre>
 $ wsk package get --summary /whisk.system/slack
@@ -1230,7 +1236,7 @@ We can invoke the action to post messages to Slack without writing any code.
 
 Notice that you first have to replace the incoming webhook `URL` with yours. To find out about yours proceed as follows:
 
-Click on your team’s name at top left of the screen.
+Click on your teams' name at top left of the screen.
 From the menu appearing select `Customize Slack`.
 Click the `hamburger` icon and the top left of the screen and select `Configure apps`.
 Click `Custom integrations`.
@@ -1261,7 +1267,7 @@ $ wsk action invoke webhook -p text "Hello again"
 
 ## Creating the weather bot using sequences
 
-Right, we have the three actions (microservices) to handle the logic in our bot. Now let’s create a sequence to chain these three pieces together just the way we have learned it earlier:
+Right, we have the three actions (microservices) to handle the logic in our bot. Now let's create a sequence to chain these three pieces together just the way we have learned it earlier:
 
 Let's define a new sequence for our bot to join these services together.
 
@@ -1272,7 +1278,7 @@ ok: created action location_forecast
 
 With this meta-service defined, we can invoke the `location_forecast` action with the input parameter for the first service (`text`). As a result the forecast for that location should appear in Slack.
 
-Let’s test this.
+Let's test this.
 The result should look similar to this:
 
 <pre>
@@ -1321,7 +1327,7 @@ As `URL` specify the `web action URL` pointing to the `location_forecast` action
 `https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/location_forecast.json`
 Then click the `Save Settings` button.
 
-Now, navigate back to the browser tab showing your channels and enter the following into the channel’s messaging field:
+Now, navigate back to the browser tab showing your channels and enter the following into the channels' messaging field:
 `weather: london`
 
 ## Connecting to triggers
@@ -1347,7 +1353,7 @@ Now let's look at invoking the bot every morning to tell us the forecast before 
 
 ## Morning forecasts
 
-Let’s now "configure" the trigger to fire automatically whenever a new external event occurs. This will cause all actions bound to this trigger via a rule to be invoked, too.
+Let's now "configure" the trigger to fire automatically whenever a new external event occurs. This will cause all actions bound to this trigger via a rule to be invoked, too.
 
 As said, triggers bind to external event sources during creation by passing in a reference to the external trigger feed to connect to. OpenWhisk's public packages contain a number of trigger feeds that we can use for external event sources.
 
@@ -1384,7 +1390,7 @@ API Gateway Integration
 
 In this context APIs are the digital glue that links services, applications, sensors and mobile devices to create compelling customer experiences and help businesses tap into new market opportunities. They allow you to bring new digital services to market, open revenue channels and exceed customer expectations.
 
-OpenWhisk’s API Gateway integration is a new feature that enables you to easily expose your OpenWhisk actions as RESTful endpoints. You can assign actions to specific endpoints, and even have verbs (`get`, `put`, `post`, `delete`) from the same endpoint assigned to different actions.
+OpenWhisk's API Gateway integration is a new feature that enables you to easily expose your OpenWhisk actions as RESTful endpoints. You can assign actions to specific endpoints, and even have verbs (`get`, `put`, `post`, `delete`) from the same endpoint assigned to different actions.
 
 There are two different approaches to expose your actions with the API gateway:
 *	Assigning API endpoint/verb combinations to specific actions individually
@@ -1392,14 +1398,14 @@ There are two different approaches to expose your actions with the API gateway:
 
 You can define your APIs using our CLI or using our UI – in the following we will make use of both.
 
-Notice that actions exposed via OpenWhisk’s API Gateway integration are currently treated like web actions; hence once can make use of the properties `headers`, `status`, or `body` as seen before.
+Notice that actions exposed via OpenWhisk's API Gateway integration are currently treated like web actions; hence once can make use of the properties `headers`, `status`, or `body` as seen before.
 
 ## Your first API
 
-Let’s examine how to expose an action able to generate Fibonacci numbers as a REST API.
+Let's examine how to expose an action able to generate Fibonacci numbers as a REST API.
 
-Therefore, let’s first have a look at the action (snippet 15) itself:
-It’s a relatively simple action that generates numbers in a Fibonacci sequence, where every number after the first two is the sum of the two preceding values. When invoking this action from the command line, you specify a `num` parameter (for the n-th place in the sequence), and it will return the value, the complete sequence, and the number of recursive invocations of the Fibonacci method:
+Therefore, let's first have a look at the action (snippet 15) itself:
+It's a relatively simple action that generates numbers in a Fibonacci sequence, where every number after the first two is the sum of the two preceding values. When invoking this action from the command line, you specify a `num` parameter (for the n-th place in the sequence), and it will return the value, the complete sequence, and the number of recursive invocations of the Fibonacci method:
 
 ```javascript
 var sequence = [1];
@@ -1437,7 +1443,7 @@ function fibonacci(num) {
 }
 ```
 
-Next, let’s deploy and invoke the action:
+Next, let's deploy and invoke the action:
 
 <pre>
 $ wsk action create fibonacci fibonacci.js
@@ -1452,7 +1458,7 @@ $ wsk action invoke fibonacci -p num 5 -b -r
 
 ### Mapping actions to endpoints
 
-Now, let’s examine how a specific action can be associated with an API endpoint/verb. Using the OpenWhisk CLI, you must specify an API path, a verb (`get`, `post`, `put`, `delete`), and the action.
+Now, let's examine how a specific action can be associated with an API endpoint/verb. Using the OpenWhisk CLI, you must specify an API path, a verb (`get`, `post`, `put`, `delete`), and the action.
 
 Notice that you may have to issue the following command and select the proper namespace before able to proceed:
 
@@ -1467,7 +1473,7 @@ $ wsk action update fibonacci --web true
 <b>ok:</b> updated action <b>fibonacci</b>
 </pre>
 
-Next, let’s use the API path `/fibonacci`, and the verb `get` to point to the action `fibonacci`:
+Next, let's use the API path `/fibonacci`, and the verb `get` to point to the action `fibonacci`:
 
 <pre>
 $ wsk api create /fibonacci get fibonacci
@@ -1475,25 +1481,25 @@ $ wsk api create /fibonacci get fibonacci
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/fibonacci 
 </pre>
 
-So, let’s try it out:
+So, let's try it out:
 
 <pre>
 $ curl --request GET https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/fibonacci?num=10
 n: 10, value: 89, sequence: 1,1,2,3,5,8,13,21,34,55,89, invocations: 19
 </pre>
 
-Notice that parameters that are passed via the query string will be available in the `params` object passed into the action’s `main` function.
+Notice that parameters that are passed via the query string will be available in the `params` object passed into the actions' `main` function.
 
 ## The Serverless Book Management Application
 
-Now let’s do something a bit more powerful: Let's say you want to expose a set of actions for managing books you have read etc. Therefore, you need to implement a couple of actions forming a serverless microservices backend for creating, reading, updating, and deleting books.
+Now let's do something a bit more powerful: Let's say you want to expose a set of actions for managing books you have read etc. Therefore, you need to implement a couple of actions forming a serverless microservices backend for creating, reading, updating, and deleting books.
 
 In the following we strongly recommend to use a REST client like *Insomnia*
 (https://insomnia.rest/) to invoke the API endpoints that will be defined – otherwise you may get annoyed by escaping efforts.
 
 ### Creating a Cloudant Instance
 
-Let’s assume you want to store the books in Cloudant as this would make things very easy as OpenWhisk already provides you with a Cloudant package that allows you to work with Cloudant without the need to write code.
+Let's assume you want to store the books in Cloudant as this would make things very easy as OpenWhisk already provides you with a Cloudant package that allows you to work with Cloudant without the need to write code.
 
 From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
 From the menu on the left-side select `Data & Analytics`.
@@ -1504,7 +1510,7 @@ Once the instance has been created switch to the `Service Credentials` tab and c
 
 ### Creating a Database
 
-Now that you have created a Cloudant instance, let’s create a database for storing the books in.
+Now that you have created a Cloudant instance, let's create a database for storing the books in.
 
 OpenWhisk can automatically create package bindings for your (Bluemix) Cloudant service instances:
 
@@ -1537,7 +1543,7 @@ $ wsk package get --summary Bluemix_bookStore_Credentials-1
 [...]
 </pre>
 
-As before, to avoid the need to pass in the same parameters to the package’s actions every time, let’s bind certain parameters:
+As before, to avoid the need to pass in the same parameters to the package's actions every time, let's bind certain parameters:
 
 <pre>
 $ wsk package bind /whisk.system/cloudant myBookStore -p username <username> -p password <password> -p host <host>
@@ -1545,23 +1551,23 @@ $ wsk package bind /whisk.system/cloudant myBookStore -p username <username> -p 
 </pre>
 
 One of the actions available is called `create-database`.
-Let’s use that one to create our database:
+Let's use that one to create our database:
 
 <pre>
 $ wsk action invoke myBookStore/create-database -p dbname books
 <b>ok:</b> invoked <b>/_/myBookStore/create-database</b> with id <b>3f67a23daa8b44efa35725fc22585f9</b>
 </pre>
 
-Now, we could easily store books into this database using the above package’s `write` action. Alternatively, we could first map an API endpoint to this and other useful actions part of the package.
+Now, we could easily store books into this database using the above package's `write` action. Alternatively, we could first map an API endpoint to this and other useful actions part of the package.
 
-Before doing so let’s update the binding so that we do not even need to pass in the `dbname` anymore:
+Before doing so let's update the binding so that we do not even need to pass in the `dbname` anymore:
 
 <pre>
 $ wsk package update myBookStore -p username <username> -p password <password> -p host <host> -p dbname books
 <b>ok:</b> updated package <b>myBookStore</b>
 </pre>
 
-Before mapping our actions, let’s create a `query index` for the field `name` so we can query books by name later on:
+Before mapping our actions, let's create a `query index` for the field `name` so we can query books by name later on:
 
 <pre>
 $ wsk action invoke myBookStore/create-query-index -p index "{\"index\": {},\"type\":\"text\"}" --blocking
@@ -1591,7 +1597,7 @@ $ wsk action create endpoint_delete --sequence proxy,myBookStore/delete-document
 <b>ok:</b> created action <b>endpoint_delete</b>
 </pre>
 
-Next, let’s map API endpoints to actions:
+Next, let's map API endpoints to actions:
 
 <pre>
 $ wsk api create /books GET endpoint_get
@@ -1607,7 +1613,7 @@ $ wsk api create /books DELETE endpoint_delete
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/books
 </pre>
 
-Now, let’s store some books.
+Now, let's store some books.
 To do so use your REST client to submit a `POST` against the endpoint you have created prior.
 
 Make sure to hand-over the following JSON data (you can use snippets 16 and 17):
@@ -1650,7 +1656,7 @@ Output:
 }
 ```
 
-Next, let’s query all books.
+Next, let's query all books.
 To do so use your REST client to submit a `GET` against the endpoint you have created prior.
 
 Hand-over the following query parameter to define the selector (you can use snippet 18):
@@ -1689,7 +1695,7 @@ Output:
 [...]
 ```
 
-Next, let’s query a particular book.
+Next, let's query a particular book.
 To do so use your REST client to submit a `GET` again.
 
 Hand-over the following query parameter to define the selector (you can use snippet 20):
@@ -1724,7 +1730,7 @@ Output:
 [...]
 ```
 
-Now, let’s delete the book we just queried.
+Now, let's delete the book we just queried.
 To do so use your REST client to submit a `DELETE`.
 Hand-over the `docid` and `docrev` of the book you just queried as query parameter.
 
@@ -1732,11 +1738,11 @@ Again, query all books to validate that the book has been properly deleted.
 
 ## Expose your weather services
 
-Now, let’s make the previously implemented weather services (functions) accessible via some simple APIs, too. This time we will use the UI (instead of the CLI) to define these APIs.
+Now, let's make the previously implemented weather services (functions) accessible via some simple APIs, too. This time we will use the UI (instead of the CLI) to define these APIs.
 
 Again, open the OpenWhisk UI.
 Select the `API` tab.
-Click the `Create an OpenWhisk API` button (only visible if you haven’t created any API before).
+Click the `Create an OpenWhisk API` button (only visible if you haven't created any API before).
 As `API name` specify `weatherAPI`.
 Leave everything else as-is and click the `Save` button at the bottom of the screen.
 
@@ -1764,7 +1770,7 @@ IBM Message Hub is an IBM Bluemix managed Apache Kafka, a scalable, high-through
 
 In the following we will show you can use AppConnect to post data to a dedicated IBM Message Hub topic which then causes an OpenWhisk trigger to fire to invoke an action.
 
-First, let’s set up a Message Hub instance and a topic:
+First, let's set up a Message Hub instance and a topic:
 
 From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
 From the menu appearing on the left of the screen select `Application Services`.
@@ -1772,7 +1778,7 @@ Click `Message Hub`.
 Leave all settings as they are and click the `Create` button at the bottom right of the screen.
 Switch to the `Manage` tab and click the `+` icon to create a new topic. As topic name specify `openwhisk`. Leave all other settings as they are and click the `Create topic` button.
 
-Second, let’s set up an App Connect instance:
+Second, let's set up an App Connect instance:
 Open a new browser tab.
 From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
 From the menu appearing on the left of the screen select `Integrate`.
@@ -1800,7 +1806,7 @@ As topic specify `openwhisk`.
 As payload select (after having clicked the little helper icon next to the input field) `lastname` for instance.
 Finally, click the `Exit and switch on button` at the top right of the screen.
 
-Now, let’s make sure a trigger fires whenever something is being posted to the Message Hub topic we just created:
+Now, let's make sure a trigger fires whenever something is being posted to the Message Hub topic we just created:
 
 In the OpenWhisk UI switch to the Develop tab if not already there.
 Create a new action (name it `newContact`) the way you learned it before containing the following code (snippet 26):
@@ -1817,7 +1823,7 @@ Click `New Trigger`.
 Provide all the details being asked for (which you can get by navigating back to the browser tab showing your Message Hub instance and having a look at the service credentials).
 Click the `Save Configuration` button.
 Click the `This Looks Good` and the `Save Rule` buttons.
-Finally, switch to the `Monitor` tab to see what’s going on.
+Finally, switch to the `Monitor` tab to see what's going on.
 
 Navigate back to the browser tab showing the Salesforce application.
 From the main menu click `Contacts`.
@@ -1935,7 +1941,7 @@ With the aforementioned integration developers using the framework can now choos
 
 ### Installing the Serverless Framework
 
-First, let’s retrieve the boilerplate repository from Github:
+First, let's retrieve the boilerplate repository from Github:
 
 <pre>
 $ git clone https://github.com/jthomas/serverless-openwhisk-boilerplate
@@ -1943,12 +1949,12 @@ $ cd serverless-openwhisk-boilerplate
 </pre>
 
 <pre>
-Next, let’s install project dependencies:
+Next, let's install project dependencies:
 $ sudo npm install --global serverless serverless-openwhisk
 $ npm install
 </pre>
 
-Finally, let’s deploy (the boilerplate includes an example that can be deployed without modification):
+Finally, let's deploy (the boilerplate includes an example that can be deployed without modification):
 
 <pre>
 $ serverless deploy
@@ -1975,7 +1981,7 @@ First open the `serverless.yaml` file and try to understand its basic structure 
 
 One of the functions defined in the serverless.yaml is called `hello_world`. The corresponding code lives in the file `hello_world.js` and, to be more precise, in a function the handler is pointing to (which is the function `main`).
 
-Now, let’s use the `invoke` command to test your newly deployed service:
+Now, let's use the `invoke` command to test your newly deployed service:
 
 <pre>
 $ serverless invoke --function hello_world
@@ -1995,7 +2001,7 @@ $ serverless invoke --function hello_world --data '{"name": "OpenWhisk"}'
 
 ### Working with Sequences
 
-Open the `serverless.yml` file and let’s define a sequence by reusing the actions `myUtil/sort` and `myUtil/head` again. To define the sequence simply extend the functions section like this (snippet 24 contains all the extension being applied as part this chapter):
+Open the `serverless.yml` file and let's define a sequence by reusing the actions `myUtil/sort` and `myUtil/head` again. To define the sequence simply extend the functions section like this (snippet 24 contains all the extension being applied as part this chapter):
 
 <pre>
 functions:
@@ -2041,7 +2047,7 @@ $ serverless deploy
 
 Watch the output of the redeployment.
 
-Use the shown endpoint’s `URL` to invoke the `hello_world` action:
+Use the shown endpoints' `URL` to invoke the `hello_world` action:
 
 <pre>
 $ curl --request GET <endpoint_URL>
@@ -2084,17 +2090,17 @@ Especially IoT applications are often held up as a great use-case for serverless
 
 Serverless platforms are ideally suited to building solutions for the Internet Of Things. IoT applications are inherently event-driven and come with unpredictable traffic patterns. Often, applications involve listening for data from externally connected devices and passing it through to an internally data store after applying some transformations.
 
-In this section, we’re going to look at using a popular open-source tool for integrating IoT devices, APIs and online services with OpenWhisk.
+In this section, we're going to look at using a popular open-source tool for integrating IoT devices, APIs and online services with OpenWhisk.
 
-Node-RED describes itself as a "visual tool for wiring the Internet Of Things". It comes with a browser-based editor that allows you to visually build up “message flows”, connecting devices to online APIs and services. Once the message flow has been developed, developers can deploy that flow to the backend service to make it live. Node-RED represents devices, online services and APIs as individual “nodes”. The tool has a huge community of 3rd nodes for almost every kind of hardware device, APIs and third-party services.
+Node-RED describes itself as a "visual tool for wiring the Internet Of Things". It comes with a browser-based editor that allows you to visually build up "message flows", connecting devices to online APIs and services. Once the message flow has been developed, developers can deploy that flow to the backend service to make it live. Node-RED represents devices, online services and APIs as individual "nodes". The tool has a huge community of 3rd nodes for almost every kind of hardware device, APIs and third-party services.
 
 OpenWhisk recently released nodes for Node-RED to represent actions and triggers. These nodes allow to create and invoke those resources through the Node-RED runtime. Using Node-RED with the OpenWhisk nodes allows you to easily build IoT applications that integrate with a serverless platform.
 
 ## Installing Node-RED
 
-Let’s start by getting Node-RED installed locally.
+Let's start by getting Node-RED installed locally.
 
-Notice that Node-RED uses the `Node.js` runtime and the `Node Package Manager` to allow developers to install the tool as a command-line utility. If you haven’t got Node.js installed locally, please get the environment running first (https://nodejs.org/en/).
+Notice that Node-RED uses the `Node.js` runtime and the `Node Package Manager` to allow developers to install the tool as a command-line utility. If you haven't got Node.js installed locally, please get the environment running first (https://nodejs.org/en/).
 
 Running this command will install Node-RED as a command-line utility available to all users:
 
@@ -2131,13 +2137,13 @@ Welcome to Node-RED
 Once you have started Node-RED, the server is running on port 1880. 
 Open a web browser and visit the following URL to open the editor: http://localhost:1880
 
-*Nodes* are available in the palette on the left-hand side of the screen. Users build “message” flows by dragging the nodes from the left-hand panel and dropping them on the grid. Nodes on the grid can be connected together with “wires” to exchange messages.
+*Nodes* are available in the palette on the left-hand side of the screen. Users build "message flows" by dragging the nodes from the left-hand panel and dropping them on the grid. Nodes on the grid can be connected together with "wires" to exchange messages.
 
 Notice that if you want more documentation for Node-RED, the project website has excellent information here: http://nodered.org/docs/
 
 ## "Hello World" with Node-RED
 
-Let’s start by building a "Hello World" example to get you started: 
+Let's start by building a "Hello World" example to get you started: 
 
 ### Add an Inject node
 
@@ -2162,7 +2168,7 @@ Connect the `Inject` and `Debug` nodes together by dragging between the output p
 At this point, the nodes only exist in the editor and must be deployed to the server.
 Therefore, click the `Deploy` button - simple as that.
 
-With the debug sidebar tab selected, click the (little left rectangle of the) Inject button. You should see numbers appear in the sidebar. By default, the `Inject` node uses the number of milliseconds since January 1st, 1970 as its payload. Let’s do something more useful with that.
+With the debug sidebar tab selected, click the (little left rectangle of the) Inject button. You should see numbers appear in the sidebar. By default, the `Inject` node uses the number of milliseconds since January 1st, 1970 as its payload. Let's do something more useful with that.
 
 ### Add a Function node
 
@@ -2195,14 +2201,14 @@ Node-RED has a huge community of external developers who publish nodes for conne
 
 This website catalogues all the available nodes: http://flows.nodered.org/ 
 
-Let’s look at installing the OpenWhisk nodes into Node-RED:
+Let's look at installing the OpenWhisk nodes into Node-RED:
 If you type `openwhisk` into the search box, we see there are two entities that can be installed. 
 
 We want to install the result named `node-red-node-openwhisk`, which contains the officially supported OpenWhisk nodes for Node-RED:
 
 So, if you go back into the Node-RED editor and click the menu icon in the top-right of the screen, it presents a menu including the `Manage palette` item. 
 
-Selecting this option will bring up the node installation dialoge in the left-hand panel. This panel shows you the list of installed nodes and also allows you to install extra nodes. We’re going to use this to install the OpenWhisk nodes.
+Selecting this option will bring up the node installation dialoge in the left-hand panel. This panel shows you the list of installed nodes and also allows you to install extra nodes. We're going to use this to install the OpenWhisk nodes.
 
 Select the `Install` tab and type in `node-red-node-openwhisk`. 
 Click the `install` button.
@@ -2211,7 +2217,7 @@ Now, once you return to the main palette menu, you should see the OpenWhisk node
 
 ### Invoking OpenWhisk actions from Node-RED
 
-Now that we have the nodes installed, let’s start by creating a flow which invokes an OpenWhisk action: 
+Now that we have the nodes installed, let's start by creating a flow which invokes an OpenWhisk action: 
 
 First, drag the OpenWhisk `action` node onto the flow panel. 
 Make sure you drag the `action` node (not the `trigger` node) that has both input and output ports. The input port receives messages that triggers the action and (optionally) passes in parameters for the invocation. The output port returns the activation response message.
@@ -2231,8 +2237,8 @@ Fill in the form with the following details:
 Finally, click the `Add` button to add this service to Node-RED. 
 
 Now, we can fill in the `action name` and `namespace` values (which you can, once again, obtain when clicking Use the CLI) for the action we want to invoke. 
-Let’s try it with the `hello` action you defined in the previous exercises. 
-Then, once again, add an `Inject` node and a `Debug` node to the flow grid (unless you still have them because you haven’t deleted them earlier). Wire up both nodes to the OpenWhisk action node.
+Let's try it with the `hello` action you defined in the previous exercises. 
+Then, once again, add an `Inject` node and a `Debug` node to the flow grid (unless you still have them because you haven't deleted them earlier). Wire up both nodes to the OpenWhisk action node.
 Then, deploy the flow using the `Deploy` button on the top-right hand corner.
 Now, once you click the `Inject` node a few times, it should trigger our action and print the results of the invocation to the debug panel:
 
@@ -2240,7 +2246,7 @@ Now, once you click the `Inject` node a few times, it should trigger our action 
 {"message: "Hello, undefined from undefined"}
 </pre>
 
-Next, let’s update the flow to include a `name` parameter in the incoming message generated by the `Inject` node. Therefore, open the `Inject` node’s editor panel and change the payload type to JSON. 
+Next, let's update the flow to include a `name` parameter in the incoming message generated by the `Inject` node. Therefore, open the `Inject` node's editor panel and change the payload type to JSON. 
 
 Add the following field value:
 
@@ -2264,9 +2270,9 @@ The `trigger` node has a single input port which receives messages that fires th
 
 Now, double-click the node icon to open the editor panel. 
 This editor panel allows us to define the `name` and `namespace` for the trigger to fire when messages are received on the flow. These parameters can be overridden at runtime by passing parameters in as properties on the message object.
-Once again, we can fill in the `service`, `name` and `namespace` values for the trigger we want to invoke. Since we have already setup the service credentials for OpenWhisk in the previous task, we don’t need to this again. 
+Once again, we can fill in the `service`, `name` and `namespace` values for the trigger we want to invoke. Since we have already setup the service credentials for OpenWhisk in the previous task, we don't need to this again. 
 
-Let’s try it with the `locationUpdate` trigger you defined in the previous exercises:
+Let's try it with the `locationUpdate` trigger you defined in the previous exercises:
 
 First, save your node configuration before returning to the flow editor screen. 
 Next, connect the `Inject` node on the screen to the `trigger` node you have just created. 
@@ -2279,11 +2285,11 @@ If you check the invocation logs using the `wsk` command-line utility, do you se
 
 The OpenWhisk nodes also allow you to define new actions through the Node-RED editor panels. Using the code editor within the configuration panel, you can create and update the source for existing and new actions. 
 
-Let’s try updating the source code for our existing `hello` action:
+Let's try updating the source code for our existing `hello` action:
 
 First, double-click the OpenWhisk `action` node to reveal the editor panel. 
 The source code for the action should automatically be displayed. 
-Next, let’s change the greeting string that the action returns. 
+Next, let's change the greeting string that the action returns. 
 Therefore, select the `Allow Edits` checkbox.
 Modify the greeting string to be:
 
@@ -2293,7 +2299,7 @@ Modify the greeting string to be:
 
 Now, add a new parameter with key (`name`) and value (`Donald`).
 Next, click `Done` to save your changes. 
-Before we update the flow, let’s set the payload of the `Inject` node back to timestamp, so that the action uses the default parameter.
+Before we update the flow, let's set the payload of the `Inject` node back to timestamp, so that the action uses the default parameter.
 Finally, once you have done this, deploy the flow and check out the results in the console. This time it should return us the new message with the update greeting and default parameter. 
 
 # The coolest engines out there!
