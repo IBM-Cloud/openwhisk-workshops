@@ -77,7 +77,7 @@ During this workshop you will learn how to develop serverless applications compo
 
 We wish you a lot of fun and success...
 
-You can also find a PDF version of this workshop here: TODO
+You can also find a PDF version of this workshop here: **TODO**
 
 # Serverless Computing
 
@@ -120,7 +120,6 @@ Developers only need to care about implementing the desired application logic - 
 A few important notes before you start:
 *	When working through the lab you may see slightly different responses being returned from your CLI than those printed as part of these instructions.<br/>You do not need to worry about this. The reason is that you may use a different namespace than the one we used when generating this document; the differences will be minor and only result in some name-prefixing.
 *	To ease your life you can download a digital copy of this document from here: https://ibm.box.com/v/serverlessconf-austin-17-ws
-* Important remark: In case you have trouble with copying & pasting those code snippets longer than a single or a few lines (marked with snippet xx in the instructions, where xx corresponds to a number and defines the file name under which the snippet was stored) you can find copies of them here – easiest is to download the file all_snippets.zip: https://ibm.box.com/v/serverlessconf-austin-17-code
 * Important remark for Windows users: Windows users are strongly advised to download Git (https://git-for-windows.github.io/) and to work from the Git bash. They are also advised to download cURL for Windows (https://curl.haxx.se/download.html)
 
 In order to use OpenWhisk proceed as follows:
@@ -143,7 +142,7 @@ The CLI (command line interface) allows you to work with OpenWhisk's basic entit
 
 An action can be a simple JavaScript function that accepts and returns a JSON object.
 
-First, use your editor of choice (for instance, download the Atom editor from https://atom.io/) to create a file called `hello.js` with the following content (snippet 01):
+First, use your editor of choice (for instance, download the Atom editor from https://atom.io/) to create a file called `hello.js` with the following content:
 
 ```javascript
 function main() {
@@ -241,7 +240,7 @@ entities in namespace: <b>default</b>
 
 JavaScript functions that run asynchronously need to return the activation result after the `main` function has returned. This can be accomplished by returning a `Promise`.
 
-Again, use your editor of choice to create a file called `asyncAction.js` with the following content (snippet 02):
+Again, use your editor of choice to create a file called `asyncAction.js` with the following content:
 
 ```javascript
 function main(msg) {
@@ -294,7 +293,7 @@ By comparing the start and end timestamps in the activation record, you can 
 
 Actions may be invoked with several named parameters.
 
-Change (and save) your `hello` action as follows (snippet 03):
+Change (and save) your `hello` action as follows:
 
 ```javascript
 function main(msg) {
@@ -344,7 +343,7 @@ So far, the examples have been self-contained functions. You can also create an 
 
 The following example invokes the Yahoo Weather service to get the current conditions at a specific location.
 
-Again, use your editor of choice to create a file called `weather.js` with the following content (snippet 04):
+Again, use your editor of choice to create a file called `weather.js` with the following content:
 var request = require("request");
 
 ```javascript
@@ -539,7 +538,7 @@ As an alternative to writing all your action code in a single JavaScript source 
 
 The structure is supposed to look as follows:
 
-First, define a `package.json` like this (snippet 05):
+First, define a `package.json` like this:
 
 ```json
 {
@@ -552,7 +551,7 @@ First, define a `package.json` like this (snippet 05):
 }
 ```
 
-Next, define an `index.js` like this (snippet 06):
+Next, define an `index.js` like this:
 
 ```javascript
 function myAction(args) {
@@ -615,24 +614,24 @@ First, open a browser window, navigate to https://console.ng.bluemix.net/openwhi
 
 The OpenWhisk UI is comprised of the following sections:
 
-1.	`My Actions`
+1. `My Actions`
    The `My Actions` section lists all actions you have created previously.  
    Clicking an action loads its code into the code editor.  
    Hovering over an action lets a trash bin appear allowing to delete the action.  
    At this point in time you should at least see the hello action we have created earlier.  
 
-2.	`My Sequences`  
+2. `My Sequences`  
    The vMy Sequences` section lists all the sequences you have created previously.  
    Clicking a sequence loads its model into the visual modeler.  
    Hovering over a sequence lets a trash bin appear allowing to delete the sequence.  
 
-3.	`My Rules` 
+3. `My Rules` 
    The `My Rules` section lists all the rules you have created previously.  
    Clicking a rule loads its model into the visual modeler.  
    Hovering over a rule lets a trash bin appear allowing to delete the rule.  
    At this point in time you should at least see the myRule rule we have created earlier.  
 
-4.	`My Triggers`  
+4. `My Triggers`  
    The `My Triggers` section lists all the triggers you have created previously.  
    Hovering over a trigger lets a flash icon appear allowing to fire the trigger as well as a trash bin allowing to delete the trigger.
 
@@ -644,7 +643,7 @@ First, click the `Create An Action` button.
 Next, specify a name (e.g. `helloUI`) by entering it into the text field prefilled with the text `Choose a name for your new action`; leave everything else as-is and click the `Create Action` button at the bottom of the screen.
 Notice that even though you did not change any configuration options, you would have had the option to change the language you want to implement your action in as well as the memory quota and the time limit. Click the `Learn more` links for additional details and feel free to play around with these options on your own.
 
-Copy the following code snippet (snippet 01) into the code editor replacing any existing code:
+Copy the following code into the code editor replacing any existing code:
 
 ```javascript
 function main() {
@@ -666,7 +665,7 @@ You should see the following result:
 
 Next, to see how things work when working with an action accepting parameters click the `Create An Action` button again. Then, once again, specify a name (e.g. `helloUI2`) and click the `Create Action` button.
 
-Next, copy the following code snippet (snippet 03) into the code editor replacing any existing code:
+Next, copy the following code into the code editor replacing any existing code:
 
 ```javascript
 function main(msg) {
@@ -676,7 +675,7 @@ function main(msg) {
 
 Once again, click the `Run This Action` button and follow the same procedure as before to test this action directly from within your browser. 
 
-Notice that you this time need to specify some JSON input to specify proper parameter values. For instance, you could specify the following input (snippet 07):
+Notice that you this time need to specify some JSON input to specify proper parameter values. For instance, you could specify the following input:
 
 ```json
 {
@@ -753,7 +752,7 @@ The `controller` will pass along the action-specified headers, if any, to the HT
 
 Notice that a JSON object or array is treated as binary data and must be base64 encoded.
 
-Now, let's make use of the `headers` and `statusCode` property to send a redirect. To do so create an action named `webAction` like this (snippet 27):
+Now, let's make use of the `headers` and `statusCode` property to send a redirect. To do so create an action named `webAction` like this:
 
 ```javascript
 function main() {
@@ -774,7 +773,7 @@ $ wsk action update webAction --web true
 Try opening
 `https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz%40de.ibm.com_dev/default/webAction.http` in your browser (again after having replaced the namespace with yours). You should be redirected to the openwhisk.org site.
 
-Next, let's make use of the `headers`, `status` and `body` properties to respond with an image. To do so update the previously created web action like this (snippet 28):
+Next, let's make use of the `headers`, `status` and `body` properties to respond with an image. To do so update the previously created web action like this:
 
 ```javascript
 function main() {
@@ -787,7 +786,7 @@ function main() {
 
 Again, invoke the web action via your browser. You should see the OpenWhisk logo. 
 
-Finally, let's make use of the `headers`, `status` and `body` properties to respond with simple HTML. To do so update the previously created web action like this (snippet 29):
+Finally, let's make use of the `headers`, `status` and `body` properties to respond with simple HTML. To do so update the previously created web action like this:
 
 ```javascript
 function main() {
@@ -819,7 +818,7 @@ Of course, OpenWhisk allows you to add custom log statements to your actions, to
 
 To see how logging works click the `Create An Action` button again. Then, once again, specify a name (e.g. `helloLogging`) and click the `Create action` button.
 
-Next, copy the following code snippet (snippet 08) into the code editor replacing any existing code:
+Next, copy the following code into the code editor replacing any existing code:
 
 ```javascript
 function main(msg) {
@@ -868,7 +867,7 @@ Let's play with the `wordCount` action.
 Hence, select the `wordCount` action and read the description to understand its purpose. Also review the sample input to understand how to properly feed the action when invoking it as well as the sample output to understand what you can expect after having invoked it.
 Click the `Run This Action` button.
 
-Based on the sample input you have been shown before, specify the following input (snippet 09) and click the `Run With This Value` button:
+Based on the sample input you have been shown before, specify the following input and click the `Run With This Value` button:
 
 ```json
 {
@@ -896,7 +895,7 @@ At this point feel free play with the other packages being available.
 ### Sequencing actions
 
 Next, let's visually model a simple sequence similar to the one we have created earlier when having used the CLI.
-Therefore, let's first create a very simple action (name it echo) the same way you learned to create actions before (snippet 10):
+Therefore, let's first create a very simple action (name it echo) the same way you learned to create actions before:
 
 ```javascript
 function main(msg) {
@@ -928,7 +927,7 @@ Then, specify an arbitrary name and select the `Language Translator` instance yo
 
 Next, select the binding (if not already selected), make sure that the `translator` action is still being selected, and click `Run This Action`.
 
-Specify the following input (snippet 11) and click the `Run With This Value` (you may need to click `Make it Live` before) button:
+Specify the following input and click the `Run With This Value` (you may need to click `Make it Live` before) button:
 
 ```json
 {
@@ -958,7 +957,7 @@ Then, click the `Add To Sequence` button and then the `This Looks Good` button.
 Finally, specify a `name` for your sequence (optional) and click the `Save Action Sequence` and afterwards the `Done` button.
 To test the sequence select it and click the `Run This Sequence` button.
 
-Specify the following input (snippet 12) and click the `Run With This Value` button:
+Specify the following input and click the `Run With This Value` button:
 
 ```json
 {
@@ -1051,7 +1050,7 @@ The action (microservice) implements the application logic within a single funct
 
 Notice that returning a `Promise` from the function means we can return the service response asynchronously.
 
-Let's first create the action (name it `location_to_latlong`) using the following code (snippet 13b). As said before, you can create it using the CLI or the OpenWhisk UI just the way you have learned it earlier:
+Let's first create the action (name it `location_to_latlong`) using the following code. As said before, you can create it using the CLI or the OpenWhisk UI just the way you have learned it earlier:
 
 ```javascript
 var request = require("request");
@@ -1112,7 +1111,7 @@ Leave all settings as they are and click the `Create button` at the bottom right
 Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
 Note down `username` and `password`.
 
-Again, let's create the action (name it `forecast_from_latlong`) using the following code (snippet 14):
+Again, let's create the action (name it `forecast_from_latlong`) using the following code:
 
 ```javascript
 var request = require("request");
@@ -1404,7 +1403,7 @@ Notice that actions exposed via OpenWhisk's API Gateway integration are currentl
 
 Let's examine how to expose an action able to generate Fibonacci numbers as a REST API.
 
-Therefore, let's first have a look at the action (snippet 15) itself:
+Therefore, let's first have a look at the action itself:
 It's a relatively simple action that generates numbers in a Fibonacci sequence, where every number after the first two is the sum of the two preceding values. When invoking this action from the command line, you specify a `num` parameter (for the n-th place in the sequence), and it will return the value, the complete sequence, and the number of recursive invocations of the Fibonacci method:
 
 ```javascript
@@ -1576,7 +1575,7 @@ $ wsk action invoke myBookStore/create-query-index -p index "{\"index\": {},\"ty
 
 As we currently do not allow package bound actions to be enabled as web actions and as we, at the same time, require an action to be a web action in order to be able to expose it via our API Gateway we have to perform a little trick: We have to implement a simply proxy action that can be enabled as web action and simply calls the package bound action holding all the previously defined parameters using sequencing. But this is not a trick only, executing such proxy actions before and after the actual action is often even required: The action supposed to be executed before the actual action often has to take care of things like authentication while the one supposed to be executed after the actual action often has to perform data transformations.
 
-Hence, create an action named `proxy` like this (snippet 30):
+Hence, create an action named `proxy` like this:
 
 ```javascript
 function main(params) {
@@ -1616,7 +1615,7 @@ https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd1
 Now, let's store some books.
 To do so use your REST client to submit a `POST` against the endpoint you have created prior.
 
-Make sure to hand-over the following JSON data (you can use snippets 16 and 17):
+Make sure to hand-over the following JSON data:
 
 ```json
 {
@@ -1659,7 +1658,7 @@ Output:
 Next, let's query all books.
 To do so use your REST client to submit a `GET` against the endpoint you have created prior.
 
-Hand-over the following query parameter to define the selector (you can use snippet 18):
+Hand-over the following query parameter to define the selector:
 
 ```json
 {
@@ -1698,7 +1697,7 @@ Output:
 Next, let's query a particular book.
 To do so use your REST client to submit a `GET` again.
 
-Hand-over the following query parameter to define the selector (you can use snippet 20):
+Hand-over the following query parameter to define the selector:
 
 ```json
 {
@@ -1809,7 +1808,7 @@ Finally, click the `Exit and switch on button` at the top right of the screen.
 Now, let's make sure a trigger fires whenever something is being posted to the Message Hub topic we just created:
 
 In the OpenWhisk UI switch to the Develop tab if not already there.
-Create a new action (name it `newContact`) the way you learned it before containing the following code (snippet 26):
+Create a new action (name it `newContact`) the way you learned it before containing the following code:
 
 ```javascript
 function main(msg) {
@@ -1874,7 +1873,7 @@ Repeat this procedure to set the proper values for the `auth` and `namespace` pr
 
 Notice that you can, once again, retrieve the correct values from here: https://new-console.ng.bluemix.net/openwhisk/cli
 
-Now switch to the explorer (`View → Explorer`), implement the following action (snippet 23) and save the file (name it `helloFromVSCode.js`):
+Now switch to the explorer (`View → Explorer`), implement the following action and save the file (name it `helloFromVSCode.js`):
 
 ```javascript
 function main() {
@@ -2001,7 +2000,7 @@ $ serverless invoke --function hello_world --data '{"name": "OpenWhisk"}'
 
 ### Working with Sequences
 
-Open the `serverless.yml` file and let's define a sequence by reusing the actions `myUtil/sort` and `myUtil/head` again. To define the sequence simply extend the functions section like this (snippet 24 contains all the extension being applied as part this chapter):
+Open the `serverless.yml` file and let's define a sequence by reusing the actions `myUtil/sort` and `myUtil/head` again. To define the sequence simply extend the functions section like this:
 
 <pre>
 functions:
@@ -2177,7 +2176,7 @@ The `Function` node allows you to pass each message though a JavaScript function
 Wire the `Function` node in between the `Inject` and `Debug` nodes. You may need to delete the existing wire (select it and hit `delete` on the keyboard).
 
 Next, double-click on the `Function` node to bring up the edit dialog. 
-Copy the following code into the function field (snippet 25):
+Copy the following code into the function field:
 
 ```javascript
 // Create a Date object from the payload
