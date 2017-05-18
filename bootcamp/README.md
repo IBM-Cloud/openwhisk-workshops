@@ -469,7 +469,7 @@ https://github.com/openwhisk/openwhisk/blob/master/docs/packages.md#creating-and
 
 *Triggers* represent a named "channel" for a stream of events.
 
-Let's create a trigger to send user location updates:
+Let's create a trigger to send *location updates*:
 
 <pre>
 $ wsk trigger create locationUpdate
