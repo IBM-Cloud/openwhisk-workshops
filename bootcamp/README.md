@@ -388,7 +388,7 @@ $ wsk action invoke --blocking --result yahooWeather --param location "Brooklyn,
 
 You can also create a composite action that chains together a *sequence* of actions.
 
-This time we will use a set of actions that are shipped with OpenWhisk in a package called `/whisk.system/util`.
+This time we will use a set of actions that are shipped with OpenWhisk in a package called `/whisk.system/utils`.
 
 Generally, to reveal which packages are available out of the box run the following command:
 
