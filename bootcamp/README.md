@@ -1957,8 +1957,9 @@ $ git clone https://github.com/jthomas/serverless-openwhisk-boilerplate
 $ cd serverless-openwhisk-boilerplate
 </pre>
 
-<pre>
 Next, let's install project dependencies:
+
+<pre>
 $ sudo npm install --global serverless serverless-openwhisk
 $ npm install
 </pre>
