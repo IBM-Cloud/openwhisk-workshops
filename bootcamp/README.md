@@ -794,7 +794,7 @@ function main() {
 
 Notice that you can use any online available base64 encoder to generate the above mentioned string to encode an image of your choice.
 
-Again, invoke the web action via your browser. You should see the OpenWhisk logo. 
+Again, invoke the web action via your browser. You should see the your image. 
 
 Finally, let's make use of the `headers`, `status` and `body` properties to respond with simple *HTML*. To do so update the previously created web action like this:
 
