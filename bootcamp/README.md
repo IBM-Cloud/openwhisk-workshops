@@ -938,7 +938,7 @@ Then, specify an arbitrary name and select the `Language Translator` instance yo
 
 Next, select the binding (if not already selected), make sure that the `translator` action is still being selected, and click `Run This Action`.
 
-Specify the following input and click the `Run With This Value` (you may need to click `Make it Live` before) button:
+Specify the following input and click the `Run With This Value` (you may need to click `Make It Live` before) button:
 
 ```json
 {
@@ -965,7 +965,7 @@ Hence, select the `echo` action you have created earlier.
 Click the `Link into a Sequence` button from the bottom right of the screen.  
 Then, from the next screen appearing select the `Watson Translator` package and the `translator` action as well as the binding you have created earlier.  
 Then, click the `Add To Sequence` button and then the `This Looks Good` button.  
-Finally, specify a `name` for your sequence (optional) and click the `Save Action Sequence` and afterwards the `Done` button.
+Finally, specify a `name` for your sequence (optional) and click the `Save Action Sequence` and afterwards the `Done` button.  
 To test the sequence select it and click the `Run This Sequence` button.
 
 Specify the following input and click the `Run With This Value` button:
