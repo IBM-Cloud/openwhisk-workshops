@@ -990,7 +990,7 @@ You should see the following result:
 
 You can also work with triggers using the OpenWhisk UI.
 
-Let's assume you want to invoke the hello action you have created earlier as soon as something changes in a particular Github repository.
+Let's assume you want to invoke the `hello` action you have created earlier as soon as something changes in a particular Github repository.
 
 First, select the `hello` action.  
 Next, click the `Automate This Action` button at the bottom right of the screen.
