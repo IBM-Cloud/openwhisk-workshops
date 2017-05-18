@@ -1057,7 +1057,7 @@ Notice that you can create (most of) the artifacts discussed below using either 
 
 This service handles retrieving `latitude` and `longitude` coordinates for addresses using an external Geocoding API.
 
-The action (microservice) implements the application logic within a single function (main) just the way we have learned it earlier. The same way we did it before, parameters are passed in as an object argument (params) to the function call. The service makes an API call to the Google Geocoding API, returning the results from the calls' response for the first address match.
+The action (microservice) implements the application logic within a single function (`main) just the way we have learned it earlier. The same way we did it before, parameters are passed in as an object argument (params) to the function call. The service makes an API call to the Google Geocoding API, returning the results from the calls' response for the first address match.
 
 Notice that returning a `Promise` from the function means we can return the service response asynchronously.
 
