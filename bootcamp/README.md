@@ -549,7 +549,7 @@ First, define a `package.json` like this:
     "version": "1.0.0",
     "main": "index.js",
     "dependencies" : {
-     "left-pad" : "1.1.3"
+        "left-pad" : "1.1.3"
     }
 }
 ```
