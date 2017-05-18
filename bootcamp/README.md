@@ -1395,12 +1395,11 @@ $ wsk rule disable regular_forecast_rule
 
 # Build a serverless microservice backend!
 
-As actions can be seen as flexible and independently deployable microservices they are perfectly suited to build up entirely serverless microservice backends that expose functions via simply *APIs* (Application Programming Interfaces).
-API Gateway Integration
+Actions can be seen as flexible and independently deployable microservices they are perfectly suited to build up entirely serverless microservice backends that expose functions via simply *APIs* (Application Programming Interfaces).
 
 In this context APIs are the digital glue that links services, applications, sensors and mobile devices to create compelling customer experiences and help businesses tap into new market opportunities. They allow you to bring new digital services to market, open revenue channels and exceed customer expectations.
 
-OpenWhisk's API Gateway integration is a new feature that enables you to easily expose your OpenWhisk actions as *RESTful* endpoints. You can assign actions to specific endpoints, and even have verbs (`get`, `put`, `post`, `delete`) from the same endpoint assigned to different actions.
+OpenWhisk's API Gateway integration is a new feature that enables you to easily expose your OpenWhisk actions as *RESTful* endpoints. You can assign actions to specific endpoints, and even have verbs (`GRT`, `PUT`, `POST`, `DELETE`) from the same endpoint assigned to different actions.
 
 There are two different approaches to expose your actions with the API gateway:
 *	Assigning API endpoint/verb combinations to specific actions individually
@@ -1468,7 +1467,7 @@ $ wsk action invoke fibonacci -p num 5 -b -r
 
 ### Mapping actions to endpoints
 
-Now, let's examine how a specific action can be associated with an API endpoint/verb. Using the OpenWhisk CLI, you must specify an API path, a verb (`get`, `post`, `put`, `delete`), and the action.
+Now, let's examine how a specific action can be associated with an API endpoint/verb. Using the OpenWhisk CLI, you must specify an API path, a verb (`GET`, `POST`, `PUT`, `DELETE`), and the action.
 
 Notice that you may have to issue the following command and select the proper namespace before able to proceed:
 
