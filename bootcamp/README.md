@@ -319,7 +319,7 @@ Notice the use of the `--result` parameter (or `-r` for short; available for blo
 
 ### Setting default parameters
 
-Recall that the `hello` action above took two parameters: the name of a person, and the place where he or she is from.
+Recall that the `hello` action above took two parameters: the `name` of a person, and the `place` where he or she is from.
 
 Rather than passing all the parameters to an action every time, you can *bind* certain parameters. Let's bind the `place` parameter above so we have an action that defaults to the place `Vermont, CT`:
 
