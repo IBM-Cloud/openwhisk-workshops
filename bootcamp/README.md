@@ -127,7 +127,7 @@ In order to use OpenWhisk proceed as follows:
 3. Log-in with your Bluemix account  
    Create one if you do not yet have one by clicking the `Sign Up` link or by directly navigating to https://console.ng.bluemix.net/registration/
 4. Click the `Download OpenWhisk CLI` button
-5. Follow steps 1 & 2 (you do not need to perform step 3), i.e. download the CLI for your particular platform and configure it by specifying your `namespace` and `authorization key
+5. Follow steps 1 & 2 (you do not need to perform step 3), i.e. download the CLI for your particular platform and configure it by specifying your `namespace` and `authorization key`
 
 # Start your engine!
 
@@ -1194,7 +1194,7 @@ $ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
 
 Once we have a forecast, we need to send it to *Slack* as a message from our bot. *Slack* provides an easy method for writing simple bots using their *webhook* integration. Incoming webhooks provide applications with `URLs` to send data to using normal *HTTP* requests. The contents of the *JSON* request body will be posted into the channel as a bot message.
 
-First, create a new team on *Slack* by navigating to `https://slack.com/` and clicking the `Create new team` link at the very top of the screen.
+First, create a new team on *Slack* by navigating to https://slack.com/ and clicking the `Create new team` link at the very top of the screen.
 
 Just follow the instructions to create a team:  
 Provide your `mail address` and click the `Next` button.  
@@ -1797,7 +1797,7 @@ Leave all settings as they are and click the `Create` button at the bottom right
 
 Now, sign-up for a *Salesforce* test account as we would like *App Connect* to post something to *Message Hub* (then causing the OpenWhisk trigger to fire and the action to be invoked) as soon as a new contact is being created:
 
-Open a new browser tab and navigate to `https://www.salesforce.com/form/signup/freetrial-sales.jsp`  
+Open a new browser tab and navigate to https://www.salesforce.com/form/signup/freetrial-sales.jsp  
 Fill out all fields shown on the right-hand side and click the `Start free trial` button.
 
 Navigate back to the browser tab showing your *App Connect* instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Apps` and then `Dashboard`).  
@@ -1857,8 +1857,8 @@ The key point for this extension is that it has full round trip for OpenWhisk ac
 
 In the future we plan to provide more such plug-ins for additional IDEs (this is no official commitment) and hence seek for early feedback.
 
-First, download VS Code for your platform from here: `https://code.visualstudio.com/`  
-Next, download the extension from here: `https://github.com/openwhisk/openwhisk-vscode#downloads`
+First, download VS Code for your platform from here: https://code.visualstudio.com/  
+Next, download the extension from here: https://github.com/openwhisk/openwhisk-vscode#downloads
 
 To install the extension open VS Code and switch to the extensions view (`View → Extensions`).  
 Click the `more` menu (represented by the `•••` icon at the very top) and select `install from VSIX...`  
