@@ -339,7 +339,7 @@ Notice that we did not need to specify the `place` parameter anymore when invoki
 
 So far, the examples have been self-contained functions. You can also create an action that calls an external API, of course.
 
-The following example invokes the Yahoo Weather service to get the current conditions at a specific location.
+The following example invokes the *Yahoo Weather service* to get the current conditions at a specific location.
 
 Again, use your editor of choice to create a file called `weather.js` with the following content:
 
