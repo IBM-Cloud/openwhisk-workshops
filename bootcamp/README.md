@@ -131,7 +131,7 @@ In order to use OpenWhisk proceed as follows:
 
 # Start your engine!
 
-The CLI allows you to work with OpenWhisk's basic entities, i.e. to create actions, triggers, rules, and sequences. Hence, let's learn how to work with the CLI.
+The CLI allows you to work with OpenWhisk's basic entities, i.e. to create *actions, triggers, rules, and sequences*. Hence, let's learn how to work with the CLI.
 
 ## Actions
 
