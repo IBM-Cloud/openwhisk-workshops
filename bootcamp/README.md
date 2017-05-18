@@ -905,7 +905,8 @@ At this point feel free play with the other packages being available.
 ### Sequencing actions
 
 Next, let's visually model a simple sequence similar to the one we have created earlier when having used the CLI.
-Therefore, let's first create a very simple action (name it echo) the same way you learned to create actions before:
+
+Therefore, let's first create a very simple action (name it `echo`) the same way you learned to create actions before:
 
 ```javascript
 function main(msg) {
