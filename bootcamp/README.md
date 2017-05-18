@@ -587,7 +587,7 @@ Next, create the action:
 
 <pre>
 $ wsk action create packageAction --kind nodejs:6 action.zip
-ok: created action packageAction
+<b>ok:</b> created action <b>packageAction</b>
 </pre>
 
 Notice that when creating an action from a .zip archive using the CLI tool, you must explicitly provide a value for the `--kind` flag.
