@@ -1403,7 +1403,7 @@ OpenWhisk's API Gateway integration is a new feature that enables you to easily 
 
 There are two different approaches to expose your actions with the API gateway:
 *	Assigning API endpoint/verb combinations to specific actions individually
-*	Using a Swagger config file to map API endpoints to actions
+*	Using a *Swagger* config file to map API endpoints to actions
 
 You can define your APIs using our CLI or using our UI – in the following we will make use of both.
 
