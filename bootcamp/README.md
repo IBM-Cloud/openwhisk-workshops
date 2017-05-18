@@ -1467,7 +1467,7 @@ $ wsk action invoke fibonacci -p num 5 -b -r
 
 ### Mapping actions to endpoints
 
-Now, let's examine how a specific action can be associated with an API endpoint/verb. Using the OpenWhisk CLI, you must specify an `API path`, a `verb` (`GET`, `POST`, `PUT`, `DELETE`), and the `action.
+Now, let's examine how a specific action can be associated with an API endpoint/verb. Using the OpenWhisk CLI, you must specify an `API path`, a `verb` (`GET`, `POST`, `PUT`, `DELETE`), and the `action`.
 
 Notice that you may have to issue the following command and select the proper namespace before able to proceed:
 
