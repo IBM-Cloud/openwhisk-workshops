@@ -670,7 +670,8 @@ You should see the following result:
 }
 </pre>
 
-Next, to see how things work when working with an action accepting parameters click the `Create An Action` button again.   Then, once again, specify a name (e.g. `helloUI2`) and click the `Create Action` button.
+Next, to see how things work when working with an action accepting parameters click the `Create An Action` button again.  
+Then, once again, specify a name (e.g. `helloUI2`) and click the `Create Action` button.
 
 Next, copy the following code into the code editor replacing any existing code:
 
