@@ -2215,10 +2215,9 @@ This website catalogues all the available nodes: http://flows.nodered.org/
 Let's look at installing the OpenWhisk nodes into *Node-RED*:  
 If you type `openwhisk` into the search box, we see there are two entities that can be installed. 
 
-We want to install the result named `node-red-node-openwhisk`, which contains the officially supported OpenWhisk nodes for *Node-RED*:
+We want to install the result named `node-red-node-openwhisk`, which contains the officially supported OpenWhisk nodes for *Node-RED*.
 
 So, if you go back into the *Node-RED* editor and click the menu icon in the top-right of the screen, it presents a menu including the `Manage palette` item. 
-
 Selecting this option will bring up the node installation dialoge in the left-hand panel. This panel shows you the list of installed nodes and also allows you to install extra nodes. We're going to use this to install the OpenWhisk nodes.
 
 Select the `Install` tab and type in `node-red-node-openwhisk`.  
