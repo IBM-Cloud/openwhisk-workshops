@@ -195,7 +195,7 @@ $ wsk activation list
 dde9212e686f413bb90f22e79e12df74             hello                                   
 eee9212e686f413bb90f22e79e12df74             hello
 </pre>
-                              
+
 Notice that the list of ```activation ids``` is ordered with the most recent one first.
 
 To obtain the result of a particular action invocation enter (notice that you need to replace the ```activation id``` shown below with the ```id``` you have received during the previous step):
