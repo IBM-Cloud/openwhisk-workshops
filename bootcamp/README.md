@@ -825,7 +825,8 @@ To see the result click the `View Activity` button which redirects you to the da
 
 Of course, OpenWhisk allows you to add custom log statements to your actions, too.
 
-To see how logging works click the `Create An Action` button again. Then, once again, specify a name (e.g. `helloLogging`) and click the `Create action` button.
+To see how logging works click the `Create An Action` button again.  
+Then, once again, specify a name (e.g. `helloLogging`) and click the `Create action` button.
 
 Next, copy the following code into the code editor replacing any existing code:
 
@@ -865,15 +866,15 @@ https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-dock
 
 As you have already seen before, OpenWhisk provides you, out of the box, with a shared collection of actions and triggers as part of so called packages. The OpenWhisk UI makes it even easier to explore and test available packages. Let's learn how to do so now.
 
-First, click the `Browse Public Packages` button at the top right of the screen.
+First, click the `Browse Public Packages` button at the top right of the screen.  
 You'll be presented with a set of packages, represented by some icons, being available.
 
-Click the `Samples` package.
-At the left of the screen you will be shown a short description of the functionality this package provides you with. At the top center of the screen you can access the different actions and triggers the package provides you with (notice that the samples package provides you only with actions). 
+Click the `Samples` package.  
+At the left of the screen you will be shown a short description of the functionality this package provides you with. At the top center of the screen you can access the different actions and triggers the package provides you with (notice that the samples package provides you only with actions).  
 You can choose between the following actions: `curl`, `greeting`, `helloWorld`, `wordCount`. For each action a short description and sample input you can feed it with as well as sample output you can expect to get when invoking the action is being provided.
 
-Let's play with the `wordCount` action.
-Hence, select the `wordCount` action and read the description to understand its purpose. Also review the sample input to understand how to properly feed the action when invoking it as well as the sample output to understand what you can expect after having invoked it.
+Let's play with the `wordCount` action.  
+Hence, select the `wordCount` action and read the description to understand its purpose. Also review the sample input to understand how to properly feed the action when invoking it as well as the sample output to understand what you can expect after having invoked it.  
 Click the `Run This Action` button.
 
 Based on the sample input you have been shown before, specify the following input and click the `Run With This Value` button:
@@ -894,9 +895,9 @@ You should see the following result:
 
 Instead of just reusing a package-provided action as-is you can also view its code (which you may want to use as a basis for your own action).
 
-Let's review the code of the `curl` action.
-Hence, navigate back to the catalog (to do so you probably want to click the `Close` button to close the invocation console) and click the `Samples` package again.
-This time select the `curl` action and read the description to understand its purpose. 
+Let's review the code of the `curl` action.  
+Hence, navigate back to the catalog (to do so you probably want to click the `Close` button to close the invocation console) and click the `Samples` package again.  
+This time select the `curl` action and read the description to understand its purpose.  
 Next, click the `View Source` button to (re)view and understand the action's code.
 
 At this point feel free play with the other packages being available.
@@ -918,20 +919,20 @@ Now, let's assume you want to define a sequence that allows any text you hand ov
 
 To make this happen, let's make use of the `translate` action part of the `Watson` package.
 
-Hence, we first need to create an instance of the `Watson Language Translator` service.
-To do so click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
-From the menu appearing on the left of the screen select `Watson`.
-Next, click `Language Translator`.
-Leave all settings as they are and click the `Create button` at the bottom right of the screen.
-Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
+Hence, we first need to create an instance of the `Watson Language Translator` service.  
+To do so click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
+From the menu appearing on the left of the screen select `Watson`.  
+Next, click `Language Translator`.  
+Leave all settings as they are and click the `Create button` at the bottom right of the screen.  
+Next, switch to the `Service Credentials` tab and click the `View Credentials` link.  
 Note down `username` and `password`.
 
-Now, let's try to understand how the mentioned package and action works.
-Hence, navigate back to the OpenWhisk UI and its catalog (`Browse Public Packages`) and click the `Watson Translator` package.
+Now, let's try to understand how the mentioned package and action works.  
+Hence, navigate back to the OpenWhisk UI and its catalog (`Browse Public Packages`) and click the `Watson Translator` package.  
 Click the `translator` action and read the description as well as the sample input and output to understand its purpose. 
 
-Next, to be able to use Watson, we need to create a binding. 
-Hence, click the `New Binding` button at the left of the screen. 
+Next, to be able to use Watson, we need to create a binding.  
+Hence, click the `New Binding` button at the left of the screen.  
 Then, specify an arbitrary name and select the `Language Translator` instance you have created before (or specify an arbitrary name and the `username` and `password` you noted down before) and click `Save Configuration`. 
 
 Next, select the binding (if not already selected), make sure that the `translator` action is still being selected, and click `Run This Action`.
@@ -958,11 +959,11 @@ You should see the following result:
 }
 ```
 
-Now, let's chain the two actions together as a sequence.
-Hence, select the `echo` action you have created earlier.
-Click the `Link into a Sequence` button from the bottom right of the screen.
-Then, from the next screen appearing select the `Watson Translator` package and the `translator` action as well as the binding you have created earlier.
-Then, click the `Add To Sequence` button and then the `This Looks Good` button. 
+Now, let's chain the two actions together as a sequence.  
+Hence, select the `echo` action you have created earlier.  
+Click the `Link into a Sequence` button from the bottom right of the screen.  
+Then, from the next screen appearing select the `Watson Translator` package and the `translator` action as well as the binding you have created earlier.  
+Then, click the `Add To Sequence` button and then the `This Looks Good` button.  
 Finally, specify a `name` for your sequence (optional) and click the `Save Action Sequence` and afterwards the `Done` button.
 To test the sequence select it and click the `Run This Sequence` button.
 
@@ -990,35 +991,35 @@ You can also work with triggers using the OpenWhisk UI.
 
 Let's assume you want to invoke the hello action you have created earlier as soon as something changes in a particular Github repository.
 
-First, select the `hello` action.
+First, select the `hello` action.  
 Next, click the `Automate This Action` button at the bottom right of the screen.
-Next, click the `Github` icon.
-Then, click the `New Trigger` icon.
+Next, click the `Github` icon.  
+Then, click the `New Trigger` icon.  
 
 Notice that you need a Github account to proceed. In case you do not have an account sign-up now.
 
 Specify your Github `username`, the `access token` and the `name` of the repository you want to watch.
 
-Notice that in Github your `username` is shown when looking at what is shown under `Signed in as...` when being logged-in. Your access token is shown under `Settings → Personal access tokens`. You probably have to create a new one by clicking the `Generate new token` button and by specifying a `name` and selecting the `repo` checkbox. Similarly, you may have to create a test repository to play around with.
+Notice that in Github your `username` is shown when looking at what is shown under `Signed in as...` when being logged-in.   Your access token is shown under `Settings → Personal access tokens`. You probably have to create a new one by clicking the `Generate new token` button and by specifying a `name` and selecting the `repo` checkbox. Similarly, you may have to create a test repository to play around with.
 
 Also notice that you can select the right repository from a pull-down menu after having specified your Gihub `username` and the `access token`.
 
 For events simply specify `*` to listen to all events.
 
-Once you have filled out all input fields click the `Save Configuration` button.
-Select the trigger you have just created (if not already selected) and click the `Next` button.
+Once you have filled out all input fields click the `Save Configuration` button.  
+Select the trigger you have just created (if not already selected) and click the `Next` button.  
 Next, click the `This Looks Good` button and, finally, the `Save Rule `button.
 
 For testing purposes let's first fire the trigger manually.
 
-To be able to observe what's going on click the `View Activity` button to open the monitoring dashboard (details about this will be explained further below). At the top right you can see triggers that fired as well as actions that have been invoked. The view updates itself periodically. You can also refresh it manually by clicking the `refresh` icon.
-To continue with the test select the browser tab showing your actions, triggers, and rules and hover over the trigger you have just created and click the `lightning` icon followed by the `Run With This Value` button to fire it. 
-In the next screen appearing click the `Run With This Value` button.
-Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.
+To be able to observe what's going on click the `View Activity` button to open the monitoring dashboard (details about this will be explained further below). At the top right you can see triggers that fired as well as actions that have been invoked.   The view updates itself periodically. You can also refresh it manually by clicking the `refresh` icon.  
+To continue with the test select the browser tab showing your actions, triggers, and rules and hover over the trigger you have just created and click the `lightning` icon followed by the `Run With This Value` button to fire it.  
+In the next screen appearing click the `Run With This Value` button.  
+Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.  
 
 Finally, open another browser tab and log into Github.
 
-Navigate to your repository and add a file or change a file's content and commit your change.
+Navigate to your repository and add a file or change a file's content and commit your change.  
 Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.
 
 ## Rules
