@@ -1775,49 +1775,50 @@ At this point feel free to play around with other features of our API Gateway in
 
 *IBM App Connect* allows you to connect different applications to make your business more efficient. It allows you to set up automation flows to direct how events in one application trigger actions in another. It also allows you to map the information you want to share between them. 
 
-IBM Message Hub is an IBM Bluemix managed Apache Kafka, a scalable, high-throughput message bus service for building real-time data pipelines and streaming applications. It allows you to wire together micro-services using open protocols, to connect stream data to analytics to realize powerful insights, to feed event data to multiple applications to react in real time. It allows you to bridge to your on-premise messaging infrastructure to create a hybrid cloud messaging solution.
+*IBM Message Hub* is an *IBM Bluemix* managed *Apache Kafka*, a scalable, high-throughput message bus service for building real-time data pipelines and streaming applications. It allows you to wire together micro-services using open protocols, to connect stream data to analytics to realize powerful insights, to feed event data to multiple applications to react in real time. It allows you to bridge to your on-premise messaging infrastructure to create a hybrid cloud messaging solution.
 
-In the following we will show you can use App Connect to post data to a dedicated IBM Message Hub topic which then causes an OpenWhisk trigger to fire to invoke an action.
+In the following we will show you can use *App Connect* to post data to a dedicated *Message Hub* topic which then causes an OpenWhisk trigger to fire to invoke an action.
 
-First, let's set up a Message Hub instance and a topic:
+First, let's set up a *Message Hub* instance and a topic:
 
-From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
-From the menu appearing on the left of the screen select `Application Services`.
-Click `Message Hub`.
+From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
+From the menu appearing on the left of the screen select `Application Services`.  
+Click `Message Hub`.  
+Leave all settings as they are and click the `Create` button at the bottom right of the screen.  
+Switch to the `Manage` tab and click the `+` icon to create a new topic. As topic name specify `openwhisk`.  
+Leave all other settings as they are and click the `Create topic` button.
+
+Second, let's set up an *App Connect* instance:  
+Open a new browser tab.  
+From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
+From the menu appearing on the left of the screen select `Integrate`.  
+Click `App Connect`.  
 Leave all settings as they are and click the `Create` button at the bottom right of the screen.
-Switch to the `Manage` tab and click the `+` icon to create a new topic. As topic name specify `openwhisk`. Leave all other settings as they are and click the `Create topic` button.
 
-Second, let's set up an App Connect instance:
-Open a new browser tab.
-From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
-From the menu appearing on the left of the screen select `Integrate`.
-Click `App Connect`.
-Leave all settings as they are and click the `Create` button at the bottom right of the screen.
+Now, sign-up for a *Salesforce* test account as we would like *App Connect* to post something to *Message Hub* (then causing the OpenWhisk trigger to fire and the action to be invoked) as soon as a new contact is being created:
 
-Now, sign-up for a *Salesforce* test account as we would like App Connect to post something to Message Hub (then causing the OpenWhisk trigger to fire and the action to be invoked) as soon as a new contact is being created:
-
-Open a new browser tab and navigate to `https://www.salesforce.com/form/signup/freetrial-sales.jsp`
+Open a new browser tab and navigate to `https://www.salesforce.com/form/signup/freetrial-sales.jsp`  
 Fill out all fields shown on the right-hand side and click the `Start free trial` button.
 
-Navigate back to the browser tab showing your App Connect instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Apps` and then `Dashboard`).
-If necessary click the `Launch App Connect` button and skip the dialogs offering initial help. 
-Click the `New` button and select `Create an event-driven flow` button.
-Click `Salesforce` and `New Contact`.
-Click the `Connect to Salesforce` button.
-In the new browser tab appearing click the `Allow` button.
-Back in the App Connect view click `Message Hub` and `Send Message`.
-Click the `Connect to Message Hub` button.
-Now, navigate back to the browser tab showing your Message Hub instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Services` and then `Dashboard`).
-Switch to the `Service Credentials` tab and click the `View Credentials` link.
-Click the icon that allows you to copy the entire *JSON* being shown.
-Next, navigate back to the browser tab showing your App Connect instance and paste the entire *JSON* you have just copied into the field labeled `Message Hub Service Credentials` and click the `Connect` button.
-As topic specify `openwhisk`.
-As payload select (after having clicked the little helper icon next to the input field) `lastname` for instance.
-Finally, click the `Exit and switch on button` at the top right of the screen.
+Navigate back to the browser tab showing your *App Connect* instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Apps` and then `Dashboard`).  
+If necessary click the `Launch App Connect` button and skip the dialogs offering initial help.  
+Click the `New` button and select `Create an event-driven flow` button.  
+Click `Salesforce` and `New Contact`.  
+Click the `Connect to Salesforce` button.  
+In the new browser tab appearing click the `Allow` button.  
+Back in the *App Connect* view click `Message Hub` and `Send Message`.  
+Click the `Connect to Message Hub` button.  
+Now, navigate back to the browser tab showing your *Message Hub* instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Services` and then `Dashboard`).  
+Switch to the `Service Credentials` tab and click the `View Credentials` link.  
+Click the icon that allows you to copy the entire *JSON* being shown.  
+Next, navigate back to the browser tab showing your *App Connect* instance and paste the entire *JSON* you have just copied into the field labeled `Message Hub Service Credentials` and click the `Connect` button.  
+As topic specify `openwhisk`.  
+As payload select (after having clicked the little helper icon next to the input field) `lastname` for instance.  
+Finally, click the `Exit and switch on button` at the top right of the screen.  
 
-Now, let's make sure a trigger fires whenever something is being posted to the Message Hub topic we just created:
+Now, let's make sure a trigger fires whenever something is being posted to the *Message Hub* topic we just created:
 
-In the OpenWhisk UI switch to the Develop tab if not already there.
+In the OpenWhisk UI switch to the Develop tab if not already there.  
 Create a new action (name it `newContact`) the way you learned it before containing the following code:
 
 ```javascript
@@ -1826,22 +1827,22 @@ function main(msg) {
 }
 ```
 
-Click the `Automate this Action` button at the bottom right of the screen to make sure it gets fired by a trigger.
-Click `Messaging`.
-Click `New Trigger`.
-Provide all the details being asked for (which you can get by navigating back to the browser tab showing your Message Hub instance and having a look at the service credentials).
-Click the `Save Configuration` button.
-Click the `This Looks Good` and the `Save Rule` buttons.
-Finally, switch to the `Monitor` tab to see what's going on.
+Click the `Automate this Action` button at the bottom right of the screen to make sure it gets fired by a trigger.  
+Click `Messaging`.  
+Click `New Trigger`.  
+Provide all the details being asked for (which you can get by navigating back to the browser tab showing your *Message Hub* instance and having a look at the service credentials).  
+Click the `Save Configuration` button.  
+Click the `This Looks Good` and the `Save Rule` buttons.  
+Finally, switch to the `Monitor` tab to see what's going on.  
 
-Navigate back to the browser tab showing the Salesforce application.
-From the main menu click `Contacts`.
-Click the `New` button at the top right of the screen.
-Provide at least a `given` and `family name` and click `Save`.
+Navigate back to the browser tab showing the Salesforce application.  
+From the main menu click `Contacts`.  
+Click the `New` button at the top right of the screen.  
+Provide at least a `given` and `family name` and click `Save`.  
 
 When navigating back to the OpenWhisk UI monitoring should reveal that the action we just created has been invoked with information about the Salesforce contact that has just been created.
 
-To summarize, the App Connect flow took care of posting to a dedicated Message Hub topic once a new Salesforce contact has been created. That caused the OpenWhisk Messaging trigger to fire which caused the associated action to be invoked.
+To summarize, the App Connect flow took care of posting to a dedicated *Message Hub* topic once a new Salesforce contact has been created. That caused the OpenWhisk Messaging trigger to fire which caused the associated action to be invoked.
 
 # Special fuel for your engine!
 
