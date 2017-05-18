@@ -77,7 +77,7 @@ During this workshop you will learn how to develop **serverless applications** c
 
 We wish you a lot of fun and success...
 
-You can also find a PDF version of this workshop here: **TODO**
+You can also find a PDF version of this workshop here: **Will be added soon**
 
 # Serverless Computing
 
@@ -1472,7 +1472,7 @@ Now, let's examine how a specific action can be associated with an API endpoint/
 Notice that you may have to issue the following command and select the proper namespace before able to proceed:
 
 <pre>
-$ wsk bluemix login --user <user> --password <password>
+$ wsk bluemix login --user &lt;user&gt; --password &lt;password&gt;
 </pre>
 
 Now, we need to enable the action as web action:
