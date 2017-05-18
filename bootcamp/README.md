@@ -1375,7 +1375,7 @@ Let's do that now:
 $ wsk package get /whisk.system/alarms --summary
 <b>package</b> /whisk.system/alarms: Alarms and periodic utility
    (<b>parameters</b>: cron trigger_payload)
- </b>feed<b>   /whisk.system/alarms/alarm: Fire trigger when alarm occurs
+ </b>feed</b>   /whisk.system/alarms/alarm: Fire trigger when alarm occurs
 
 $ wsk trigger create regular_forecast --feed /whisk.system/alarms/alarm -p cron "*/10 * * * * *" -p trigger_payload "{\"text\":\"London\"}"
 <b>ok:</b> created trigger <b>feed regular_forecast</b>
