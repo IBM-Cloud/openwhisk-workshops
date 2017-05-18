@@ -1402,8 +1402,8 @@ In this context APIs are the digital glue that links services, applications, sen
 OpenWhisk's API Gateway integration is a new feature that enables you to easily expose your OpenWhisk actions as *RESTful* endpoints. You can assign actions to specific endpoints, and even have verbs (`GRT`, `PUT`, `POST`, `DELETE`) from the same endpoint assigned to different actions.
 
 There are two different approaches to expose your actions with the API gateway:
-*	Assigning API endpoint/verb combinations to specific actions individually
-*	Using a *Swagger* config file to map API endpoints to actions
+* Assigning API endpoint/verb combinations to specific actions individually
+* Using a *Swagger* config file to map API endpoints to actions
 
 You can define your APIs using our CLI or using our UI – in the following we will make use of both.
 
