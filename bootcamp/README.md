@@ -700,7 +700,7 @@ You should see the following result:
 }
 </pre>
 
-## Invoking actions via REST calls
+### Invoking actions via REST calls
 
 Actions cannot only be invoked via the CLI or the OpenWhisk UI, they can also be invoked via simple *REST* API calls. All you need to do is to `POST` against the correct *REST* API endpoint.
 
@@ -728,7 +728,7 @@ You should see the following result:
 [...]
 </pre>
 
-## Invoking actions via web actions
+### Invoking actions via web actions
 
 Web actions are OpenWhisk actions annotated to quickly enable you to build web based applications. This allows you to program backend logic which your web application can access anonymously without requiring an OpenWhisk authentication key. It is up to the action developer to implement their own desired authentication and authorization (i.e. `OAuth` flow).
 
@@ -749,7 +749,7 @@ Notice that you can also enable any action as a web action using the OpenWhisk U
 
 We leave this as a voluntary exercise for you – will you find the right place?
 
-### Web action responses 
+#### Web action responses 
 
 Web actions can also be used to implement *HTTP* handlers that respond with `headers`, `statusCode`, and `body` content of different types. The web action must still return a *JSON* object, but the OpenWhisk system (namely its `controller`) will treat a web action differently if its result includes one or more of the following as top level *JSON* properties:
 * `headers`: a *JSON* object where the keys are header-names and the values are string values for those headers (default is no headers)
@@ -807,7 +807,7 @@ function main() {
 
 Again, invoke the web action via your browser. You should see the the message `Hello World!`.
 
-## Invoking actions periodically
+### Invoking actions periodically
 
 Also, actions cannot only be invoked in a blocking (synchronous) or non-blocking (asynchronous) fashion as explained before, they can also be invoked *periodically*.
 
