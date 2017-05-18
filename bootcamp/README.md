@@ -1508,11 +1508,11 @@ In the following we strongly recommend to use a *REST* client like *Insomnia*
 
 ### Creating a Cloudant Instance
 
-Let's assume you want to store the books in Cloudant as this would make things very easy as OpenWhisk already provides you with a Cloudant package that allows you to work with Cloudant without the need to write code.
+Let's assume you want to store the books in *Cloudant* as this would make things very easy as OpenWhisk already provides you with a *Cloudant* package that allows you to work with *Cloudant* without the need to write code.
 
-From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.
-From the menu on the left-side select `Data & Analytics`.
-Click `Cloudant NoSQL DB`.
+From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
+From the menu on the left-side select `Data & Analytics`.  
+Click `Cloudant NoSQL DB`.  
 As service name specify `bookStore`, leave everything else as-is and click the `Create` button.
 
 Once the instance has been created switch to the `Service Credentials` tab and click the `View Credentials` link. You will need the `username`, `password` and `host` shown there throughout the rest of this chapter, hence leave this browser tab open.
@@ -1739,8 +1739,8 @@ Output:
 [...]
 ```
 
-Now, let's delete the book we just queried.
-To do so use your *REST* client to submit a `DELETE`.
+Now, let's delete the book we just queried.  
+To do so use your *REST* client to submit a `DELETE`.  
 Hand-over the `docid` and `docrev` of the book you just queried as query parameter.
 
 Again, query all books to validate that the book has been properly deleted.
@@ -1749,22 +1749,22 @@ Again, query all books to validate that the book has been properly deleted.
 
 Now, let's make the previously implemented weather services (functions) accessible via some simple APIs, too. This time we will use the UI (instead of the CLI) to define these APIs.
 
-Again, open the OpenWhisk UI.
-Select the `API` tab.
-Click the `Create an OpenWhisk API` button (only visible if you haven't created any API before).
-As `API name` specify `weatherAPI`.
+Again, open the OpenWhisk UI.  
+Select the `API` tab.  
+Click the `Create an OpenWhisk API` button (only visible if you haven't created any API before).  
+As `API name` specify `weatherAPI`.  
 Leave everything else as-is and click the `Save` button at the bottom of the screen.
 
-On the next screen select the `Definition` tab from the navigation on the left of the screen.
-Click the `Create Operation` button.
-As `path` specify `location_to_latlong`.
-As `action` select the `location_to_latlong` action.
-Leave everything else as-is and click the `Save` button at the bottom of the screen.
+On the next screen select the `Definition` tab from the navigation on the left of the screen.  
+Click the `Create Operation` button.  
+As `path` specify `location_to_latlong`.  
+As `action` select the `location_to_latlong` action.  
+Leave everything else as-is and click the `Save` button at the bottom of the screen.  
 Click the `Save` button at the bottom of the screen.
 
-To find out the `URL` to be used to invoke this operation switch to the `API Explorer` tab.
-From the list at the left select the `getLocationtolatlong` entry and copy the `GET URL` shown.
-Open a browser window and append they query parameter `?location=London`.
+To find out the `URL` to be used to invoke this operation switch to the `API Explorer` tab.  
+From the list at the left select the `getLocationtolatlong` entry and copy the `GET URL` shown.  
+Open a browser window and append they query parameter `?location=London`.  
 You should be presented the latitude and longitude of London.
 
 Switch back to the `Definition` tab and, based on what you just learned, expose the `forecast_from_latlong` action by adding another operation, too.
@@ -1773,11 +1773,11 @@ At this point feel free to play around with other features of our API Gateway in
 
 # IBM App Connect & Message Hub
 
-*IBM AppConnect* allows you to connect different applications to make your business more efficient. It allows you to set up automation flows to direct how events in one application trigger actions in another. It also allows you to map the information you want to share between them. 
+*IBM App Connect* allows you to connect different applications to make your business more efficient. It allows you to set up automation flows to direct how events in one application trigger actions in another. It also allows you to map the information you want to share between them. 
 
 IBM Message Hub is an IBM Bluemix managed Apache Kafka, a scalable, high-throughput message bus service for building real-time data pipelines and streaming applications. It allows you to wire together micro-services using open protocols, to connect stream data to analytics to realize powerful insights, to feed event data to multiple applications to react in real time. It allows you to bridge to your on-premise messaging infrastructure to create a hybrid cloud messaging solution.
 
-In the following we will show you can use AppConnect to post data to a dedicated IBM Message Hub topic which then causes an OpenWhisk trigger to fire to invoke an action.
+In the following we will show you can use App Connect to post data to a dedicated IBM Message Hub topic which then causes an OpenWhisk trigger to fire to invoke an action.
 
 First, let's set up a Message Hub instance and a topic:
 
