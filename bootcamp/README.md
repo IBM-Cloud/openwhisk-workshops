@@ -643,7 +643,10 @@ The OpenWhisk UI is comprised of the following sections:
 Let's start exploring the UI by creating some simple first actions similar to the ones we have created before when having used the CLI.
 
 First, click the `Create An Action` button.
-Next, specify a name (e.g. `helloUI`) by entering it into the text field prefilled with the text `Choose a name for your new action`; leave everything else as-is and click the `Create Action` button at the bottom of the screen.
+
+Next, specify a name (e.g. `helloUI`) by entering it into the text field prefilled with the text `Choose a name for your new action`.
+
+Leave everything else as-is and click the `Create Action` button at the bottom of the screen.
 
 Notice that even though you did not change any configuration options, you would have had the option to change the language you want to implement your action in as well as the memory quota and the time limit. Click the `Learn more` links for additional details and feel free to play around with these options on your own.
 
@@ -655,7 +658,9 @@ function main() {
 }
 ```
 
-Next, click the `Run This Action` button to test the action directly from within your browser. Before being able to run your action you need to make it live, hence click the `Make It Live` button when being prompted to do so.	Afterwards click the `Run With this Value` button.
+Next, click the `Run This Action` button to test the action directly from within your browser.
+Before being able to run your action you need to make it live, hence click the `Make It Live` button when being prompted to do so.
+Afterwards click the `Run With this Value` button.
 
 Notice that you do not need to specify any *JSON* input as the action is not expecting any parameters to be handed over.
 
