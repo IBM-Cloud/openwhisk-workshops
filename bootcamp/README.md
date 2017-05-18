@@ -119,7 +119,7 @@ Developers only need to care about implementing the desired application logic - 
 
 A few important notes before you start:
 *	When working through the lab you may see slightly different responses being returned from your CLI than those printed as part of these instructions.<br/>You do not need to worry about this. The reason is that you may use a different namespace than the one we used when generating this document; the differences will be minor and only result in some name-prefixing.
-* Important remark for Windows users: Windows users are strongly advised to download Git (https://git-for-windows.github.io/) and to work from the Git bash. They are also advised to download cURL for Windows (https://curl.haxx.se/download.html)
+* Important remark for Windows users: Windows users are strongly advised to download *Git* (https://git-for-windows.github.io/) and to work from the *Git bash*. They are also advised to download `cURL for Windows (https://curl.haxx.se/download.html)
 
 In order to use OpenWhisk proceed as follows:
 1. Open a browser window
