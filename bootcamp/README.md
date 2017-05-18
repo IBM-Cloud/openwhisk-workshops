@@ -125,7 +125,7 @@ In order to use OpenWhisk proceed as follows:
 1. Open a browser window
 2. Navigate to https://console.ng.bluemix.net/openwhisk/
 3. Log-in with your Bluemix account  
-   Create one if you do not yet have one by clicking the `Sign-up` link or by directly navigating to https://console.ng.bluemix.net/registration/
+   Create one if you do not yet have one by clicking the `Sign-up` link or by directly navigating to https://console.ng.bluemix.net/registration/
 4. Click the `Download OpenWhisk CLI` button
 5. Follow steps 1 & 2 (you do not need to perform step 3), i.e. download the CLI for your particular platform and configure it by specifying your `namespace` and `authorization key
 
