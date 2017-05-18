@@ -990,18 +990,18 @@ You should see the following result:
 
 You can also work with triggers using the OpenWhisk UI.
 
-Let's assume you want to invoke the `hello` action you have created earlier as soon as something changes in a particular Github repository.
+Let's assume you want to invoke the `hello` action you have created earlier as soon as something changes in a particular *Github* repository.
 
 First, select the `hello` action.  
 Next, click the `Automate This Action` button at the bottom right of the screen.
 Next, click the `Github` icon.  
 Then, click the `New Trigger` icon.  
 
-Notice that you need a Github account to proceed. In case you do not have an account sign-up now.
+Notice that you need a *Github* account to proceed. In case you do not have an account sign-up now.
 
-Specify your Github `username`, the `access token` and the `name` of the repository you want to watch.
+Specify your *Github* `username`, the `access token` and the `name` of the repository you want to watch.
 
-Notice that in Github your `username` is shown when looking at what is shown under `Signed in as...` when being logged-in.   Your access token is shown under `Settings → Personal access tokens`. You probably have to create a new one by clicking the `Generate new token` button and by specifying a `name` and selecting the `repo` checkbox. Similarly, you may have to create a test repository to play around with.
+Notice that in *Github* your `username` is shown when looking at what is shown under `Signed in as...` when being logged-in.   Your access token is shown under `Settings → Personal access tokens`. You probably have to create a new one by clicking the `Generate new token` button and by specifying a `name` and selecting the `repo` checkbox. Similarly, you may have to create a test repository to play around with.
 
 Also notice that you can select the right repository from a pull-down menu after having specified your Gihub `username` and the `access token`.
 
@@ -1018,7 +1018,7 @@ To continue with the test select the browser tab showing your actions, triggers,
 In the next screen appearing click the `Run With This Value` button.  
 Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.  
 
-Finally, open another browser tab and log into Github.
+Finally, open another browser tab and log into *Github*.
 
 Navigate to your repository and add a file or change a file's content and commit your change.  
 Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.
@@ -1935,9 +1935,9 @@ Feel free to experiment with the extension a bit on your own and provide us with
 
 ## Developing with the Serverless Framework
 
-Very recently we have announced our integration with the Serverless Framework (https://serverless.com/framework/). Hence, developers can now use the framework to build applications for the OpenWhisk platform.
+Very recently we have announced our integration with the *Serverless Framework* (https://serverless.com/framework/). Hence, developers can now use the framework to build applications for the OpenWhisk platform.
 
-The Serverless Framework is the most popular open-source framework for building serverless applications. Launching back in 2015, under a different name, the framework has experienced tremendous growth and now has over fourteen thousands stars on Github.
+The *Serverless Framework* is the most popular open-source framework for building serverless applications. Launching back in 2015, under a different name, the framework has experienced tremendous growth and now has over fourteen thousands stars on *Github*.
 
 Thousands of developers are using the tool to build serverless applications every day.
 
@@ -1951,7 +1951,7 @@ With the aforementioned integration developers using the framework can now choos
 
 ### Installing the Serverless Framework
 
-First, let's retrieve the boilerplate repository from Github:
+First, let's retrieve the boilerplate repository from *Github*:
 
 <pre>
 $ git clone https://github.com/jthomas/serverless-openwhisk-boilerplate
