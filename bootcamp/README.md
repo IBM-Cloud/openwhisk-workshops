@@ -741,7 +741,7 @@ $ wsk action update hello --web true
 
 Once enabled your action is supposed to be accessible as a web action via a new *REST* interface.
 
-The `URL` is structured as follows: `https://{APIHOST}/api/v1/web/{QUALIFIED ACTION NAME}.{EXT}`. The fully qualified name of an action consists of three parts: the `namespace`, the `package name`, and the `action name`. The fully qualified name of a web action must include its package name, which is `default` if the action is not in a named package. The last part of the URI called the extension which is typically `.http` or .`json`. The web action API path may be used with `cURL` or `wget` without an API key. It may even be entered directly in your browser.
+The `URL` is structured as follows: `https://{APIHOST}/api/v1/web/{QUALIFIED ACTION NAME}.{EXT}`. The fully qualified name of an action consists of three parts: the `namespace`, the `package name`, and the `action name`. The fully qualified name of a web action must include its package name, which is `default` if the action is not in a named package. The last part of the `URI` called the extension which is typically `.http` or .`json`. The web action API path may be used with `cURL` or `wget` without an API key. It may even be entered directly in your browser.
 
 Try opening `https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/hello.json?name=Andreas&place=Stuttgart` in your web browser after having replaced the namespace `andreas.nauerz@de.ibm.com_dev` with your namespace.
 
@@ -756,9 +756,9 @@ Web actions can also be used to implement *HTTP* handlers that respond with `hea
 * `statusCode`: a valid *HTTP status code* (default is 200 OK)
 * `body`: a string which is either plain text or a base64 encoded string (for binary data)
 
-The `controller` will pass along the action-specified headers, if any, to the *HTTP* client when terminating the request/response. Similarly, the controller will respond with the given status code when present. Lastly, the body is passed along as the body of the response. Unless a content-type header is declared in the action results' headers, the body is passed along as is if it's a string (or results in an error otherwise). When the content-type is defined, the controller will determine if the response is binary data or plain text and decode the string using a base64 decoder as needed. Should the body fail to decode correctly, an error is returned to the caller.
+The `controller` will pass along the action-specified *headers*, if any, to the *HTTP* client when terminating the *request/response*. Similarly, the `controller` will respond with the given *status code* when present. Lastly, the *body* is passed along as the *body* of the *response*. Unless a *content-type header* is declared in the actions' result *header*, the *body* is passed along as is if it's a string (or results in an error otherwise). When the *content-type* is defined, the `controller` will determine if the *response* is binary data or plain text and decode the string using a *base64 decoder* as needed. Should the *body* fail to decode correctly, an error is returned to the caller.
 
-Notice that a *JSON* object or array is treated as binary data and must be base64 encoded.
+Notice that a *JSON* object or array is treated as binary data and must be *base64* encoded.
 
 Now, let's make use of the `headers` and `statusCode` property to send a redirect. To do so create an action named `webAction` like this:
 
