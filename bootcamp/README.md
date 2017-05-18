@@ -785,12 +785,14 @@ Next, let's make use of the `headers`, `status` and `body` properties to respond
 
 ```javascript
 function main() {
-    let png = "<COPY FROM SNIPPET>"
+    let png = "<STRING REPRESENTING A BASE64 ENCODED IMAGE>"
     return { headers: { "Content-Type": "image/png" },
              statusCode: 200,
              body: png };
 }
 ```
+
+Notice that you can use any online available base64 encoder to generate the above mentioned string to encode an image of your choice.
 
 Again, invoke the web action via your browser. You should see the OpenWhisk logo. 
 
