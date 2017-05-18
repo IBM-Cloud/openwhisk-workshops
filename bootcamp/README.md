@@ -1482,7 +1482,7 @@ $ wsk action update fibonacci --web true
 <b>ok:</b> updated action <b>fibonacci</b>
 </pre>
 
-Next, let's use the API path `/fibonacci`, and the verb `get` to point to the action `fibonacci`:
+Next, let's use the API path `/fibonacci`, and the verb `GET` to point to the action `fibonacci`:
 
 <pre>
 $ wsk api create /fibonacci get fibonacci
