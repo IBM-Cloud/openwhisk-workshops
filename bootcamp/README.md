@@ -537,7 +537,7 @@ We can finally see that the `hello` action received the event payload and return
 
 ## Uploading dependencies
 
-As an alternative to writing all your action code in a single *JavaScript* source file, you can implement an action as an `npm` package.
+As an alternative to writing all your code in a single *JavaScript* source file, you can implement an action as an `npm` package.
 
 The structure is supposed to look as follows:
 
