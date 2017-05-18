@@ -2179,7 +2179,7 @@ Connect the `Inject` and `Debug` nodes together by dragging between the output p
 At this point, the nodes only exist in the editor and must be deployed to the server.  
 Therefore, click the `Deploy` button - simple as that.
 
-With the debug sidebar tab selected, click the (little left rectangle of the) Inject button. You should see numbers appear in the sidebar. By default, the `Inject` node uses the number of milliseconds since January 1st, 1970 as its payload. Let's do something more useful with that.
+With the debug sidebar tab selected, click the (little left rectangle of the) `Inject` button. You should see numbers appear in the sidebar. By default, the `Inject` node uses the number of milliseconds since January 1st, 1970 as its payload. Let's do something more useful with that.
 
 ### Add a Function node
 
