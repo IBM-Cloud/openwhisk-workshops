@@ -1043,11 +1043,11 @@ Play around with the actions, triggers, etc., you have created before, i.e. fire
 
 # Build a weather engine!
 
-Before starting with the free-style session, let's build, based on all you learned, a more reasonable and useful demo.
+Now, let's build, based on all you learned, a more reasonable and useful demo.
 
 The demo creates a bot for *Slack* that can help notify users about weather forecasts. Users can ask the bot for a forecast for a specific location by sending a chat message. The bot can also be configured to send the forecast for a location at regular intervals, e.g. every day at 8am.
 
-The bot needs to perform a few functions, e.g. convert addresses to locations, retrieve weather forecasts for locations and integrate with Slack. Rather than implementing the bot as a monolithic application, containing the logic for all of these features, we want to go and deploy it as separate services.
+The bot needs to perform a few functions, e.g. convert addresses to locations, retrieve weather forecasts for locations and integrate with *Slack*. Rather than implementing the bot as a monolithic application, containing the logic for all of these features, we want to go and deploy it as separate services.
 
 Later, we'll look at using sequences to bind them together to create our bot without writing any code.
 
@@ -1192,16 +1192,16 @@ $ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
 
 ## Sending messages to Slack
 
-Once we have a forecast, we need to send it to Slack as a message from our bot. Slack provides an easy method for writing simple bots using their *webhook* integration. Incoming webhooks provide applications with `URLs` to send data to using normal *HTTP* requests. The contents of the *JSON* request body will be posted into the channel as a bot message.
+Once we have a forecast, we need to send it to *Slack* as a message from our bot. *Slack* provides an easy method for writing simple bots using their *webhook* integration. Incoming webhooks provide applications with `URLs` to send data to using normal *HTTP* requests. The contents of the *JSON* request body will be posted into the channel as a bot message.
 
-First, create a new team on Slack by navigating to `https://slack.com/` and clicking the `Create new team` link at the very top of the screen.
+First, create a new team on *Slack* by navigating to `https://slack.com/` and clicking the `Create new team` link at the very top of the screen.
 
 Just follow the instructions to create a team:
 Provide your `mail address` and click the `Next` button.
 Provide the `confirmation code` you have been send via mail.
 Provide your `first name`, `last name`, and `username` and click the `Continue to password` button.
 Specify a `password` and click the `Continue to Team Info` button.
-Select an option like `Shared interest group` to specify what you will use Slack for and click the `Continue to Group Name` button.
+Select an option like `Shared interest group` to specify what you will use *Slack* for and click the `Continue to Group Name` button.
 Provide an arbitrary `group name` and click the `Continue to Team URL` button.
 Provide an arbitrary `team URL` and click the `Create Team` button.
 Skip the process for sending invitations by clicking the `Skip for Now` button, then click the `Explore Slack` button to get started. 
@@ -1211,7 +1211,7 @@ To create a communication channel proceed as follows:
 Click the little `+` icon next to the text `CHANNELS` on the left of the screen.
 Then, simply provide the name `weather` for your channel and click the `Create Channel` button.
 
-Slack is set up.
+*Slack* is set up.
 
 We could now write another action (microservice) to handle sending these *HTTP* requests but, as you already know, OpenWhisk comes with integrations (provided by packages) for a number of third-party systems meaning we don't have to.
 
@@ -1242,7 +1242,7 @@ $ wsk package get --summary /whisk.system/slack
  <b>action</b> /whisk.system/slack/post: Post a message to Slack
 </pre>
 
-We can invoke the action to post messages to Slack without writing any code.
+We can invoke the action to post messages to *Slack* without writing any code.
 
 Notice that you first have to replace the incoming webhook `URL` with yours. To find out about yours proceed as follows:
 
@@ -1257,7 +1257,7 @@ $ wsk action invoke /whisk.system/slack/post -p url https://hooks.slack.com/serv
 <b>ok:</b> invoked <b>/whisk.system/slack/post</b> with id <b>78070fe2acb54c70ae49c0fa047aee51</b>
 </pre>
 
-The fact that we can now see the message popping up in your Slack channel verifies that this has worked out.
+The fact that we can now see the message popping up in your *Slack* channel verifies that this has worked out.
 
 Again, we would like to bind default parameters for the action but this isn't (yet) supported without copying global packages to your local namespace first.
 
@@ -1268,7 +1268,7 @@ $ wsk action create --copy webhook /whisk.system/slack/post -p url https://hooks
 <b>ok:</b> created action <b>webhook</b>
 </pre>
 
-This customized Slack service can be invoked with just the `text` parameter and gives us a friendly bot message in the `weather` channel:
+This customized *Slack* service can be invoked with just the `text` parameter and gives us a friendly bot message in the `weather` channel:
 
 <pre>
 $ wsk action invoke webhook -p text "Hello again"
@@ -1286,7 +1286,7 @@ $ wsk action create location_forecast --sequence location_to_latlong,forecast_fr
 ok: created action location_forecast
 </pre>
 
-With this meta-service defined, we can invoke the `location_forecast` action with the input parameter for the first service (`text`). As a result the forecast for that location should appear in Slack.
+With this meta-service defined, we can invoke the `location_forecast` action with the input parameter for the first service (`text`). As a result the forecast for that location should appear in *Slack*.
 
 Let's test this.
 The result should look similar to this:
@@ -1323,7 +1323,7 @@ $ wsk action update location_forecast --web true
 ## Bot forecasts
 At this point the question is how we can ask the bot for forecasts about a location?
 
-Slack provides outgoing webhooks that will post *JSON* messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say weather london and have the bot respond.
+*Slack* provides outgoing webhooks that will post *JSON* messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say weather london and have the bot respond.
 
 Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel via have created prior.
 
