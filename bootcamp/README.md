@@ -741,11 +741,11 @@ $ wsk action update hello --web true
 
 Once enabled your action is supposed to be accessible as a web action via a new *REST* interface.
 
-The URL is structured as follows: `https://{APIHOST}/api/v1/web/{QUALIFIED ACTION NAME}.{EXT}`. The fully qualified name of an action consists of three parts: the namespace, the package name, and the action name. The fully qualified name of a web action must include its package name, which is `default` if the action is not in a named package. The last part of the URI called the extension which is typically `.http` or .`json`. The web action API path may be used with `curl` or `wget` without an API key. It may even be entered directly in your browser.
+The `URL` is structured as follows: `https://{APIHOST}/api/v1/web/{QUALIFIED ACTION NAME}.{EXT}`. The fully qualified name of an action consists of three parts: the `namespace`, the `package name`, and the `action name`. The fully qualified name of a web action must include its package name, which is `default` if the action is not in a named package. The last part of the URI called the extension which is typically `.http` or .`json`. The web action API path may be used with `cURL` or `wget` without an API key. It may even be entered directly in your browser.
 
 Try opening `https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/hello.json?name=Andreas&place=Stuttgart` in your web browser after having replaced the namespace `andreas.nauerz@de.ibm.com_dev` with your namespace.
 
-Notice that you can also enable any action as a web action using the OpenWhisk UI. There you can also find out about the correct URL to invoke your web actions.
+Notice that you can also enable any action as a web action using the OpenWhisk UI. There you can also find out about the correct `URL` to invoke your web actions.
 
 We leave this as a voluntary exercise for you – will you find the right place?
 
