@@ -342,9 +342,10 @@ So far, the examples have been self-contained functions. You can also create an 
 The following example invokes the Yahoo Weather service to get the current conditions at a specific location.
 
 Again, use your editor of choice to create a file called `weather.js` with the following content:
-var request = require("request");
 
 ```javascript
+var request = require("request");
+
 function main(msg) {
     var location = msg.location || "Vermont";
     var url = "https://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + location + "')&format=json";
