@@ -280,11 +280,12 @@ $ wsk activation get b066ca51e68c4d3382df2d8033265db0
 {
     "start": 1455881628103,
     "end":   1455881648126,
+    "duration": 2055,
     ...
 }
 </pre>
 
-By comparing the start and end timestamps in the activation record, you can see that this activation took slightly over two seconds to complete.
+By looking at the `duration` entry being shown as part of the activation record, you can see that this activation took slightly over two seconds to complete.
 
 ### Passing parameters to actions
 
