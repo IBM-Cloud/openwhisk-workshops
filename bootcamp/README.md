@@ -73,7 +73,7 @@
 
 # Preface
 
-During this workshop you will learn how to develop **serverless applications** composed of loosely coupled microservice-like functions. You'll explore **OpenWhisk's** latest *CLI* (command line interface) and UI and become an OpenWhisk star by implementing a weather bot using IBM's Weather Company Data service and Slack. You will also investigate how to use the recently added API Gateway and web actions capabilities. Finally, you will find out how to package and deploy your entire serverless application together using the Serverless Framework.
+During this workshop you will learn how to develop **serverless applications** composed of loosely coupled microservice-like functions. You'll explore **OpenWhisk's** latest *CLI* (command line interface) and UI and become an OpenWhisk star by implementing a weather bot using *IBM's Weather Company Data service* and *Slack*. You will also investigate how to use the recently added API Gateway and web actions capabilities. Finally, you will find out how to package and deploy your entire serverless application together using the Serverless Framework.
 
 We wish you a lot of fun and success...
 
@@ -368,7 +368,7 @@ function main(msg) {
 }
 ```
 
-Notice that the action above uses the *JavaScript request library* to make an *HTTP* request to the Yahoo Weather API and to extract certain fields from the *JSON* result.
+Notice that the action above uses the *JavaScript request library* to make an *HTTP* request to the *Yahoo Weather API* and to extract certain fields from the *JSON* result.
 
 The example also shows the need for asynchronous actions. The action returns a Promise to indicate that the result of this action is not available yet when the function returns. Instead, the result is available in the callback after the *HTTP* call completes, and is passed as an argument to the `resolve` function just as we have seen it earlier.
 
