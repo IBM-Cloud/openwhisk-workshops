@@ -254,7 +254,6 @@ Notice that the `main` function returns a `Promise` which indicates that the a
 In this particular example the `setTimeout` function waits for two seconds before calling the callback function. This represents the asynchronous code and goes inside the `Promise's` callback function.
 
 The `Promise's` callback takes two arguments, `resolve` and `reject`, which are both functions. The call to `resolve` fulfills the `Promise` and indicates that the activation has completed normally.
-
 A call to `reject` can be used to reject the `Promise` and signal that the activation has completed abnormally.
 
 Next, run the following commands to create the action and invoke it:
