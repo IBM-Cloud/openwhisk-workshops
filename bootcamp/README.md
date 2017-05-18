@@ -377,6 +377,7 @@ Now, run the following commands to create the action and invoke it:
 <pre>
 $ wsk action create yahooWeather weather.js
 <b>ok:</b> created action <b>yahooWeather</b>
+
 $ wsk action invoke --blocking --result yahooWeather --param location "Brooklyn, NY"
 {
     "msg": "It is 28 degrees in Brooklyn, NY and Cloudy"
