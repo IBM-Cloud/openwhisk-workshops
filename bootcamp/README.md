@@ -235,7 +235,7 @@ entities in namespace: <b>default</b>
 
 ### Creating and invoking asynchronous actions
 
-JavaScript functions that run asynchronously need to return the activation result after the `main` function has returned. This can be accomplished by returning a `Promise`.
+*JavaScript* functions that run asynchronously need to return the activation result after the `main` function has returned. This can be accomplished by returning a `Promise`.
 
 Again, use your editor of choice to create a file called `asyncAction.js` with the following content:
 
@@ -366,7 +366,7 @@ function main(msg) {
 }
 ```
 
-Notice that the action above uses the JavaScript request library to make an *HTTP* request to the Yahoo Weather API and to extract certain fields from the *JSON* result.
+Notice that the action above uses the *JavaScript request library* to make an *HTTP* request to the Yahoo Weather API and to extract certain fields from the *JSON* result.
 
 The example also shows the need for asynchronous actions. The action returns a Promise to indicate that the result of this action is not available yet when the function returns. Instead, the result is available in the callback after the *HTTP* call completes, and is passed as an argument to the `resolve` function just as we have seen it earlier.
 
