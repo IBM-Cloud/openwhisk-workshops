@@ -235,7 +235,7 @@ entities in namespace: <b>default</b>
 
 ### Creating and invoking asynchronous actions
 
-*JavaScript* functions that run asynchronously need to return the activation result after the `main` function has returned. This can be accomplished by returning a `Promise`.
+*JavaScript* functions that run *asynchronously* need to return the activation result after the `main` function has returned. This can be accomplished by returning a `Promise`.
 
 Again, use your editor of choice to create a file called `asyncAction.js` with the following content:
 
