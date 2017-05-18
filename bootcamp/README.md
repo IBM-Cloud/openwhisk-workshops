@@ -89,7 +89,7 @@ Serverless computing does not refer to a specific technology; instead if refers 
 
 OpenWhisk is a cloud-first distributed event-based programming service and represents a Function-as-a-Service (FaaS) platform that allows you to execute code in response to an event.
 
-It provides you with the previously mentioned serverless deployment and operations model, with a granular pricing model at any scale that provides you with exactly the resources – not more not less – you need and only charges you for code really running. It offers a flexible programming model. incl. support for languages like JavaScript, Swift, Python, and Java and even for the execution of custom logic via *Docker* containers. This allows small agile teams to reuse existing skills and to develop in a fit-for-purpose fashion. It also provides you with tools to declaratively chain together the building blocks you have developed. It is open and can run anywhere to avoid and kind of vendor lock-in.
+It provides you with the previously mentioned serverless deployment and operations model, with a granular pricing model at any scale that provides you with exactly the resources – not more not less – you need and only charges you for code really running. It offers a flexible programming model. incl. support for languages like *JavaScript, Swift, Python, and Java* and even for the execution of custom logic via *Docker* containers. This allows small agile teams to reuse existing skills and to develop in a fit-for-purpose fashion. It also provides you with tools to declaratively chain together the building blocks you have developed. It is open and can run anywhere to avoid and kind of vendor lock-in.
 
 In summary, OpenWhisk provides...
 * ... a rich set of building blocks that they can easily glue/stitch together
@@ -139,9 +139,9 @@ The CLI allows you to work with OpenWhisk's basic entities, i.e. to create *acti
 
 ### Creating and invoking JavaScript actions
 
-An action can be a simple JavaScript function that accepts and returns a JSON object.
+An action can be a simple *JavaScript* function that accepts and returns a *JSON* object.
 
-First, use your editor of choice (for instance, download the Atom editor from https://atom.io/) to create a file called `hello.js` with the following content:
+First, use your editor of choice (for instance, download the *Atom* editor from https://atom.io/) to create a file called `hello.js` with the following content:
 
 ```javascript
 function main() {
@@ -167,7 +167,7 @@ hello                                  private nodejs:6
 </pre>
 
 To run an action use the ```wsk action invoke``` command. 
-A blocking (i.e. synchronous) invocation waits until the action has completed and returned a result. It is indicated by the ```--blocking``` option (or ```-b``` for short):
+A *blocking* (i.e. *synchronous*) invocation waits until the action has completed and returned a result. It is indicated by the ```--blocking``` option (or ```-b``` for short):
 
 <pre>
 $ wsk action invoke --blocking hello
@@ -187,7 +187,7 @@ The above command outputs two important pieces of information:
 *	the ```activation id``` (```dde9212e686f413bb90f22e79e12df74```)
 *	the ```activation response``` which includes the result
 
-The ```activation id``` can be used to retrieve the logs or the result of an (asynchronous) invocation at a future point in time. In case you forgot to note down an activation id you can retrieve the list of activations at any time:
+The ```activation id``` can be used to retrieve the logs or the result of an (asynchronous) invocation at a future point in time. In case you forgot to note down an `activation id` you can retrieve the list of activations at any time:
 
 <pre>
 $ wsk activation list
@@ -307,7 +307,7 @@ $ wsk action create hello hello.js
 <b>ok:</b> created action <b>hello</b>
 </pre>
 
-You can pass named parameters as JSON payload or via the CLI:
+You can pass named parameters as *JSON* payload or via the CLI:
 
 <pre>
 $ wsk action invoke -b hello -p name "Bernie" -p place "Vermont" --result
@@ -368,9 +368,9 @@ function main(msg) {
 }
 ```
 
-Notice that the action above uses the JavaScript request library to make an HTTP request to the Yahoo Weather API and to extract certain fields from the JSON result.
+Notice that the action above uses the JavaScript request library to make an *HTTP* request to the Yahoo Weather API and to extract certain fields from the *JSON* result.
 
-The example also shows the need for asynchronous actions. The action returns a Promise to indicate that the result of this action is not available yet when the function returns. Instead, the result is available in the callback after the HTTP call completes, and is passed as an argument to the `resolve` function just as we have seen it earlier.
+The example also shows the need for asynchronous actions. The action returns a Promise to indicate that the result of this action is not available yet when the function returns. Instead, the result is available in the callback after the *HTTP* call completes, and is passed as an argument to the `resolve` function just as we have seen it earlier.
 
 Now, run the following commands to create the action and invoke it:
 
@@ -433,7 +433,7 @@ $ wsk package bind /whisk.system/utils myUtil
 </pre>
 
 You now have access to the following actions:
-* `myUtil/cat`: Action to transform lines of text into a JSON array
+* `myUtil/cat`: Action to transform lines of text into a *JSON* array
 * `myUtil/head`: Action to return the first element in an array
 * `myUtil/sort`: Action to sort an array of text
 
@@ -533,7 +533,7 @@ We can finally see that the `hello` action received the event payload and return
 
 ## Uploading dependencies
 
-As an alternative to writing all your action code in a single JavaScript source file, you can implement an action as an `npm` package.
+As an alternative to writing all your action code in a single *JavaScript* source file, you can implement an action as an `npm` package.
 
 The structure is supposed to look as follows:
 
@@ -601,7 +601,7 @@ $ wsk action invoke --blocking --result packageAction --param lines '["and now",
 }
 </pre>
 
-Finally, notice that while most `npm` packages install JavaScript sources on `npm install`, some also install and compile binary artifacts. The archive file upload currently does not support binary dependencies but rather only JavaScript dependencies. Action invocations may fail if the archive includes binary dependencies.
+Finally, notice that while most `npm` packages install *JavaScript* sources on `npm install`, some also install and compile binary artifacts. The archive file upload currently does not support binary dependencies but rather only *JavaScript* dependencies. Action invocations may fail if the archive includes binary dependencies.
 
 # Boost your engine!
 
@@ -652,7 +652,7 @@ function main() {
 
 Next, click the `Run This Action` button to test the action directly from within your browser. Before being able to run your action you need to make it live, hence click the `Make It Live` button when being prompted to do so.	Afterwards click the `Run With this Value` button.
 
-Notice that you do not need to specify any JSON input as the action is not expecting any parameters to be handed over.
+Notice that you do not need to specify any *JSON* input as the action is not expecting any parameters to be handed over.
 
 You should see the following result:
 
@@ -674,7 +674,7 @@ function main(msg) {
 
 Once again, click the `Run This Action` button and follow the same procedure as before to test this action directly from within your browser. 
 
-Notice that you this time need to specify some JSON input to specify proper parameter values. For instance, you could specify the following input:
+Notice that you this time need to specify some *JSON* input to specify proper parameter values. For instance, you could specify the following input:
 
 ```json
 {
@@ -742,14 +742,14 @@ We leave this as a voluntary exercise for you – will you find the right place?
 
 ### Web action responses 
 
-Web actions can also be used to implement HTTP handlers that respond with `headers`, `statusCode`, and `body` content of different types. The web action must still return a JSON object, but the OpenWhisk system (namely its `controller`) will treat a web action differently if its result includes one or more of the following as top level JSON properties:
-*	`headers`: a JSON object where the keys are header-names and the values are string values for those headers (default is no headers)
-* `statusCode`: a valid HTTP status code (default is 200 OK)
+Web actions can also be used to implement *HTTP* handlers that respond with `headers`, `statusCode`, and `body` content of different types. The web action must still return a *JSON* object, but the OpenWhisk system (namely its `controller`) will treat a web action differently if its result includes one or more of the following as top level *JSON* properties:
+* `headers`: a *JSON* object where the keys are header-names and the values are string values for those headers (default is no headers)
+* `statusCode`: a valid *HTTP status code* (default is 200 OK)
 * `body`: a string which is either plain text or a base64 encoded string (for binary data)
 
-The `controller` will pass along the action-specified headers, if any, to the HTTP client when terminating the request/response. Similarly, the controller will respond with the given status code when present. Lastly, the body is passed along as the body of the response. Unless a content-type header is declared in the action results' headers, the body is passed along as is if it's a string (or results in an error otherwise). When the content-type is defined, the controller will determine if the response is binary data or plain text and decode the string using a base64 decoder as needed. Should the body fail to decode correctly, an error is returned to the caller.
+The `controller` will pass along the action-specified headers, if any, to the *HTTP* client when terminating the request/response. Similarly, the controller will respond with the given status code when present. Lastly, the body is passed along as the body of the response. Unless a content-type header is declared in the action results' headers, the body is passed along as is if it's a string (or results in an error otherwise). When the content-type is defined, the controller will determine if the response is binary data or plain text and decode the string using a base64 decoder as needed. Should the body fail to decode correctly, an error is returned to the caller.
 
-Notice that a JSON object or array is treated as binary data and must be base64 encoded.
+Notice that a *JSON* object or array is treated as binary data and must be base64 encoded.
 
 Now, let's make use of the `headers` and `statusCode` property to send a redirect. To do so create an action named `webAction` like this:
 
@@ -1180,7 +1180,7 @@ $ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
 
 ## Sending messages to Slack
 
-Once we have a forecast, we need to send it to Slack as a message from our bot. Slack provides an easy method for writing simple bots using their *webhook* integration. Incoming webhooks provide applications with `URLs` to send data to using normal HTTP requests. The contents of the JSON request body will be posted into the channel as a bot message.
+Once we have a forecast, we need to send it to Slack as a message from our bot. Slack provides an easy method for writing simple bots using their *webhook* integration. Incoming webhooks provide applications with `URLs` to send data to using normal *HTTP* requests. The contents of the *JSON* request body will be posted into the channel as a bot message.
 
 First, create a new team on Slack by navigating to `https://slack.com/` and clicking the `Create new team` link at the very top of the screen.
 
@@ -1201,7 +1201,7 @@ Then, simply provide the name `weather` for your channel and click the `Create C
 
 Slack is set up.
 
-We could now write another action (microservice) to handle sending these HTTP requests but, as you already know, OpenWhisk comes with integrations (provided by packages) for a number of third-party systems meaning we don't have to.
+We could now write another action (microservice) to handle sending these *HTTP* requests but, as you already know, OpenWhisk comes with integrations (provided by packages) for a number of third-party systems meaning we don't have to.
 
 Let's once again review which packages are available:
 
@@ -1311,7 +1311,7 @@ $ wsk action update location_forecast --web true
 ## Bot forecasts
 At this point the question is how we can ask the bot for forecasts about a location?
 
-Slack provides outgoing webhooks that will post JSON messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say weather london and have the bot respond.
+Slack provides outgoing webhooks that will post *JSON* messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say weather london and have the bot respond.
 
 Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel via have created prior.
 
@@ -1614,7 +1614,7 @@ https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd1
 Now, let's store some books.
 To do so use your REST client to submit a `POST` against the endpoint you have created prior.
 
-Make sure to hand-over the following JSON data:
+Make sure to hand-over the following *JSON* data:
 
 ```json
 {
@@ -1798,8 +1798,8 @@ Back in the App Connect view click `Message Hub` and `Send Message`.
 Click the `Connect to Message Hub` button.
 Now, navigate back to the browser tab showing your Message Hub instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Services` and then `Dashboard`).
 Switch to the `Service Credentials` tab and click the `View Credentials` link.
-Click the icon that allows you to copy the entire JSON being shown.
-Next, navigate back to the browser tab showing your App Connect instance and paste the entire JSON you have just copied into the field labeled `Message Hub Service Credentials` and click the `Connect` button.
+Click the icon that allows you to copy the entire *JSON* being shown.
+Next, navigate back to the browser tab showing your App Connect instance and paste the entire *JSON* you have just copied into the field labeled `Message Hub Service Credentials` and click the `Connect` button.
 As topic specify `openwhisk`.
 As payload select (after having clicked the little helper icon next to the input field) `lastname` for instance.
 Finally, click the `Exit and switch on button` at the top right of the screen.
@@ -1838,7 +1838,7 @@ OpenWhisk also integrates with other (3rd party) tools to provide developers wit
 
 ## Developing with VS Code
 
-Many, especially JavaScript/NodeJS, developers use *VS Code* to develop their code.
+Many, especially *JavaScript/NodeJS*, developers use *VS Code* to develop their code.
 We have recently developed a prototypical extension (not yet officially supported) for VS Code that enables complete round trip cycles for authoring OpenWhisk actions inside the editor.
 
 The key point for this extension is that it has full round trip for OpenWhisk actions (*list, create new local, create new remote, update, import from remote system, invoke, etc.*) without the need to leave the IDE which makes development cycles far shorter and easier. The extension works for action written in different languages (like JS and Swift) and on different platforms (like Windows, Mac, and Linux).
@@ -2170,7 +2170,7 @@ With the debug sidebar tab selected, click the (little left rectangle of the) In
 
 ### Add a Function node
 
-The `Function` node allows you to pass each message though a JavaScript function.
+The `Function` node allows you to pass each message though a *JavaScript* function.
 
 Wire the `Function` node in between the `Inject` and `Debug` nodes. You may need to delete the existing wire (select it and hit `delete` on the keyboard).
 
@@ -2244,7 +2244,7 @@ Now, once you click the `Inject` node a few times, it should trigger our action 
 {"message: "Hello, undefined from undefined"}
 </pre>
 
-Next, let's update the flow to include a `name` parameter in the incoming message generated by the `Inject` node. Therefore, open the `Inject` node's editor panel and change the payload type to JSON. 
+Next, let's update the flow to include a `name` parameter in the incoming message generated by the `Inject` node. Therefore, open the `Inject` node's editor panel and change the payload type to *JSON*. 
 
 Add the following field value:
 
