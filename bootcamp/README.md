@@ -815,7 +815,8 @@ To test this open the OpenWhisk UI and select the `helloUI` action we have creat
 Next, click the `Automate This Action` button at the bottom right of the code editor.  
 Next, from the next screen appearing select the `Periodic` icon.  
 Next, create a new trigger aka alarm by clicking the `New Alarm` icon.  
-To keep things simple select the `:MM minutes` icon and specify `N` to be `1` so that they action is supposed to be executed every minute. Specify a name for the periodic trigger and click the `Create Periodic Trigger` button.  
+To keep things simple select the `:MM minutes` icon and specify `N` to be `1` so that they action is supposed to be executed every minute.  
+Specify a name for the periodic trigger and click the `Create Periodic Trigger` button.  
 Finally, click `Next`, then `This Looks Good`, and then `Save Rule`.
 
 To see the result click the `View Activity` button which redirects you to the dashboard. You should see a periodic invocation every minute – to stop this you have to disable the rule that has been created – will you find out how this can be done?
