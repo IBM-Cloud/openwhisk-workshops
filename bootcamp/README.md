@@ -1114,12 +1114,12 @@ Now, let's implement the service for finding forecasts for locations.
 
 The service uses an external API to retrieve weather forecasts for locations, returning the text description for weather in the next 24 hours.
 
-Hence, we first need to create an instance of the `Weather Company Data` service.
-To do so click the `Catalog` link at the top right of the screen.
-From the menu appearing on the left of the screen select `Data & Analytics`.
-Next, click `Weather Company Data`.
-Leave all settings as they are and click the `Create button` at the bottom right of the screen.
-Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
+Hence, we first need to create an instance of the *Weather Company Data service*.  
+To do so click the `Catalog` link at the top right of the screen.  
+From the menu appearing on the left of the screen select `Data & Analytics`.  
+Next, click `Weather Company Data`.  
+Leave all settings as they are and click the `Create button` at the bottom right of the screen.  
+Next, switch to the `Service Credentials` tab and click the `View Credentials` link.  
 Note down `username` and `password`.
 
 Again, let's create the action (name it `forecast_from_latlong`) using the following code:
@@ -1196,19 +1196,19 @@ Once we have a forecast, we need to send it to *Slack* as a message from our bot
 
 First, create a new team on *Slack* by navigating to `https://slack.com/` and clicking the `Create new team` link at the very top of the screen.
 
-Just follow the instructions to create a team:
-Provide your `mail address` and click the `Next` button.
-Provide the `confirmation code` you have been send via mail.
-Provide your `first name`, `last name`, and `username` and click the `Continue to password` button.
-Specify a `password` and click the `Continue to Team Info` button.
-Select an option like `Shared interest group` to specify what you will use *Slack* for and click the `Continue to Group Name` button.
-Provide an arbitrary `group name` and click the `Continue to Team URL` button.
-Provide an arbitrary `team URL` and click the `Create Team` button.
-Skip the process for sending invitations by clicking the `Skip for Now` button, then click the `Explore Slack` button to get started. 
+Just follow the instructions to create a team:  
+Provide your `mail address` and click the `Next` button.  
+Provide the `confirmation code` you have been send via mail.  
+Provide your `first name`, `last name`, and `username` and click the `Continue to password` button.  
+Specify a `password` and click the `Continue to Team Info` button.  
+Select an option like `Shared interest group` to specify what you will use *Slack* for and click the `Continue to Group Name` button.  
+Provide an arbitrary `group name` and click the `Continue to Team URL` button.  
+Provide an arbitrary `team URL` and click the `Create Team` button.  
+Skip the process for sending invitations by clicking the `Skip for Now` button, then click the `Explore Slack` button to get started.  
 Finally, type something into the text field at the very bottom to get started.
 
-To create a communication channel proceed as follows:
-Click the little `+` icon next to the text `CHANNELS` on the left of the screen.
+To create a communication channel proceed as follows:  
+Click the little `+` icon next to the text `CHANNELS` on the left of the screen.  
 Then, simply provide the name `weather` for your channel and click the `Create Channel` button.
 
 *Slack* is set up.
@@ -1246,10 +1246,10 @@ We can invoke the action to post messages to *Slack* without writing any code.
 
 Notice that you first have to replace the incoming webhook `URL` with yours. To find out about yours proceed as follows:
 
-Click on your teams' name at top left of the screen.
-From the menu appearing select `Customize Slack`.
-Click the `hamburger` icon and the top left of the screen and select `Configure apps`.
-Click `Custom integrations`.
+Click on your teams' name at top left of the screen.  
+From the menu appearing select `Customize Slack`.  
+Click the `hamburger` icon and the top left of the screen and select `Configure apps`.  
+Click `Custom integrations`.  
 Click `Incoming WebHooks`, then the `edit` (pencil) icon the and copy the `URL` being shown under `Webhook URL`.
 
 <pre>
@@ -1327,14 +1327,14 @@ At this point the question is how we can ask the bot for forecasts about a locat
 
 Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel via have created prior.
 
-To make that happen proceed as follows:
-When being in the channel just created click the `Gear` icon at the very top and select the `Add an app or integration` link from the menu appearing.
-On the new screen enter the word `outgoing` into the search field, then select the entry `Outgoing WebHooks`.
-Next, click the `Add Configuration` and the `Add Outgoing WebHooks integration` buttons.
-As `channel` select the channel we have just created before.
-As `trigger` word specify `weather`.
+To make that happen proceed as follows:  
+When being in the channel just created click the `Gear` icon at the very top and select the `Add an app or integration` link from the menu appearing.  
+On the new screen enter the word `outgoing` into the search field, then select the entry `Outgoing WebHooks`.  
+Next, click the `Add Configuration` and the `Add Outgoing WebHooks integration` buttons.  
+As `channel` select the channel we have just created before.  
+As `trigger` word specify `weather`.  
 As `URL` specify the `web action URL` pointing to the `location_forecast` action – like this:
-`https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/location_forecast.json`
+`https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/location_forecast.json`  
 Then click the `Save Settings` button.
 
 Now, navigate back to the browser tab showing your channels and enter the following into the channels' messaging field:
