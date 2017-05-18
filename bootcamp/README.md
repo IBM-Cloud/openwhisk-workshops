@@ -1283,12 +1283,12 @@ Let's define a new sequence for our bot to join these services together.
 
 <pre>
 $ wsk action create location_forecast --sequence location_to_latlong,forecast_from_latlong,webhook
-ok: created action location_forecast
+<b>ok:</b> created action <b>location_forecast</b>
 </pre>
 
 With this meta-service defined, we can invoke the `location_forecast` action with the input parameter for the first service (`text`). As a result the forecast for that location should appear in *Slack*.
 
-Let's test this.
+Let's test this.  
 The result should look similar to this:
 
 <pre>
