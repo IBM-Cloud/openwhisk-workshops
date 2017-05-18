@@ -794,7 +794,7 @@ function main() {
 
 Again, invoke the web action via your browser. You should see the OpenWhisk logo. 
 
-Finally, let's make use of the `headers`, `status` and `body` properties to respond with simple HTML. To do so update the previously created web action like this:
+Finally, let's make use of the `headers`, `status` and `body` properties to respond with simple *HTML*. To do so update the previously created web action like this:
 
 ```javascript
 function main() {
@@ -805,7 +805,7 @@ function main() {
 }
 ```
 
-Again, invoke the web action via your browser. You should see the the message Hello World!.
+Again, invoke the web action via your browser. You should see the the message `Hello World!`.
 
 ## Invoking actions periodically
 
