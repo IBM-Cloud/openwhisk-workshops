@@ -1323,7 +1323,7 @@ $ wsk action update location_forecast --web true
 ## Bot forecasts
 At this point the question is how we can ask the bot for forecasts about a location?
 
-*Slack* provides outgoing webhooks that will post *JSON* messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say `weather london and have the bot respond.
+*Slack* provides outgoing webhooks that will post *JSON* messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say `weather: london and have the bot respond.
 
 Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel via have created prior.
 
