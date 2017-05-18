@@ -617,14 +617,14 @@ First, open a browser window, navigate to https://console.ng.bluemix.net/openwhi
 
 The OpenWhisk UI is comprised of the following sections:
 
-1. `My Actions`
+1. `My Actions`  
    The `My Actions` section lists all actions you have created previously.  
    Clicking an action loads its code into the code editor.  
    Hovering over an action lets a trash bin appear allowing to delete the action.  
    At this point in time you should at least see the hello action we have created earlier.  
 
 2. `My Sequences`  
-   The vMy Sequences` section lists all the sequences you have created previously.  
+   The My Sequences` section lists all the sequences you have created previously.  
    Clicking a sequence loads its model into the visual modeler.  
    Hovering over a sequence lets a trash bin appear allowing to delete the sequence.  
 
