@@ -486,7 +486,7 @@ locationUpdate                         private
 
 So far we have only created a named channel to which events can be fired.
 
-Let's now fire a trigger by specifying its name and parameters:
+Let's now fire the trigger by specifying its name and parameters:
 
 <pre>
 $ wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
@@ -499,7 +499,7 @@ Events you fire to the `locationUpdate` trigger currently do not do anything. To
 
 *Rules* are used to associate a trigger with an action. Hence, every time a trigger event is fired, the action is invoked together with the events' parameters.
 
-Let's create a rule that calls the `hello` action whenever a location update is posted; required parameters are the name of the rule, the trigger, and the action:
+Let's create a rule that calls the `hello` action whenever a location update is posted; required parameters are the `name` of the rule, the trigger, and the action:
 
 <pre>
 $ wsk rule create myRule locationUpdate hello
