@@ -1639,9 +1639,9 @@ Output:
 
 ```json
 {
-   "ok": true,
-   "id": "1d6e1a830c5a9c4bc62db7f14b1e91e0",
-   "rev": "1-5cb5fef5b2fc44f78cb181f6ace8f8db"
+    "ok": true,
+    "id": "1d6e1a830c5a9c4bc62db7f14b1e91e0",
+    "rev": "1-5cb5fef5b2fc44f78cb181f6ace8f8db"
 }
 ```
 
@@ -1659,9 +1659,9 @@ Output:
 
 ```json
 {
-   "ok": true,
-   "id": "2e6e1a830c5a9c4bc62db7f14b1e91e0",
-   "rev": "2-6cb5fef5b2fc44f78cb181f6ace8f8db"
+    "ok": true,
+    "id": "2e6e1a830c5a9c4bc62db7f14b1e91e0",
+    "rev": "2-6cb5fef5b2fc44f78cb181f6ace8f8db"
 }
 ```
 
@@ -1689,17 +1689,17 @@ Output:
 
 ```json
 {
-   	"docs": [
-		  {        
-		     	"_id": "d67e49d6a85d20e9e2ec45710d12d816",
-			     "_rev": "1-f4e3fbffab0b7dfcf8677c68689bf9c3",
-			     "name": "firstBook"
-		  },
-		  {
-			     "_id": "26a38a8193722046b2cac60e66dbb0f5",
-			     "_rev": "1-3db09f4b6275c63cafca157112bb01d0",
-			     "name": "secondBook"
-		  }
+    "docs": [
+        {        
+	    "_id": "d67e49d6a85d20e9e2ec45710d12d816",
+	    "_rev": "1-f4e3fbffab0b7dfcf8677c68689bf9c3",
+	    "name": "firstBook"
+	},
+	{
+	    "_id": "26a38a8193722046b2cac60e66dbb0f5",
+	    "_rev": "1-3db09f4b6275c63cafca157112bb01d0",
+	    "name": "secondBook"
+	}
 ],
 [...]
 ```
@@ -1729,13 +1729,13 @@ Output:
 
 ```json
 {
-	   "docs": [
-		      {
-			         "_id": "d67e49d6a85d20e9e2ec45710d12d816",
-			         "_rev": "1-f4e3fbffab0b7dfcf8677c68689bf9c3",
-			         "name": "firstBook"
-		      }
-	   ],
+    "docs": [
+        {
+	    "_id": "d67e49d6a85d20e9e2ec45710d12d816",
+	    "_rev": "1-f4e3fbffab0b7dfcf8677c68689bf9c3",
+	    "name": "firstBook"
+	}
+    ],
 [...]
 ```
 
