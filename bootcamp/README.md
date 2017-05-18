@@ -1835,14 +1835,14 @@ Click the `Save Configuration` button.
 Click the `This Looks Good` and the `Save Rule` buttons.  
 Finally, switch to the `Monitor` tab to see what's going on.  
 
-Navigate back to the browser tab showing the Salesforce application.  
+Navigate back to the browser tab showing the *Salesforce* application.  
 From the main menu click `Contacts`.  
 Click the `New` button at the top right of the screen.  
 Provide at least a `given` and `family name` and click `Save`.  
 
-When navigating back to the OpenWhisk UI monitoring should reveal that the action we just created has been invoked with information about the Salesforce contact that has just been created.
+When navigating back to the OpenWhisk UI monitoring should reveal that the action we just created has been invoked with information about the *Salesforce* contact that has just been created.
 
-To summarize, the App Connect flow took care of posting to a dedicated *Message Hub* topic once a new Salesforce contact has been created. That caused the OpenWhisk Messaging trigger to fire which caused the associated action to be invoked.
+To summarize, the App Connect flow took care of posting to a dedicated *Message Hub* topic once a new *Salesforce* contact has been created. That caused the OpenWhisk Messaging trigger to fire which caused the associated action to be invoked.
 
 # Special fuel for your engine!
 
@@ -1851,25 +1851,24 @@ OpenWhisk also integrates with other (3rd party) tools to provide developers wit
 ## Developing with VS Code
 
 Many, especially *JavaScript/NodeJS*, developers use *VS Code* to develop their code.
-We have recently developed a prototypical extension (not yet officially supported) for VS Code that enables complete round trip cycles for authoring OpenWhisk actions inside the editor.
+We have recently developed a prototypical extension (not yet officially supported) for *VS Code* that enables complete round trip cycles for authoring OpenWhisk actions inside the editor.
 
-The key point for this extension is that it has full round trip for OpenWhisk actions (*list, create new local, create new remote, update, import from remote system, invoke, etc.*) without the need to leave the IDE which makes development cycles far shorter and easier. The extension works for action written in different languages (like JS and Swift) and on different platforms (like Windows, Mac, and Linux).
+The key point for this extension is that it has full round trip for OpenWhisk actions (*list, create new local, create new remote, update, import from remote system, invoke, etc.*) without the need to leave the IDE which makes development cycles far shorter and easier. The extension works for action written in different languages (like *JavaScript and Swift*) and on different platforms (like *Windows, Mac, and Linux*).
 
 In the future we plan to provide more such plug-ins for additional IDEs (this is no official commitment) and hence seek for early feedback.
 
-First, download VS Code for your platform from here: `https://code.visualstudio.com/`
+First, download VS Code for your platform from here: `https://code.visualstudio.com/`  
 Next, download the extension from here: `https://github.com/openwhisk/openwhisk-vscode#downloads`
 
-To install the extension open VS Code and switch to the extensions view (`View → Extensions`). 
-Click the `more` menu (represented by the `•••` icon at the very top) and select `install from VSIX...` 
+To install the extension open VS Code and switch to the extensions view (`View → Extensions`).  
+Click the `more` menu (represented by the `•••` icon at the very top) and select `install from VSIX...`  
 Point to the `VSIX file` you downloaded.
 
 Once you have the extension installed, you will have to run `wsk property set` inside of VS Code to set the `apihost`, `auth`, and `namespace` values the same way you did configure your local CLI at the very beginning of this workshop:
 
-Open the command palette via `View → Command Palette` or by pressing `F1` and entering:
-`wsk property set`
+Open the command palette via `View → Command Palette` or by pressing `F1` and entering: `wsk property set`
 
-When prompted select the option `apihiost` and press `enter`.
+When prompted select the option `apihiost` and press `enter`.  
 Next enter the correct value for the apihost property.
 
 In the console you should see a result like this:
