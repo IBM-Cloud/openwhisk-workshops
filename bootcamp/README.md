@@ -1351,10 +1351,10 @@ $ wsk trigger create forecast
 <b>ok:</b> created trigger <b>forecast</b>
 
 $ wsk rule create forecast_rule forecast location_forecast
-<b>ok:<b> created rule <b>forecast_rule</b>
+<b>ok:</b> created rule <b>forecast_rule</b>
 
 $ wsk trigger fire forecast -p text "London"
-<b>ok:<b> triggered <b>forecast</b> with id <b>49914a20416d416d8c90282d59eebee3</b>
+<b>ok:</b> triggered <b>forecast</b> with id <b>49914a20416d416d8c90282d59eebee3</b>
 </pre>
 
 Once we fired the trigger, passing in the `text` parameter, the bot was automatically invoked and posted the forecast for `London` to the channel.
