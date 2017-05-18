@@ -1166,7 +1166,7 @@ Notice that the service expects four parameters, `latitude` and `longitude` coor
 Let's test the action again:
 
 <pre>
-$ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p username <username> -p password <password> -b -r
+$ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p username &lt;username&gt; -p password &lt;password&gt; -b -r
 {
     "text": "Partly cloudy. Lows overnight in the low 60s."
 }
