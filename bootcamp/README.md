@@ -702,9 +702,9 @@ You should see the following result:
 
 ## Invoking actions via REST calls
 
-Actions cannot only be invoked via the CLI or the OpenWhisk UI, they can also be invoked via simple REST API calls. All you need to do is to `POST` against the correct REST API endpoint.
+Actions cannot only be invoked via the CLI or the OpenWhisk UI, they can also be invoked via simple *REST* API calls. All you need to do is to `POST` against the correct *REST* API endpoint.
 
-To find out about the correct REST API endpoint for a particular action, select the action, e.g. the `helloUI` action we have created earlier, and click the `View REST Endpoint` link at the bottom right of the code editor.
+To find out about the correct *REST* API endpoint for a particular action, select the action, e.g. the `helloUI` action we have created earlier, and click the `View REST Endpoint` link at the bottom right of the code editor.
 
 To test this use the `cURL URL`; just click the `Copy` button displayed next to the `cURL URL` shown and submit it.
 
@@ -739,7 +739,7 @@ $ wsk action update hello --web true
 <b>ok:</b> updated action <b>hello</b>
 </pre>
 
-Once enabled your action is supposed to be accessible as a web action via a new REST interface.
+Once enabled your action is supposed to be accessible as a web action via a new *REST* interface.
 
 The URL is structured as follows: `https://{APIHOST}/api/v1/web/{QUALIFIED ACTION NAME}.{EXT}`. The fully qualified name of an action consists of three parts: the namespace, the package name, and the action name. The fully qualified name of a web action must include its package name, which is `default` if the action is not in a named package. The last part of the URI called the extension which is typically `.http` or .`json`. The web action API path may be used with `curl` or `wget` without an API key. It may even be entered directly in your browser.
 
@@ -1339,7 +1339,7 @@ Now, navigate back to the browser tab showing your channels and enter the follow
 
 ## Connecting to triggers
 
-As you learned earlier, triggers are used to represent event streams from the external world into OpenWhisk. They can be invoked manually, through the REST API, or automatically, after connecting to trigger feeds. Actions can be bound to triggers using rules. When a trigger is fired, the action is invoked together with the request parameters. Multiple actions can listen to the same trigger.
+As you learned earlier, triggers are used to represent event streams from the external world into OpenWhisk. They can be invoked manually, through the *REST* API, or automatically, after connecting to trigger feeds. Actions can be bound to triggers using rules. When a trigger is fired, the action is invoked together with the request parameters. Multiple actions can listen to the same trigger.
 
 Let's now look at binding the bot service to a sample trigger and invoke it indirectly by firing that trigger:
 
@@ -1397,7 +1397,7 @@ API Gateway Integration
 
 In this context APIs are the digital glue that links services, applications, sensors and mobile devices to create compelling customer experiences and help businesses tap into new market opportunities. They allow you to bring new digital services to market, open revenue channels and exceed customer expectations.
 
-OpenWhisk's API Gateway integration is a new feature that enables you to easily expose your OpenWhisk actions as RESTful endpoints. You can assign actions to specific endpoints, and even have verbs (`get`, `put`, `post`, `delete`) from the same endpoint assigned to different actions.
+OpenWhisk's API Gateway integration is a new feature that enables you to easily expose your OpenWhisk actions as *RESTful* endpoints. You can assign actions to specific endpoints, and even have verbs (`get`, `put`, `post`, `delete`) from the same endpoint assigned to different actions.
 
 There are two different approaches to expose your actions with the API gateway:
 *	Assigning API endpoint/verb combinations to specific actions individually
@@ -1409,7 +1409,7 @@ Notice that actions exposed via OpenWhisk's API Gateway integration are currentl
 
 ## Your first API
 
-Let's examine how to expose an action able to generate Fibonacci numbers as a REST API.
+Let's examine how to expose an action able to generate Fibonacci numbers as a *REST* API.
 
 Therefore, let's first have a look at the action itself:
 It's a relatively simple action that generates numbers in a Fibonacci sequence, where every number after the first two is the sum of the two preceding values. When invoking this action from the command line, you specify a `num` parameter (for the n-th place in the sequence), and it will return the value, the complete sequence, and the number of recursive invocations of the Fibonacci method:
@@ -1501,7 +1501,7 @@ Notice that parameters that are passed via the query string will be available in
 
 Now let's do something a bit more powerful: Let's say you want to expose a set of actions for managing books you have read etc. Therefore, you need to implement a couple of actions forming a serverless microservices backend for creating, reading, updating, and deleting books.
 
-In the following we strongly recommend to use a REST client like *Insomnia*
+In the following we strongly recommend to use a *REST* client like *Insomnia*
 (https://insomnia.rest/) to invoke the API endpoints that will be defined – otherwise you may get annoyed by escaping efforts.
 
 ### Creating a Cloudant Instance
@@ -1621,7 +1621,7 @@ https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd1
 </pre>
 
 Now, let's store some books.
-To do so use your REST client to submit a `POST` against the endpoint you have created prior.
+To do so use your *REST* client to submit a `POST` against the endpoint you have created prior.
 
 Make sure to hand-over the following *JSON* data:
 
@@ -1664,7 +1664,7 @@ Output:
 ```
 
 Next, let's query all books.
-To do so use your REST client to submit a `GET` against the endpoint you have created prior.
+To do so use your *REST* client to submit a `GET` against the endpoint you have created prior.
 
 Hand-over the following query parameter to define the selector:
 
@@ -1703,7 +1703,7 @@ Output:
 ```
 
 Next, let's query a particular book.
-To do so use your REST client to submit a `GET` again.
+To do so use your *REST* client to submit a `GET` again.
 
 Hand-over the following query parameter to define the selector:
 
@@ -1738,7 +1738,7 @@ Output:
 ```
 
 Now, let's delete the book we just queried.
-To do so use your REST client to submit a `DELETE`.
+To do so use your *REST* client to submit a `DELETE`.
 Hand-over the `docid` and `docrev` of the book you just queried as query parameter.
 
 Again, query all books to validate that the book has been properly deleted.
