@@ -386,9 +386,8 @@ $ wsk action invoke --blocking --result yahooWeather --param location "Brooklyn,
 
 ### Working with packages and sequencing actions
 
-You can also create a composite action that chains together a *sequence* of actions.
-
-This time we will use a set of actions that are shipped with OpenWhisk in a package called `/whisk.system/utils`.
+You can also create a *composite* action that chains together a *sequence* of actions.
+We will demonstrate how to use such sequences using actions shipped with *packages* available out of the box.
 
 Generally, to reveal which packages are available out of the box run the following command:
 
@@ -408,7 +407,7 @@ $ wsk package list /whisk.system
 /whisk.system/pushnotifications        shared 
 </pre>
 
-Next, to reveal the list of entities in the `/whisk.system/cloudant` package run the following command:
+Next, to reveal the list of entities contained in the `/whisk.system/cloudant` package run the following command:
 
 <pre>
 $ wsk package get --summary /whisk.system/cloudant
@@ -420,20 +419,24 @@ $ wsk package get --summary /whisk.system/cloudant
 [...]
 </pre>
 
-This output shows that the Cloudant package provides multiple actions, e.g. `read` and `write`, and a trigger *feed* called `changes`. The `changes` feed causes triggers to be fired when documents are added to the specified Cloudant database.
+The output shows that the `/whisk.system/cloudant` package provides multiple actions, e.g. `read` and `write`, and a trigger *feed* called `changes`. The `changes` feed causes triggers to be fired when documents are added to the specified *Cloudant* database.
 
-The Cloudant package also defines the parameters `username`, `password`, `host`, and `port`. These parameters must be specified for the actions and feeds to be meaningful. The parameters allow the actions to operate on a specific Cloudant account.
+The package also defines the parameters `username`, `password`, `host`, and `port`. These parameters must be specified for the actions and feeds to be meaningful. The parameters allow the actions to operate on a specific *Cloudant* account.
 
 One way to access the actions in this package is by binding to them (you could alternatively access the package directly, of course). Bindings create a reference to the given package in your namespace. The advantage is that they allow you to access actions by typing `myUtil/actionName` instead of `/whisk.system/utils/actionName` every time.
 
-Just run the following command:
+Now, let's use a set of actions that are shipped with the package `/whisk.system/utils`.
+
+Are you able to find out what is contained in this package?
+
+To create a binding run the following command:
 
 <pre>
 $ wsk package bind /whisk.system/utils myUtil
 <b>ok:</b> created binding <b>myUtil</b>
 </pre>
 
-You now have access to the following actions:
+This gives you access to the following actions:
 * `myUtil/cat`: Action to transform lines of text into a *JSON* array
 * `myUtil/head`: Action to return the first element in an array
 * `myUtil/sort`: Action to sort an array of text
