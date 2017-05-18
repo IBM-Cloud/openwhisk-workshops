@@ -646,7 +646,7 @@ First, click the `Create An Action` button.
 Next, specify a name (e.g. `helloUI`) by entering it into the text field prefilled with the text `Choose a name for your new action`.  
 Leave everything else as-is and click the `Create Action` button at the bottom of the screen.
 
-Notice that even though you did not change any configuration options, you would have had the option to change the language you want to implement your action in as well as the memory quota and the time limit. Click the `Learn more` links for additional details and feel free to play around with these options on your own.
+Notice that even though you did not change any configuration options, you would have had the option to change the `language` you want to implement your action in as well as the `memory quota` and the `time limit`. Click the `Learn more` links for additional details and feel free to play around with these options on your own.
 
 Copy the following code into the code editor replacing any existing code:
 
