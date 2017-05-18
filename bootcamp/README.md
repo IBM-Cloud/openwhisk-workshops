@@ -1,9 +1,9 @@
-# Table of Content
+# Table of Contents
 
 - [Preface](#preface)
 - [Serverless Computing](#serverless-computing)
-- [Prepare your engine!](#prepare-your-engine-)
-- [Start your engine!](#start-your-engine-)
+- [Prepare your engines!](#prepare-your-engine-)
+- [Start your engines!](#start-your-engine-)
   * [Actions](#actions)
     + [Creating and invoking JavaScript actions](#creating-and-invoking-javascript-actions)
     + [Creating and invoking asynchronous actions](#creating-and-invoking-asynchronous-actions)
