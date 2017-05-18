@@ -73,7 +73,7 @@
 
 # Preface
 
-During this workshop you will learn how to develop **serverless applications** composed of loosely coupled microservice-like functions. You'll explore **OpenWhisk's** latest *CLI* (command line interface) and UI and become an OpenWhisk star by implementing a weather bot using *IBM's Weather Company Data service* and *Slack*. You will also investigate how to use the recently added API Gateway and web actions capabilities. Finally, you will find out how to package and deploy your entire serverless application together using the Serverless Framework.
+During this workshop you will learn how to develop **serverless applications** composed of loosely coupled microservice-like functions. You'll explore **OpenWhisk's** latest *CLI* (command line interface) and UI and become an OpenWhisk star by implementing a weather bot using *IBM's Weather Company Data service* and *Slack*. You will also investigate how to use the recently added API Gateway and web actions capabilities. Finally, you will find out how to package and deploy your entire serverless application together using the *Serverless Framework*.
 
 We wish you a lot of fun and success...
 
@@ -2011,7 +2011,7 @@ $ serverless invoke --function hello_world --data '{"name": "OpenWhisk"}'
 
 ### Working with Sequences
 
-Open the `serverless.yml` file and let's define a sequence by reusing the actions `myUtil/sort` and `myUtil/head` again. To define the sequence simply extend the functions section like this:
+Open the `serverless.yml` file and let's define a sequence by reusing the actions `myUtil/sort` and `myUtil/head` again. To define the sequence simply extend the `functions` section like this:
 
 <pre>
 functions:
@@ -2038,7 +2038,7 @@ $ serverless invoke --function mySequence --data '{"lines":["c","b","a"]}'
 
 ### Connecting API Endpoints
 
-Open the `serverless.yaml` file and define an API endpoint for the `hello_world` action we have worked with prior. To define the endpoint simply extend the functions section like this:
+Open the `serverless.yaml` file and define an API endpoint for the `hello_world` action we have worked with prior. To define the endpoint simply extend the `functions` section like this:
 
 <pre>
 functions:
@@ -2068,7 +2068,7 @@ $ curl --request GET <endpoint_URL>
 
 ### Working with Triggers and Rules
 
-Open the `serverless.yaml` file and define an triggers and rules for the `hello_world` action we have worked with prior. To define the endpoint simply extend the functions section like this:
+Open the `serverless.yaml` file and define an triggers and rules for the `hello_world` action we have worked with prior. To define the endpoint simply extend the `functions` section like this:
 
 <pre>
 functions:
@@ -2088,11 +2088,11 @@ $ serverless deploy
 </pre>
 
 Test the trigger and rule the same way you did earlier.
-You can learn more about using the Serverless Framework here: https://github.com/serverless/serverless-openwhisk 
+You can learn more about using the *Serverless Framework* here: https://github.com/serverless/serverless-openwhisk 
 
 ### Packaging your weather services
 
-At this point it may be a good exercise to package together the previously implemented weather services using the Serverless Framework – we leave this as a voluntary exercise for you.
+At this point it may be a good exercise to package together the previously implemented weather services using the *Serverless Framework* – we leave this as a voluntary exercise for you.
 
 # Node-RED and OpenWhisk
 
