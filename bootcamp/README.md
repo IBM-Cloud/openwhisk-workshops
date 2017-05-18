@@ -1519,9 +1519,9 @@ Once the instance has been created switch to the `Service Credentials` tab and c
 
 ### Creating a Database
 
-Now that you have created a Cloudant instance, let's create a database for storing the books in.
+Now that you have created a *Cloudant* instance, let's create a database for storing the books in.
 
-OpenWhisk can automatically create package bindings for your (Bluemix) Cloudant service instances:
+OpenWhisk can automatically create package bindings for your (Bluemix) *Cloudant service* instances:
 
 <pre>
 $ wsk package refresh
@@ -1531,7 +1531,7 @@ Bluemix_bookStore_Credentials-1
 [...]
 </pre>
 
-The refresh automatically creates a package binding for the Cloudant service instance that you created. To verify this:
+The refresh automatically creates a package binding for the *Cloudant service* instance that you created. To verify this:
 
 <pre>
 $ wsk package list
@@ -2334,7 +2334,7 @@ Dark Vision processes videos to discover dark data. By analyzing video frames wi
 Details about Skylink can be found here:
 https://github.com/IBM-Bluemix/skylink
 
-Skylink is a sample application that lets you connect a DJI drone aircraft to the IBM Cloud with near realtime image analysis leveraging IBM Cloudant, OpenWhisk, IBM Watson, and Alchemy Vision.
+Skylink is a sample application that lets you connect a DJI drone aircraft to the *IBM Cloud* with near realtime image analysis leveraging *IBM Cloudant, OpenWhisk, IBM Watson, and Alchemy Vision*.
 
 # Learning more
 
