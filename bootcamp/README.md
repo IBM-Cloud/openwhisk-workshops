@@ -1668,7 +1668,7 @@ Output:
 Next, let's query all books.
 To do so use your *REST* client to submit a `GET` against the endpoint you have created prior.
 
-Hand-over the following query parameter to define the selector:
+Hand-over the following query parameter to define the *selector*:
 
 ```json
 {
