@@ -1177,7 +1177,7 @@ Since we do not want to pass in the `API credentials` with every request, let's 
 Let's update the action and bind said parameters:
 
 <pre>
-$ wsk action update forecast_from_latlong -p username <username> -p password <password>
+$ wsk action update forecast_from_latlong -p username &lt;username&gt; -p password &lt;password&gt;
 <b>ok:</b> updated action <b>forecast_from_latlong</b>
 </pre>
 
@@ -1323,7 +1323,7 @@ $ wsk action update location_forecast --web true
 ## Bot forecasts
 At this point the question is how we can ask the bot for forecasts about a location?
 
-*Slack* provides outgoing webhooks that will post *JSON* messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say `weather: london and have the bot respond.
+*Slack* provides outgoing webhooks that will post *JSON* messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say `weather: london` and have the bot respond.
 
 Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel via have created prior.
 
@@ -1555,7 +1555,7 @@ $ wsk package get --summary Bluemix_bookStore_Credentials-1
 As before, to avoid the need to pass in the same parameters to the package's actions every time, let's bind certain parameters:
 
 <pre>
-$ wsk package bind /whisk.system/cloudant myBookStore -p username <username> -p password <password> -p host <host>
+$ wsk package bind /whisk.system/cloudant myBookStore -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt;
 <b>ok:</b> created binding <b>myBookStore</b>
 </pre>
 
@@ -1572,7 +1572,7 @@ Now, we could easily store books into this database using the above package's `w
 Before doing so let's update the binding so that we do not even need to pass in the `dbname` anymore:
 
 <pre>
-$ wsk package update myBookStore -p username <username> -p password <password> -p host <host> -p dbname books
+$ wsk package update myBookStore -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt; -p dbname books
 <b>ok:</b> updated package <b>myBookStore</b>
 </pre>
 
