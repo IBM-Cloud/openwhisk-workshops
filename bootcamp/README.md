@@ -1970,7 +1970,7 @@ Finally, let's deploy (the boilerplate includes an example that can be deployed 
 $ serverless deploy
 </pre>
 
-If the deployment succeed, the following messages will be printed to the console:
+If the deployment succeeds, the following messages will be printed to the console:
 
 <pre>
 $ serverless deploy
@@ -1989,7 +1989,7 @@ Test Service
 
 First open the `serverless.yaml` file and try to understand its basic structure which is pretty self-explanatory. It defines some of the OpenWhisk entities you have learned about before. For instance, it defines the name of your service (which represents the collection of all your artifacts), some functions (aka actions) and properties of these (like the handlers containing their code) and so forth. It also defines that you are working with OpenWhisk as your serverless engine.
 
-One of the functions defined in the serverless.yaml is called `hello_world`. The corresponding code lives in the file `hello_world.js` and, to be more precise, in a function the handler is pointing to (which is the function `main`).
+One of the functions defined in the `serverless.yaml` is called `hello_world`. The corresponding code lives in the file `hello_world.js` and, to be more precise, in a function the handler is pointing to (which is the function `main`).
 
 Now, let's use the `invoke` command to test your newly deployed service:
 
