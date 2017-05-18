@@ -2274,9 +2274,9 @@ Hopefully that worked fine, so add a parameter for `place` on your own before yo
 
 ## Invoking OpenWhisk Triggers from NodeRED
 
-Drag the OpenWhisk `trigger` node onto the flow panel.
+Drag the OpenWhisk `Trigger` node onto the flow panel.
 
-The `trigger` node has a single input port which receives messages that fires the trigger and (optionally) passes in parameters for the invocation. 
+The `Trigger` node has a single input port which receives messages that fires the trigger and (optionally) passes in parameters for the invocation. 
 
 Now, double-click the node icon to open the editor panel.  
 This editor panel allows us to define the `name` and `namespace` for the trigger to fire when messages are received on the flow. These parameters can be overridden at runtime by passing parameters in as properties on the message object.  
@@ -2307,7 +2307,7 @@ Modify the greeting string to be:
 "Salutations " + msg.name + "!"
 </pre>
 
-Now, add a new parameter with key (`name`) and value (`Donald`).  
+Now, add a new parameter with `key` (`name`) and `value` (`Donald`).  
 Next, click `Done` to save your changes.  
 Before we update the flow, let's set the payload of the `Inject` node back to timestamp, so that the action uses the default parameter.  
 Finally, once you have done this, deploy the flow and check out the results in the console. This time it should return us the new message with the update greeting and default parameter. 
