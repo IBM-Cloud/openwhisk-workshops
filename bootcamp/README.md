@@ -510,7 +510,7 @@ Now, every time we fire a location update event, the `hello` action will be call
 
 <pre>
 $ wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
-<b>ok:</b> triggered <b>locationUpdate</b> with id <b>12ca88d404ca456eb2e76357c765ccdb</b>
+<b>ok:</b> triggered <b>locationUpdate</b> with id <b>2c0b4602f5a84ea1b049a57c059e1ec1</b>
 </pre>
 
 We can check that the action was really invoked by checking the most recent activations:
@@ -519,7 +519,7 @@ We can check that the action was really invoked by checking the most recent acti
 $ wsk activation list hello
 <b>activations</b>
 12ca88d404ca456eb2e76357c765ccdb       hello
-11ca88d404ca456eb2e76357c765ccdb       hello
+8b61fbedb91144269fee474e5f503e67       hello
 </pre>
 
 Notice that the use of the optional argument `hello` filters the result so that only invocations of the `hello` action are being displayed.
@@ -537,7 +537,7 @@ We can finally see that the `hello` action received the event payload and return
 
 ## Uploading dependencies
 
-As an alternative to writing all your code in a single *JavaScript* source file, you can implement an action as an `npm` package.
+As an alternative to writing all your code in a single *JavaScript* source file, you can implement an action as an `npm` package (requiring NodeJS (https://nodejs.org/) to be installed, of course).
 
 The structure is supposed to look as follows:
 
