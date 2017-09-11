@@ -1402,7 +1402,7 @@ Actions can be seen as flexible and independently deployable microservices they 
 
 In this context APIs are the digital glue that links services, applications, sensors and mobile devices to create compelling customer experiences and help businesses tap into new market opportunities. They allow you to bring new digital services to market, open revenue channels and exceed customer expectations.
 
-OpenWhisk's API Gateway integration is a new feature that enables you to easily expose your OpenWhisk actions as *RESTful* endpoints. You can assign actions to specific endpoints, and even have verbs (`GRT`, `PUT`, `POST`, `DELETE`) from the same endpoint assigned to different actions.
+OpenWhisk's API Gateway integration is a new feature that enables you to easily expose your OpenWhisk actions as *RESTful* endpoints. You can assign actions to specific endpoints, and even have verbs (`GET`, `PUT`, `POST`, `DELETE`) from the same endpoint assigned to different actions.
 
 There are two different approaches to expose your actions with the API gateway:
 * Assigning API endpoint/verb combinations to specific actions individually
