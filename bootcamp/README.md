@@ -2344,7 +2344,7 @@ Skylink is a sample application that lets you connect a DJI drone aircraft to th
 
 Important resources:
 
-* IBM Bluemix OpenWhisk: https://www.ibm.com/cloud-computing/bluemix/de/openwhisk
+* IBM Cloud Functions: https://www.ibm.com/cloud-computing/bluemix/de/openwhisk
 * Apache OpenWhisk: https://openwhisk.org
 * OpenWhisk on Github: https://github.com/openwhisk/openwhisk/
 * OpenWhisk on Twitter: https://twitter.com/openwhisk
