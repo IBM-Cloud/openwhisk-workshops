@@ -2,8 +2,8 @@
 
 - [Preface](#preface)
 - [Serverless Computing](#serverless-computing)
-- [Prepare your engines!](#prepare-your-engine-)
-- [Start your engines!](#start-your-engine-)
+- [Prepare your engines!](#prepare-your-engines)
+- [Start your engines!](#start-your-engines)
   * [Actions](#actions)
     + [Creating and invoking JavaScript actions](#creating-and-invoking-javascript-actions)
     + [Creating and invoking asynchronous actions](#creating-and-invoking-asynchronous-actions)
@@ -14,7 +14,7 @@
   * [Triggers and rules](#triggers-and-rules)
   * [Using rules to associate triggers and actions](#using-rules-to-associate-triggers-and-actions)
   * [Uploading dependencies](#uploading-dependencies)
-- [Boost your engine!](#boost-your-engine-)
+- [Boost your engines!](#boost-your-engines)
   * [Getting started with the OpenWhisk UI](#getting-started-with-the-openwhisk-ui)
   * [Actions](#actions-1)
     + [Invoking actions via REST calls](#invoking-actions-via-rest-calls)
@@ -35,7 +35,7 @@
   * [Bot forecasts](#bot-forecasts)
   * [Connecting to triggers](#connecting-to-triggers)
   * [Morning forecasts](#morning-forecasts)
-- [Build a serverless microservice backend!](#build-a-serverless-microservice-backend-)
+- [Build a serverless microservice backend!](#build-a-serverless-microservice-backend)
   * [Your first API](#your-first-api)
     + [Mapping actions to endpoints](#mapping-actions-to-endpoints)
   * [The Serverless Book Management Application](#the-serverless-book-management-application)
@@ -115,7 +115,7 @@ Services define the events they emit as triggers, and developers define the acti
 
 Developers only need to care about implementing the desired application logic - the system handles the rest.
 
-# Prepare your engine!
+# Prepare your engines!
 
 A few important notes before you start:
 * When working through the lab you may see slightly different responses being returned from your CLI than those printed as part of these instructions.<br/>You do not need to worry about this. The reason is that you may use a different namespace than the one we used when generating this document; the differences will be minor and only result in some name-prefixing.
@@ -126,10 +126,10 @@ In order to use OpenWhisk proceed as follows:
 2. Navigate to https://console.ng.bluemix.net/openwhisk/
 3. Log-in with your Bluemix account  
    Create one if you do not yet have one by clicking the `Sign Up` link or by directly navigating to https://console.ng.bluemix.net/registration/
-4. Click the `Download OpenWhisk CLI` button
-5. Follow steps 1 & 2 (you do not need to perform step 3), i.e. download the CLI for your particular platform and configure it by specifying your `namespace` and `authorization key`
+4. Click the `Download CloudFunctions CLI` button
+5. Follow steps 1 to 3 (you do not necessarily need to perform step 4), i.e. download the CLI for your particular platform, install OpenWhisk plugin, login to Bluemix specifying the api endpoint, organization and namespace.
 
-# Start your engine!
+# Start your engines!
 
 The CLI allows you to work with OpenWhisk's basic entities, i.e. to create *actions, triggers, rules, and sequences*. Hence, let's learn how to work with the CLI.
 
@@ -154,23 +154,23 @@ Save the file to wherever you want.
 Next, open a terminal window, navigate to the directory where you stored the file `hello.js` and create an OpenWhisk action called `hello` referencing the function in `hello.js`:
 
 <pre>
-$ wsk action create hello hello.js
+$ bx wsk action create hello hello.js
 <b>ok:</b> created action <b>hello</b>
 </pre>
 
 Notice that you can always list the actions you have already created like this:
 
 <pre>
-$ wsk action list
+$ bx wsk action list
 <b>actions</b>
 hello                                  private nodejs:6
 </pre>
 
-To run an action use the ```wsk action invoke``` command.
+To run an action use the ```bx wsk action invoke``` command.
 A *blocking* (i.e. *synchronous*) invocation waits until the action has completed and returned a result. It is indicated by the ```--blocking``` option (or ```-b``` for short):
 
 <pre>
-$ wsk action invoke --blocking hello
+$ bx wsk action invoke --blocking hello
 <b>ok:</b> invoked <b>hello</b> with id <b>dde9212e686f413bb90f22e79e12df74</b>
 [...]
 "response": {
@@ -190,7 +190,7 @@ The above command outputs two important pieces of information:
 The ```activation id``` can be used to retrieve the logs or the result of an (asynchronous) invocation at a future point in time. In case you forgot to note down an `activation id` you can retrieve the list of activations at any time:
 
 <pre>
-$ wsk activation list
+$ bx wsk activation list
 <b>activations</b>
 dde9212e686f413bb90f22e79e12df74             hello                                   
 eee9212e686f413bb90f22e79e12df74             hello
@@ -201,7 +201,7 @@ Notice that the list of ```activation ids``` is ordered with the most recent one
 To obtain the result of a particular action invocation enter (notice that you need to replace the ```activation id``` shown below with the ```id``` you have received during the previous step):
 
 <pre>
-$ wsk activation get dde9212e686f413bb90f22e79e12df74
+$ bx wsk activation get dde9212e686f413bb90f22e79e12df74
 <b>ok:</b> got activation <b>dde9212e686f413bb90f22e79e12df74</b>
 [...]
 "response": {
@@ -218,14 +218,14 @@ $ wsk activation get dde9212e686f413bb90f22e79e12df74
 You can delete an action like this:
 
 <pre>
-$ wsk action delete hello
+$ bx wsk action delete hello
 <b>ok:</b> deleted action <b>hello</b>
 </pre>
 
 You can check whether an action was successfully deleted like this:
 
 <pre>
-$ wsk list
+$ bx wsk list
 entities in namespace: <b>default</b>
 <b>packages</b>
 <b>actions</b>
@@ -260,10 +260,10 @@ A call to `reject` can be used to reject the `Promise` and signal that the act
 Next, run the following commands to create the action and invoke it:
 
 <pre>
-$ wsk action create asyncAction asyncAction.js
+$ bx wsk action create asyncAction asyncAction.js
 <b>ok:</b> created action <b>asyncAction</b>
 
-$ wsk action invoke --blocking --result asyncAction
+$ bx wsk action invoke --blocking --result asyncAction
 {
     "message": "Hello world"
 }
@@ -272,11 +272,11 @@ $ wsk action invoke --blocking --result asyncAction
 Finally, run the following commands to fetch the activation log to see how long the activation took to complete:
 
 <pre>
-$ wsk activation list --limit 1 asyncAction
+$ bx wsk activation list --limit 1 asyncAction
 <b>activations</b>
 b066ca51e68c4d3382df2d8033265db0       asyncAction
 
-$ wsk activation get b066ca51e68c4d3382df2d8033265db0
+$ bx wsk activation get b066ca51e68c4d3382df2d8033265db0
 {
     "start": 1455881628103,
     "end":   1455881648126,
@@ -302,14 +302,14 @@ function main(msg) {
 Again, create the action:
 
 <pre>
-$ wsk action create hello hello.js
+$ bx wsk action create hello hello.js
 <b>ok:</b> created action <b>hello</b>
 </pre>
 
 You can pass named parameters as *JSON* payload or via the CLI:
 
 <pre>
-$ wsk action invoke -b hello -p name "Bernie" -p place "Vermont" --result
+$ bx wsk action invoke -b hello -p name "Bernie" -p place "Vermont" --result
 {
     "message": "Hello, Bernie from Vermont"
 }
@@ -324,10 +324,10 @@ Recall that the `hello` action above took two parameters: the `name` of a person
 Rather than passing all the parameters to an action every time, you can *bind* certain parameters. Let's bind the `place` parameter above so we have an action that defaults to the place `Vermont, CT`:
 
 <pre>
-$ wsk action create helloBindParams hello.js --param place "Vermont, CT"
+$ bx wsk action create helloBindParams hello.js --param place "Vermont, CT"
 <b>ok:</b> created action <b>helloBindParams</b>
 
-$ wsk action invoke -b helloBindParams --param name "Bernie" --result
+$ bx wsk action invoke -b helloBindParams --param name "Bernie" --result
 {
     "message": "Hello, Bernie from Vermont, CT"
 }
@@ -375,10 +375,10 @@ The example also shows the need for asynchronous actions. The action returns a P
 Now, run the following commands to create the action and invoke it:
 
 <pre>
-$ wsk action create yahooWeather weather.js
+$ bx wsk action create yahooWeather weather.js
 <b>ok:</b> created action <b>yahooWeather</b>
 
-$ wsk action invoke --blocking --result yahooWeather --param location "Brooklyn, NY"
+$ bx wsk action invoke --blocking --result yahooWeather --param location "Brooklyn, NY"
 {
     "msg": "It is 28 degrees in Brooklyn, NY and Cloudy"
 }
@@ -392,7 +392,7 @@ We will demonstrate how to use such sequences using actions shipped with *packag
 Generally, to reveal which packages are available out of the box run the following command:
 
 <pre>
-$ wsk package list /whisk.system
+$ bx wsk package list /whisk.system
 <b>packages</b>
 /whisk.system/cloudant                 shared
 /whisk.system/alarms                   shared
@@ -410,7 +410,7 @@ $ wsk package list /whisk.system
 Next, to reveal the list of entities contained in the `/whisk.system/cloudant` package run the following command:
 
 <pre>
-$ wsk package get --summary /whisk.system/cloudant
+$ bx wsk package get --summary /whisk.system/cloudant
 <b>package</b> /whisk.system/cloudant: Cloudant database service
    (<b>parameters</b>: BluemixServiceName host username password dbname includeDoc overwrite)
 <b>action</b> /whisk.system/cloudant/read: Read document from database
@@ -432,7 +432,7 @@ Are you able to find out what is contained in this package?
 To create a binding run the following command:
 
 <pre>
-$ wsk package bind /whisk.system/utils myUtil
+$ bx wsk package bind /whisk.system/utils myUtil
 <b>ok:</b> created binding <b>myUtil</b>
 </pre>
 
@@ -444,14 +444,14 @@ This gives you access to the following actions:
 Let's now create a composite action that is a sequence of the above actions, so that the result of one action is passed as arguments to the next action:
 
 <pre>
-$ wsk action create myAction --sequence myUtil/sort,myUtil/head
+$ bx wsk action create myAction --sequence myUtil/sort,myUtil/head
 <b>ok:</b> created action <b>myAction</b>
 </pre>
 
 The composite action above will return the first element of a sorted array:
 
 <pre>
-$ wsk action invoke -b myAction -p lines '["c","b","a"]' --result
+$ bx wsk action invoke -b myAction -p lines '["c","b","a"]' --result
 {
     "lines": [
         "a"
@@ -472,14 +472,14 @@ https://github.com/openwhisk/openwhisk/blob/master/docs/packages.md#creating-and
 Let's create a trigger to send *location updates*:
 
 <pre>
-$ wsk trigger create locationUpdate
+$ bx wsk trigger create locationUpdate
 <b>ok:</b> created trigger <b>locationUpdate</b>
 </pre>
 
 You can check that the trigger has been created like this:
 
 <pre>
-$ wsk trigger list
+$ bx wsk trigger list
 <b>triggers</b>
 locationUpdate                         private
 </pre>
@@ -489,7 +489,7 @@ So far we have only created a named channel to which events can be fired.
 Let's now fire the trigger by specifying its name and parameters:
 
 <pre>
-$ wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
+$ bx wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
 <b>ok:</b> triggered <b>locationUpdate</b> with id <b>11ca88d404ca456eb2e76357c765ccdb</b>
 </pre>
 
@@ -502,21 +502,21 @@ Events you fire to the `locationUpdate` trigger currently do not do anything. To
 Let's create a rule that calls the `hello` action whenever a location update is posted; required parameters are the `name` of the rule, the trigger, and the action:
 
 <pre>
-$ wsk rule create myRule locationUpdate hello
+$ bx wsk rule create myRule locationUpdate hello
 <b>ok:</b> created rule <b>myRule</b>
 </pre>
 
 Now, every time we fire a location update event, the `hello` action will be called with the corresponding event parameters:
 
 <pre>
-$ wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
+$ bx wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
 <b>ok:</b> triggered <b>locationUpdate</b> with id <b>2c0b4602f5a84ea1b049a57c059e1ec1</b>
 </pre>
 
 We can check that the action was really invoked by checking the most recent activations:
 
 <pre>
-$ wsk activation list hello
+$ bx wsk activation list hello
 <b>activations</b>
 12ca88d404ca456eb2e76357c765ccdb       hello
 8b61fbedb91144269fee474e5f503e67       hello
@@ -527,7 +527,7 @@ Notice that the use of the optional argument `hello` filters the result so that 
 Again, to obtain the result of the particular action invocation enter (notice that you once again need to replace the `activation id` with the `id`you have received during the previous step):
 
 <pre>
-$ wsk activation result 12ca88d404ca456eb2e76357c765ccdb
+$ bx wsk activation result 12ca88d404ca456eb2e76357c765ccdb
 {
     "result": "Hello, Donald from Washington, D.C."
 }
@@ -586,7 +586,7 @@ $ zip -r action.zip *
 Next, create the action:
 
 <pre>
-$ wsk action create packageAction --kind nodejs:6 action.zip
+$ bx wsk action create packageAction --kind nodejs:6 action.zip
 <b>ok:</b> created action <b>packageAction</b>
 </pre>
 
@@ -595,7 +595,7 @@ Notice that when creating an action from a .zip archive using the CLI tool, you 
 You can finally invoke the action like any other:
 
 <pre>
-$ wsk action invoke --blocking --result packageAction --param lines '["and now", "for something completely", "different"]'
+$ bx wsk action invoke --blocking --result packageAction --param lines '["and now", "for something completely", "different"]'
 {
     "padded": [
         ".......................and now",
@@ -607,7 +607,7 @@ $ wsk action invoke --blocking --result packageAction --param lines '["and now",
 
 Finally, notice that while most `npm` packages install *JavaScript* sources on `npm install`, some also install and compile binary artifacts. The archive file upload currently does not support binary dependencies but rather only *JavaScript* dependencies. Action invocations may fail if the archive includes binary dependencies.
 
-# Boost your engine!
+# Boost your engines!
 
 As an alternative to the CLI, you can also use the OpenWhisk UI, esp. the visual code editor, to work with OpenWhisk's basic entities, i.e. to create actions, triggers, rules, and sequences. Hence, let's learn how to work with the OpenWhisk UI.
 
@@ -735,7 +735,7 @@ Web actions are OpenWhisk actions annotated to quickly enable you to build web b
 Web action activations will be associated with the user that created the action. This actions defers the cost of an action activation from the caller to the owner of the action. To allow the previously created `hello` action to be called as a web action enter:
 
 <pre>
-$ wsk action update hello --web true
+$ bx wsk action update hello --web true
 <b>ok:</b> updated action <b>hello</b>
 </pre>
 
@@ -774,7 +774,7 @@ function main() {
 Enable the action as web action:
 
 <pre>
-$ wsk action update webAction --web true
+$ bx wsk action update webAction --web true
 <b>ok:</b> updated action <b>webAction</b>
 </pre>
 
@@ -927,7 +927,7 @@ To do so click the `Catalog` (not the `Browse Public Packages`) link at the top 
 From the menu appearing on the left of the screen select `Watson`.  
 Next, click `Language Translator`.  
 Leave all settings as they are and click the `Create button` at the bottom right of the screen.  
-Next, switch to the `Service Credentials` tab and click the `View Credentials` link.  
+Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
 Note down `username` and `password`.
 
 Now, let's try to understand how the mentioned package and action works.  
@@ -1096,14 +1096,14 @@ function main(params) {
 Next, let's deploy the action the way you learned it earlier:
 
 <pre>
-$ wsk action create location_to_latlong location_to_latlong.js
+$ bx wsk action create location_to_latlong location_to_latlong.js
 <b>ok:</b> created action <b>location_to_latlong</b>
 </pre>
 
 Next, let's test the action:
 
 <pre>
-$ wsk action invoke location_to_latlong -b -r -p text "London"
+$ bx wsk action invoke location_to_latlong -b -r -p text "London"
 {
     "lat": 51.5073509,
     "lng": -0.1277583
@@ -1121,7 +1121,7 @@ To do so click the `Catalog` link at the top right of the screen.
 From the menu appearing on the left of the screen select `Data & Analytics`.  
 Next, click `Weather Company Data`.  
 Leave all settings as they are and click the `Create button` at the bottom right of the screen.  
-Next, switch to the `Service Credentials` tab and click the `View Credentials` link.  
+Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
 Note down `username` and `password`. If you use the service not in US-South also note down the `host`.
 
 Again, let's create the action (name it `forecast_from_latlong`) using the following code:
@@ -1160,7 +1160,7 @@ function main(params) {
 Next, let's deploy the action again:
 
 <pre>
-$ wsk action create forecast_from_latlong forecast_from_latlong.js
+$ bx wsk action create forecast_from_latlong forecast_from_latlong.js
 <b>ok:</b> created action <b>forecast_from_latlong</b>
 </pre>
 
@@ -1169,7 +1169,7 @@ Notice that the service expects four parameters, `latitude` and `longitude` coor
 Let's test the action again:
 
 <pre>
-$ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt; -b -r
+$ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt; -b -r
 {
     "text": "Partly cloudy. Lows overnight in the low 60s."
 }
@@ -1180,14 +1180,14 @@ Since we do not want to pass in the `API credentials` with every request, let's 
 Let's update the action and bind said parameters:
 
 <pre>
-$ wsk action update forecast_from_latlong -p username &lt;username&gt; -p password &lt;password&gt;
+$ bx wsk action update forecast_from_latlong -p username &lt;username&gt; -p password &lt;password&gt;
 <b>ok:</b> updated action <b>forecast_from_latlong</b>
 </pre>
 
 Let's test the action again:
 
 <pre>
-$ wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
+$ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
 {
     "text": "Partly cloudy. Lows overnight in the low 60s."
 }
@@ -1221,7 +1221,7 @@ We could now write another action (microservice) to handle sending these *HTTP* 
 Let's once again review which packages are available:
 
 <pre>
-$ wsk package list /whisk.system
+$ bx wsk package list /whisk.system
 <b>packages</b>
 /whisk.system/cloudant                 shared
 /whisk.system/alarms                   shared
@@ -1239,7 +1239,7 @@ $ wsk package list /whisk.system
 The package potentially being of interest is the `Slack` package; so let's see what's in there:
 
 <pre>
-$ wsk package get --summary /whisk.system/slack
+$ bx wsk package get --summary /whisk.system/slack
 <b>package</b> /whisk.system/slack: This package interacts with the Slack messaging service
    (<b>parameters</b>: username url channel token)
  <b>action</b> /whisk.system/slack/post: Post a message to Slack
@@ -1256,7 +1256,7 @@ Click `Custom integrations`.
 Click `Incoming WebHooks`, then the `edit` (pencil) icon the and copy the `URL` being shown under `Webhook URL`.
 
 <pre>
-$ wsk action invoke /whisk.system/slack/post -p url https://hooks.slack.com/services/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 -p channel weather -p text "Hello"
+$ bx wsk action invoke /whisk.system/slack/post -p url https://hooks.slack.com/services/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 -p channel weather -p text "Hello"
 <b>ok:</b> invoked <b>/whisk.system/slack/post</b> with id <b>78070fe2acb54c70ae49c0fa047aee51</b>
 </pre>
 
@@ -1267,14 +1267,14 @@ Again, we would like to bind default parameters for the action but this isn't (y
 So, let's do this now:
 
 <pre>
-$ wsk action create --copy webhook /whisk.system/slack/post -p url https://hooks.slack.com/services/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 -p channel weather -p username "Weather Bot" -p icon_emoji ":sun_with_face:"
+$ bx wsk action create --copy webhook /whisk.system/slack/post -p url https://hooks.slack.com/services/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 -p channel weather -p username "Weather Bot" -p icon_emoji ":sun_with_face:"
 <b>ok:</b> created action <b>webhook</b>
 </pre>
 
 This customized *Slack* service can be invoked with just the `text` parameter and gives us a friendly bot message in the `weather` channel:
 
 <pre>
-$ wsk action invoke webhook -p text "Hello again"
+$ bx wsk action invoke webhook -p text "Hello again"
 <b>ok:</b> invoked <b>webhook</b> with id <b>a4044f7192544d69bc179a991a970559</b>
 </pre>
 
@@ -1285,7 +1285,7 @@ Right, we have the three actions (microservices) to handle the logic in our bot.
 Let's define a new sequence for our bot to join these services together.
 
 <pre>
-$ wsk action create location_forecast --sequence location_to_latlong,forecast_from_latlong,webhook
+$ bx wsk action create location_forecast --sequence location_to_latlong,forecast_from_latlong,webhook
 <b>ok:</b> created action <b>location_forecast</b>
 </pre>
 
@@ -1295,7 +1295,7 @@ Let's test this.
 The result should look similar to this:
 
 <pre>
-$ wsk action invoke location_forecast -p text "London" -b
+$ bx wsk action invoke location_forecast -p text "London" -b
 <b>ok:</b> invoked <b>location_forecast</b> with id <b>d63b40bb36c54cfbaf8262b6f7e5c2e9</b>
 {
     "activationId": "d63b40bb36c54cfbaf8262b6f7e5c2e9",
@@ -1319,7 +1319,7 @@ $ wsk action invoke location_forecast -p text "London" -b
 To enable the action to be called as a web action finally enter:
 
 <pre>
-$ wsk action update location_forecast --web true
+$ bx wsk action update location_forecast --web true
 <b>ok:</b> updated action <b>location_forecast</b>
 </pre>
 
@@ -1350,13 +1350,13 @@ As you learned earlier, triggers are used to represent event streams from the ex
 Let's now look at binding the bot service to a sample trigger and invoke it indirectly by firing that trigger:
 
 <pre>
-$ wsk trigger create forecast
+$ bx wsk trigger create forecast
 <b>ok:</b> created trigger <b>forecast</b>
 
-$ wsk rule create forecast_rule forecast location_forecast
+$ bx wsk rule create forecast_rule forecast location_forecast
 <b>ok:</b> created rule <b>forecast_rule</b>
 
-$ wsk trigger fire forecast -p text "London"
+$ bx wsk trigger fire forecast -p text "London"
 <b>ok:</b> triggered <b>forecast</b> with id <b>49914a20416d416d8c90282d59eebee3</b>
 </pre>
 
@@ -1375,15 +1375,15 @@ One of those public trigger feeds is in the `alarm` package we already used earl
 Let's do that now:
 
 <pre>
-$ wsk package get /whisk.system/alarms --summary
+$ bx wsk package get /whisk.system/alarms --summary
 <b>package</b> /whisk.system/alarms: Alarms and periodic utility
    (<b>parameters</b>: cron trigger_payload)
  </b>feed</b>   /whisk.system/alarms/alarm: Fire trigger when alarm occurs
 
-$ wsk trigger create regular_forecast --feed /whisk.system/alarms/alarm -p cron "*/10 * * * * *" -p trigger_payload "{\"text\":\"London\"}"
+$ bx wsk trigger create regular_forecast --feed /whisk.system/alarms/alarm -p cron "*/10 * * * * *" -p trigger_payload "{\"text\":\"London\"}"
 <b>ok:</b> created trigger <b>feed regular_forecast</b>
 
-$ wsk rule create regular_forecast_rule regular_forecast location_forecast
+$ bx wsk rule create regular_forecast_rule regular_forecast location_forecast
 <b>ok:</b> created rule <b>regular_forecast_rule</b>
 </pre>
 
@@ -1392,7 +1392,7 @@ The trigger schedule is provided by the `cron` parameter, which we've set up to 
 Okay, that's great but let's turn off this alarm before it drives us mad:
 
 <pre>
-$ wsk rule disable regular_forecast_rule
+$ bx wsk rule disable regular_forecast_rule
 <b>ok:</b> rule <b>regular_forecast_rule</b> is <b>inactive</b>
 </pre>
 
@@ -1458,10 +1458,10 @@ function fibonacci(num) {
 Next, let's deploy and invoke the action:
 
 <pre>
-$ wsk action create fibonacci fibonacci.js
+$ bx wsk action create fibonacci fibonacci.js
 <b>ok:</b> created action <b>fibonacci</b>
 
-$ wsk action invoke fibonacci -p num 5 -b -r
+$ bx wsk action invoke fibonacci -p num 5 -b -r
 <b>ok:</b>  invoked action <b>fibonacci</b> with id <b>dde9212e686f413bb90f22e79e12df75</b>
 {
   "body": "n: 5, value: 8, sequence: 1,1,2,3,5,8, invocations: 9"
@@ -1475,13 +1475,15 @@ Now, let's examine how a specific action can be associated with an API endpoint/
 Notice that you may have to issue the following command and select the proper namespace before able to proceed:
 
 <pre>
-$ wsk bluemix login --user &lt;user&gt; --password &lt;password&gt;
+$ bx login -a api.$BLUEMIX_REGION.bluemix.net -o $ORG -s $NAMESPACE
 </pre>
+
+If you are wondering what does the properties above mean, copy the full command from this link: https://console.bluemix.net/openwhisk/learn/cli
 
 Now, we need to enable the action as web action:
 
 <pre>
-$ wsk action update fibonacci --web true
+$ bx wsk action update fibonacci --web true
 <b>ok:</b> updated action <b>fibonacci</b>
 </pre>
 
@@ -1518,7 +1520,7 @@ From the menu on the left-side select `Data & Analytics`.
 Click `Cloudant NoSQL DB`.  
 As service name specify `bookStore`, leave everything else as-is and click the `Create` button.
 
-Once the instance has been created switch to the `Service Credentials` tab and click the `View Credentials` link. You will need the `username`, `password` and `host` shown there throughout the rest of this chapter, hence leave this browser tab open.
+Once the instance has been created switch to the `Service Credentials` tab, create new credentials by clicking the `New credential` link and click the `View Credentials` link. You will need the `username`, `password` and `host` shown there throughout the rest of this chapter, hence leave this browser tab open.
 
 ### Creating a Database
 
@@ -1527,7 +1529,7 @@ Now that you have created a *Cloudant* instance, let's create a database for sto
 OpenWhisk can automatically create package bindings for your (Bluemix) *Cloudant service* instances:
 
 <pre>
-$ wsk package refresh
+$ bx wsk package refresh
 _ refreshed successfully
 created bindings:
 Bluemix_bookStore_Credentials-1
@@ -1537,7 +1539,7 @@ Bluemix_bookStore_Credentials-1
 The refresh automatically creates a package binding for the *Cloudant service* instance that you created. To verify this:
 
 <pre>
-$ wsk package list
+$ bx wsk package list
 <b>packages</b>
 /andreas.nauerz@de.ibm.com_dev/Bluemix_bookStore_Credentials-1        private
 [...]
@@ -1546,7 +1548,7 @@ $ wsk package list
 Once again, to reveal the list of entities in the `/whisk.system/cloudant` package run the following command:
 
 <pre>
-$ wsk package get --summary Bluemix_bookStore_Credentials-1
+$ bx wsk package get --summary Bluemix_bookStore_Credentials-1
 <b>package</b> /whisk.system/cloudant: Cloudant database service
    (<b>parameters</b>: BluemixServiceName host username password dbname includeDoc overwrite)
 <b>action</b> /whisk.system/cloudant/read: Read document from database
@@ -1558,7 +1560,7 @@ $ wsk package get --summary Bluemix_bookStore_Credentials-1
 As before, to avoid the need to pass in the same parameters to the package's actions every time, let's bind certain parameters:
 
 <pre>
-$ wsk package bind /whisk.system/cloudant myBookStore -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt;
+$ bx wsk package bind /whisk.system/cloudant myBookStore -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt;
 <b>ok:</b> created binding <b>myBookStore</b>
 </pre>
 
@@ -1566,7 +1568,7 @@ One of the actions available is called `create-database`.
 Let's use that one to create our database:
 
 <pre>
-$ wsk action invoke myBookStore/create-database -p dbname books
+$ bx wsk action invoke myBookStore/create-database -p dbname books
 <b>ok:</b> invoked <b>/_/myBookStore/create-database</b> with id <b>3f67a23daa8b44efa35725fc22585f9</b>
 </pre>
 
@@ -1575,14 +1577,14 @@ Now, we could easily store books into this database using the above package's `w
 Before doing so let's update the binding so that we do not even need to pass in the `dbname` anymore:
 
 <pre>
-$ wsk package update myBookStore -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt; -p dbname books
+$ bx wsk package update myBookStore -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt; -p dbname books
 <b>ok:</b> updated package <b>myBookStore</b>
 </pre>
 
 Before mapping our actions, let's create a `query index` for the field `name` so we can query books by name later on:
 
 <pre>
-$ wsk action invoke myBookStore/create-query-index -p index "{\"index\": {},\"type\":\"text\"}" --blocking
+$ bx wsk action invoke myBookStore/create-query-index -p index "{\"index\": {},\"type\":\"text\"}" --blocking
 <b>ok:</b> invoked <b>/_/myBookStore/create-query-index</b> with id <b>4g67a23daa8b44efa35725fc22585f0</b>
 </pre>
 
@@ -1599,28 +1601,28 @@ function main(params) {
 Next, we create 3 sequences and enable them as web actions:
 
 <pre>
-$ wsk action create endpoint_get --sequence proxy,myBookStore/exec-query-find --web true
+$ bx wsk action create endpoint_get --sequence proxy,myBookStore/exec-query-find --web true
 <b>ok:</b> created action <b>endpoint_get</b>
 
-$ wsk action create endpoint_post --sequence proxy,myBookStore/write --web true
+$ bx wsk action create endpoint_post --sequence proxy,myBookStore/write --web true
 <b>ok:</b> created action <b>endpoint_post</b>
 
-$ wsk action create endpoint_delete --sequence proxy,myBookStore/delete-document --web true
+$ bx wsk action create endpoint_delete --sequence proxy,myBookStore/delete-document --web true
 <b>ok:</b> created action <b>endpoint_delete</b>
 </pre>
 
 Next, let's map API endpoints to actions:
 
 <pre>
-$ wsk api create /books GET endpoint_get
+$ bx wsk api create /books GET endpoint_get
 <b>ok:</b> created API /books GET for action <b>/_/endpoint_get</b>
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/books
 
-$ wsk api create /books POST endpoint_post
+$ bx wsk api create /books POST endpoint_post
 <b>ok:</b> created API /books POST for action <b>/_/endpoint_post</b>
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/books
 
-$ wsk api create /books DELETE endpoint_delete
+$ bx wsk api create /books DELETE endpoint_delete
 <b>ok:</b> created API /books DELETE for action <b>/_/endpoint_delete</b>
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/books
 </pre>
