@@ -77,8 +77,6 @@ During this workshop you will learn how to develop **serverless applications** c
 
 We wish you a lot of fun and success...
 
-You can also find a PDF version of this workshop here: **Will be added soon**
-
 # Serverless Computing
 
 **Serverless computing** refers to a model where the existence of servers is entirely abstracted away. I.e. that even though servers still exist, developers are relieved from the need to care about their operation. They are relieved from the need to worry about low-level infrastructural and operational details such as scalability, high-availability, infrastructure-security, and so forth. Hence, serverless computing is essentially about reducing maintenance efforts to allow developers to quickly focus on developing value-adding code.
