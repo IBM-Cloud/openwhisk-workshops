@@ -1335,7 +1335,7 @@ To make that happen proceed as follows:
 When being in the channel just created click the `Gear` icon at the very top and select the `Add an app or integration` link from the menu appearing.  
 On the new screen enter the word `outgoing` into the search field, then select the entry `Outgoing WebHooks`.  
 Next, click the `Add Configuration` and the `Add Outgoing WebHooks integration` buttons.  
-As `channel` select the channel we have just created before.  
+As `channel` select the channel you have created before.  
 As `trigger` word specify `weather`.  
 As `URL` specify the `web action URL` pointing to the `location_forecast` action – like this:
 `https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/location_forecast.json`  
