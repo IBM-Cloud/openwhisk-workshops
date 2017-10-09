@@ -1490,7 +1490,7 @@ $ bx wsk action update fibonacci --web true
 Next, let's use the API path `/fibonacci`, and the verb `GET` to point to the action `fibonacci`:
 
 <pre>
-$ wsk api create /fibonacci get fibonacci
+$ bx wsk api create /fibonacci get fibonacci
 <b>ok:</b> created API /fibonacci GET for action <b>/_/fibonacci</b>
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/8326f1d8a3dbc5afd14413a2682b7a78e17a55ee352f6c03f6be82718d69726e/fibonacci
 </pre>
