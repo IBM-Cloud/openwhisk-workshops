@@ -1509,7 +1509,7 @@ Notice that parameters that are passed via the query string will be available in
 Now let's do something a bit more powerful: Let's say you want to expose a set of actions for managing books you have read etc. Therefore, you need to implement a couple of actions forming a serverless microservices backend for creating, reading, updating, and deleting books.
 
 In the following we strongly recommend to use a *REST* client like *Insomnia*
-(https://insomnia.rest/) to invoke the API endpoints that will be defined – otherwise you may get annoyed by escaping efforts. If you decide to use `curl` or another client, make sure you pass over the `application/json` header.
+(https://insomnia.rest/) to invoke the API endpoints that will be defined – otherwise you may get annoyed by escaping efforts. However, if you decide to use `curl` or another client, make sure you pass over the `application/json` header.
 
 ### Creating a Cloudant Instance
 
