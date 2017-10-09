@@ -1253,6 +1253,8 @@ Click the `hamburger` icon and the top left of the screen and select `Configure 
 Click `Custom integrations`.  
 Click `Incoming WebHooks`, then the `edit` (pencil) icon the and copy the `URL` being shown under `Webhook URL`.
 
+Notice that, in case you see a message like "you do not have any integrations yet" you have to use the `Search App Directory` field at the very top of the screen to search for `Incoming WebHooks` and add it first.
+
 <pre>
 $ bx wsk action invoke /whisk.system/slack/post -p url https://hooks.slack.com/services/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 -p channel weather -p text "Hello"
 <b>ok:</b> invoked <b>/whisk.system/slack/post</b> with id <b>78070fe2acb54c70ae49c0fa047aee51</b>
