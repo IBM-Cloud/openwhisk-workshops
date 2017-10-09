@@ -1249,11 +1249,11 @@ Notice that you first have to replace the incoming webhook `URL` with yours. To 
 
 Click on your teams' name at top left of the screen.  
 From the menu appearing select `Customize Slack`.  
-Click the `hamburger` icon and the top left of the screen and select `Configure apps`.  
-Click `Custom integrations`.
+Click the `hamburger` icon and the top left of the screen and select `Configure Apps`.  
+Click `Custom Integrations`.
 On the new screen enter the word `incoming` into the search field, then select the entry `Incoming WebHooks`.
-Next, click the `Add Configuration` and button.
-Next, select the `weather`channel your have created before and click the `Add Incoming WebHooks` integration button.
+Next, click the `Add Configuration` button.
+Next, select the `weather`channel you have created before and click the `Add Incoming WebHooks integration` button.
 Then copy the `URL` being shown under `Webhook URL`.
 
 <pre>
