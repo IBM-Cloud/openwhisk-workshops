@@ -357,7 +357,7 @@ function main(msg) {
                 var condition = JSON.parse(body).query.results.channel.item.condition;
                 var text = condition.text;
                 var temperature = condition.temp;
-                var output = "It is " + temperature + " degrees in " + location + " and " + text;
+                var output = "It is " + temperature + " degrees Fahrenheit in " + location + " and " + text;
 
                 resolve({msg: output});
             }
@@ -378,7 +378,7 @@ $ bx wsk action create yahooWeather weather.js
 
 $ bx wsk action invoke --blocking --result yahooWeather --param location "Brooklyn, NY"
 {
-    "msg": "It is 28 degrees in Brooklyn, NY and Cloudy"
+    "msg": "It is 28 degrees Fahrenheit in Brooklyn, NY and Cloudy"
 }
 </pre>
 
