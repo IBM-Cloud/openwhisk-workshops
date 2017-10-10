@@ -1178,7 +1178,7 @@ Since we do not want to pass in the `API credentials` with every request, let's 
 Let's update the action and bind said parameters:
 
 <pre>
-$ bx wsk action update forecast_from_latlong -p username &lt;username&gt; -p password &lt;password&gt;
+$ bx wsk action update forecast_from_latlong -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt;
 <b>ok:</b> updated action <b>forecast_from_latlong</b>
 </pre>
 
@@ -1328,7 +1328,7 @@ At this point the question is how we can ask the bot for forecasts about a locat
 
 *Slack* provides outgoing webhooks that will post *JSON* messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say `weather: london` and have the bot respond.
 
-Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel via have created prior.
+Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel via have slack integration action created prior.
 
 To make that happen proceed as follows:  
 When being in the channel just created click the `Gear` icon at the very top and select the `Add an app or integration` link from the menu appearing.  
