@@ -1329,7 +1329,7 @@ At this point the question is how we can ask the bot for forecasts about a locat
 
 *Slack* provides outgoing webhooks that will post *JSON* messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say `weather: london` and have the bot respond.
 
-Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel via have slack integration action created prior.
+Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel we have created prior.
 
 To make that happen proceed as follows:  
 When being in the channel just created click the `Gear` icon at the very top and select the `Add an app or integration` link from the menu appearing.  
