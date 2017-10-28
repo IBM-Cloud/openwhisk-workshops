@@ -832,7 +832,7 @@ To see the result click the `View Activity` button which redirects you to the da
 Of course, OpenWhisk allows you to add custom log statements to your actions, too.
 
 To see how logging works click the `Create an Action` button again.  
-Then, once again, specify a name (e.g. `helloLogging`) and click the `Create action` button.
+Then, once again, specify a name (e.g. `helloLogging`) and click the `Create Action` button.
 
 Next, copy the following code into the code editor replacing any existing code:
 
