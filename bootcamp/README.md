@@ -1911,7 +1911,7 @@ $ fsh app invoke demo_if -p password andreas
 }
 </pre>
 
-By entering `fsh session get &lt;sessionid&gt;` one can also visualize the results of an invocation - try it out!
+By entering `fsh session get <sessionID>` one can also visualize the results of an invocation - try it out!
 
 ## More Compositions
 
@@ -2022,7 +2022,7 @@ $ fsh app invoke demo_while -p count 10
 
 Notice that you may get a different result (count) due to the random number being relevant here.
 
-Once again, we recommend entering `fsh session get &lt;sessionid&gt;` again to visualize the results of the invocations.
+Once again, we recommend entering `fsh session get <sessionID>` again to visualize the results of the invocations.
 
 An overview of all currently available Compositions can be found here:
 https://github.com/ibm-functions/composer/tree/master/docs#compositions-by-example
