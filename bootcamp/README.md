@@ -646,7 +646,7 @@ The OpenWhisk UI is comprised of the following sections:
 
 Let's start exploring the UI by creating some simple first actions similar to the ones we have created before when having used the CLI.
 
-First, click the `Create An Action` button.  
+First, click the `Create an Action` button.  
 Next, specify a name (e.g. `helloUI`) by entering it into the text field prefilled with the text `Choose a name for your new action`.  
 Leave everything else as-is and click the `Create Action` button at the bottom of the screen.
 
