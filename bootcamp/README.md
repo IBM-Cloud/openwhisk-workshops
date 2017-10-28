@@ -1784,6 +1784,57 @@ Switch back to the `Definition` tab and, based on what you just learned, expose 
 
 At this point feel free to play around with other features of our API Gateway integration.
 
+# Composing more complex serverless applications
+
+So far we have developed application logic only contained in single actions (aka functions) that could have been seen as loosely coupled microservices. They were rather simple and focussed on very specific tasks.
+
+While the implementation of such microservices is rather simple, their composition or orchestration is way more complex. That's why frameworks like Kubernetes with additions like Istio have meanwhile become very popular. With IBM's new *Composer*  developers can now build apps that leverage multiple functions and that require more complex, coordinated flows for end to end solutions.
+
+Composer is a programming model (extension) for composing individual functions into larger applications. *Compositions*, informally named *apps*, run in the cloud using automatically managed compute and memory resources. Composer enables stateful computation, control flow, and rich patterns of data flow. 
+
+This means Composer allows to develop more complex serverless applications by combining multiple functions using control logic and state.
+
+Composer has two parts: The first is a library for describing compositions, programmatically. The library is currently available in Node.js. The second is a runtime that executes the composition.
+
+## Getting started with Composer
+
+To work with compositions the new functions programming shell (aka `fsh`) is required.
+
+Hence, let's first install `fsh`:
+
+<pre>
+$ npm install -g @ibm-functions/shell
+</pre>
+
+After the installation, you can find out about `fsh`'s basic capabilities like this:
+
+<pre>
+$ fsh
+Welcome to the IBM Cloud Functions Shell
+
+Usage information:
+fsh about                                    [ Display version information ]
+fsh help                                     [ Show more detailed help, with tutorials ]
+fsh shell                                    [ Open graphical shell ]
+fsh run <script.fsh>                         [ Execute commands from a file ]
+
+fsh app init                                 [ Initialize state management ]
+fsh app preview <file.js|file.json>          [ Prototype a composition, with visualization help ]
+fsh app list                                 [ List deployed compositions ]
+fsh app create <name> <file.js|file.json>    [ Deploy a composition ]
+fsh app update <name> <file.js|file.json>    [ Update or deploy composition ]
+fsh app delete <name>                        [ Undeploy a composition ]
+fsh app invoke <name>                        [ Invoke a composition and wait for its response ]
+fsh app async <name>                         [ Asynchronously invoke a composition ]
+
+fsh session list                             [ List recent app invocations ]
+fsh session get <sessionId>                  [ Graphically display the result and flow of a session ]
+fsh session result <sessionId>               [ Print the return value of a session ]
+fsh session kill <sessionId>                 [ Kill a live session ]
+fsh session purge <sessionId>                [ Purge the state of a completed session ]
+</pre>
+
+
 # IBM App Connect & Message Hub
 
 *IBM App Connect* allows you to connect different applications to make your business more efficient. It allows you to set up automation flows to direct how events in one application trigger actions in another. It also allows you to map the information you want to share between them.
