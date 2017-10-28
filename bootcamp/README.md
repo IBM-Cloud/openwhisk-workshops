@@ -1989,13 +1989,31 @@ If the deployment succeeds, the following messages will be printed to the consol
 $ serverless deploy
 Serverless: Packaging service...
 Serverless: Compiling Functions...
+Serverless: Compiling API Gateway definitions...
 Serverless: Compiling Rules...
 Serverless: Compiling Triggers & Feeds...
 Serverless: Deploying Functions...
-Serverless: Deploying Triggers...
-Serverless: Deploying Rules...
 Serverless: Deployment successful!
-Test Service
+
+Service Information
+platform:	openwhisk.ng.bluemix.net
+namespace:	_
+service:	my_service
+
+actions:
+[...]
+
+triggers:
+[...]
+
+rules:
+[...]
+
+endpoints:
+[...]
+
+web-actions:
+[...]
 </pre>
 
 ### Working with Actions
