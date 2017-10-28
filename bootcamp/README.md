@@ -566,9 +566,9 @@ First, define a `package.json` like this:
 Next, define an `index.js` like this:
 
 ```javascript
-function myAction(args) {
+function myAction(params) {
     const leftPad = require("left-pad");
-    const lines = args.lines || [];
+    const lines = params.lines || [];
 
     return { padded: lines.map(l => leftPad(l, 30, ".")) }
 }
@@ -1850,8 +1850,8 @@ Now, let's define the three aforementioned functions:
 First, the function `condition` (to be stored in a file named `condition.js`):
 
 ```javascript
-function main(args) {
-	if (args.password == "andreas") {
+function main(params) {
+	if (params.password == "andreas") {
 		return { value: true };
 	}
 
