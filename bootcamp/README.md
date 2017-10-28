@@ -1826,7 +1826,7 @@ Compositions can be defined via JSON or, alternatively, using Node code that rel
 
 Combinators accept either inline Node functions or functions (aka actions) by name. For the latter, you can either use functions' fully qualified or short names.
 
-One of the easiest to understand and out-of-the-box available Composition method is the `if`:
+One of the easiest to understand and out-of-the-box available Composition methods is the `if`:
 `composer.if(condition, consequent, alternate)` runs either the `consequent` task if the condition evaluates to true or the `alternate` task if not. The `condition`, `consequent`, and `alternate` tasks are all invoked on the input parameter object for the composition. The output parameter object of the condition task is discarded.
 
 Let's first define the Composition (and store it in a file named `demo_if.js`):
@@ -1845,7 +1845,7 @@ composer.compile(app, 'demo_if.json')
 
 This Composition defines that if the function `condition` evaluates to `true` the function `success` is being executed and the function `failure` otherwise.
 
-Now, let's define the three aforementioned functions:
+Now, let's define the three aforementioned functions.
 
 First, the function `condition` (to be stored in a file named `condition.js`):
 
@@ -1914,6 +1914,51 @@ fsh app invoke demo_if -p password andreas
 By entering `fsh session get &lt;sessionid&gt;` one can also visualize the results of an invocation - try it out!
 
 ## More Compositions
+
+Another easy to understand and out-of-the-box available Composition methods is the `repeat`:
+`composer.repeat(count, task)` runs `task` `count` times.
+
+Let's first define the Composition (and store it in a file named `demo_repeat.js`):
+
+```javascript
+'use strict'
+
+const composer = require('@ibm-functions/composer')
+
+// author action composition
+const app = composer.repeat(5, 'task_repeat')
+
+// compile action composition
+composer.compile(app, 'demo_repeat.json')
+```
+Now, let's define the three function `task_repeat` (to be stored in a file named `task_repeat.js`):
+
+```javascript
+function main(params) {
+	x = params.count;
+	x++;
+
+    return { count: x };
+}
+```
+
+Notice that the output of each invocation serves as input for the next invocation.
+
+Next, deploy the function and Composition:
+
+<pre>
+$ fsh action create task_repeat task_repeat.js
+$ fsh app create demo_repeat demo_repeat.js
+</pre>
+
+Next, invoke the Composition:
+
+<pre>
+fsh app invoke demo_repeat -p count 10
+{
+   message: "Success"
+}
+</pre>
 
 An overview of all currently available Compositions can be found here:
 https://github.com/ibm-functions/composer/tree/master/docs#compositions-by-example
