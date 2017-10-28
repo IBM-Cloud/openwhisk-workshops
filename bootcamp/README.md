@@ -1482,7 +1482,7 @@ Now, let's examine how a specific action can be associated with an API endpoint/
 Notice that you may have to issue the following command and select the proper namespace before able to proceed:
 
 <pre>
-$ bx login -a api.$BLUEMIX_REGION.bluemix.net -o $ORG -s $NAMESPACE
+$ bx login -a api.ng.bluemix.net -o $ORG -s $NAMESPACE
 </pre>
 
 If you are wondering what does the properties above mean, copy the full command from this link: https://console.bluemix.net/openwhisk/learn/cli
