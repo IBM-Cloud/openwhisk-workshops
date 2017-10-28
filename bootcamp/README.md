@@ -930,7 +930,7 @@ Hence, we first need to create an instance of the `Watson Language Translator` s
 To do so click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
 From the menu appearing on the left of the screen select `Watson`.  
 Next, click `Language Translator`.  
-Leave all settings as they are and click the `Create button` at the bottom right of the screen.  
+Leave all settings as they are and click the `Create` button at the bottom right of the screen.  
 Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
 Note down `username` and `password`.
 
