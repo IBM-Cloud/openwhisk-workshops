@@ -2057,7 +2057,11 @@ Next, redeploy the service:
 
 <pre>
 $ serverless deploy
+</pre>
+
 Next, test the sequence:
+
+<pre>
 $ serverless invoke --function mySequence --data '{"lines":["c","b","a"]}'
 {
     "lines": [
