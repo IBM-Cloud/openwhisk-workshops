@@ -2008,7 +2008,7 @@ Next, deploy the functions and Composition:
 <pre>
 $ fsh action create condition_while condition_while.js
 $ fsh action create task_while task_while.js
-$ fsh app create demo_repeat demo_repeat.js
+$ fsh app create demo_while demo_while.js
 </pre>
 
 Next, invoke the Composition:
@@ -2016,9 +2016,11 @@ Next, invoke the Composition:
 <pre>
 $ fsh app invoke demo_while -p count 10
 {
-   count: 15
+   count: 18
 }
 </pre>
+
+Notice that you can get a different result (count) due to the random number being relevant here.
 
 An overview of all currently available Compositions can be found here:
 https://github.com/ibm-functions/composer/tree/master/docs#compositions-by-example
