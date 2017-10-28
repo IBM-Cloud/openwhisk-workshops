@@ -818,7 +818,7 @@ Again, invoke the web action via your browser. You should see the the message `H
 Also, actions cannot only be invoked in a blocking (synchronous) or non-blocking (asynchronous) fashion as explained before, they can also be invoked *periodically*.
 
 To test this open the OpenWhisk UI and select the `helloUI` action we have created earlier.  
-Next, click the `Automate This Action` button at the bottom right of the code editor.  
+Next, click the `Automate this Action` button at the bottom right of the code editor.  
 Next, from the next screen appearing select the `Periodic` icon.  
 Next, create a new trigger aka alarm by clicking the `New Alarm` icon.  
 To keep things simple select the `:MM minutes` icon and specify `N` to be `1` so that they action is supposed to be executed every minute.  
@@ -999,7 +999,7 @@ You can also work with triggers using the OpenWhisk UI.
 Let's assume you want to invoke the `hello` action you have created earlier as soon as something changes in a particular *Github* repository.
 
 First, select the `hello` action.  
-Next, click the `Automate This Action` button at the bottom right of the screen.
+Next, click the `Automate this Action` button at the bottom right of the screen.
 Next, click the `Github` icon.  
 Then, click the `New Trigger` icon.  
 
@@ -1031,7 +1031,7 @@ Then, navigate back to the browser tab showing the monitoring dashboard where yo
 
 ## Rules
 
-Within the OpenWhisk UI rules are created in a similar way than sequences. You first select an action supposed to become part of the rule. Then you click the `Automate This Action` aka `Create a Rule` button just the way we already did it earlier.
+Within the OpenWhisk UI rules are created in a similar way than sequences. You first select an action supposed to become part of the rule. Then you click the `Automate this Action` aka `Create a Rule` button just the way we already did it earlier.
 
 Similarly than triggers rules can be manually invoked by clicking the `Fire This Trigger` button after having selected the rule. Alternatively, you can invoke the action part of a rule only by clicking the `Run Only the Action` button after having selected the rule. Try it out using the rules we have already created earlier.
 
