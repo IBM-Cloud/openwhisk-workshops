@@ -1796,7 +1796,7 @@ This means Composer allows to develop more complex serverless applications by co
 
 Composer has two parts: The first is a library for describing compositions, programmatically. The library is currently available in Node.js. The second is a runtime that executes the composition.
 
-## Getting started with Composer
+## Getting started
 
 To work with compositions the new functions programming shell (aka `fsh`) is required.
 
@@ -1813,27 +1813,105 @@ $ fsh
 Welcome to the IBM Cloud Functions Shell
 
 Usage information:
-fsh about                                    [ Display version information ]
-fsh help                                     [ Show more detailed help, with tutorials ]
-fsh shell                                    [ Open graphical shell ]
-fsh run <script.fsh>                         [ Execute commands from a file ]
-
-fsh app init                                 [ Initialize state management ]
-fsh app preview <file.js|file.json>          [ Prototype a composition, with visualization help ]
-fsh app list                                 [ List deployed compositions ]
-fsh app create <name> <file.js|file.json>    [ Deploy a composition ]
-fsh app update <name> <file.js|file.json>    [ Update or deploy composition ]
-fsh app delete <name>                        [ Undeploy a composition ]
-fsh app invoke <name>                        [ Invoke a composition and wait for its response ]
-fsh app async <name>                         [ Asynchronously invoke a composition ]
-
-fsh session list                             [ List recent app invocations ]
-fsh session get <sessionId>                  [ Graphically display the result and flow of a session ]
-fsh session result <sessionId>               [ Print the return value of a session ]
-fsh session kill <sessionId>                 [ Kill a live session ]
-fsh session purge <sessionId>                [ Purge the state of a completed session ]
+[...]
 </pre>
 
+## Your first Composition
+
+Compositions can be defined via JSON or, alternatively, using Node code that relies on the Composer SDK. In the following we will focus on the second approach which usually feels more natural for developers.
+
+Combinators accept either inline Node functions or functions (aka actions) by name. For the latter, you can either use functions' fully qualified or short names.
+
+One of the easiest to understand and out-of-the-box available Composition method is the `if`:
+`composer.if(condition, consequent, alternate)` runs either the `consequent` task if the condition evaluates to true or the `alternate` task if not. The `condition`, `consequent`, and `alternate` tasks are all invoked on the input parameter object for the composition. The output parameter object of the condition task is discarded.
+
+Let's first define the Composition (and store it in a file named `demo_if.js`):
+
+```javascript
+'use strict'
+
+const composer = require('@ibm-functions/composer')
+
+// author action composition
+const app = composer.if('condition', /* then */ 'success', /* else */ 'failure')
+
+// compile action composition
+composer.compile(app, 'demo_if.json')
+```
+
+This Composition defines that if the function `condition` evaluates to `true` the function `success` is being executed and the function `failure` otherwise.
+
+Now, let's define the three aforementioned functions:
+
+First, the function `condition` (to be stored in a file named `condition.js`):
+
+```javascript
+function main(args) {
+	if (args.password == "andreas") {
+		return { value: true };
+	}
+
+    return { value: false };
+}
+```
+
+Notice that returning a JSON object with a key names `value` and a value of type boolean is essential.
+
+Second, the function `success` (to be stored in a file named `success.js`):
+
+```javascript
+function main() {
+    return { message: "Success" };
+}
+```
+
+Third, the function `failure` (to be stored in a file named `failure.js`):
+
+```javascript
+function main() {
+    return { message: "Failure" };
+}
+```
+
+Next, deploy the three functions:
+
+<pre>
+$ fsh action create condition condition.js
+$ fsh action create success success.js
+$ fsh action create failure failure.js
+</pre>
+
+Next, deploy the actual Composition:
+
+<pre>
+$ fsh app create demo_if demo_if.js
+</pre>
+
+Before invoking the Composition one can visualize it by entering `fsh app preview demo_if.js`.
+
+Next, invoke the Composition, first without specifing a password which should cause the function `condition` to return `false` and hence the function `failure` to be invoked:
+
+<pre>
+$ fsh app invoke demo_if
+{
+   message: "Failure"
+}
+</pre>
+
+Finally, invoke the Composition again, this time with specifing the password `andreas` which should cause the function `condition` to return `true` and hence the function `success` to be invoked:
+}
+
+<pre>
+fsh app invoke demo_if -p password andreas
+{
+   message: "Success"
+}
+</pre>
+
+## More Compositions
+
+An overview of all currently available Compositions can be found here:
+https://github.com/ibm-functions/composer/tree/master/docs#compositions-by-example
 
 # IBM App Connect & Message Hub
 
