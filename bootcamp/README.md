@@ -1894,7 +1894,7 @@ Configuration saved in C:\Users\IBM_ADMIN\.openwhisk\vscode-config.json
 
 Repeat this procedure to set the proper values for the `auth` and `namespace` properties.
 
-Notice that you can, once again, retrieve the correct values from here: https://new-console.ng.bluemix.net/openwhisk/cli
+Notice that you can retrieve the correct values from here (after clicking the `Looking for the wsk CLI?` link at the very bottom of the screen): https://new-console.ng.bluemix.net/openwhisk/cli
 
 Now switch to the explorer (`View → Explorer`), implement the following action and save the file (name it `helloFromVSCode.js`):
 
