@@ -2020,7 +2020,7 @@ web-actions:
 
 First open the `serverless.yml` file and try to understand its basic structure which is pretty self-explanatory. It defines some of the OpenWhisk entities you have learned about before. For instance, it defines the name of your service (which represents the collection of all your artifacts), some functions (aka actions) and properties of these (like the handlers containing their code) and so forth. It also defines that you are working with OpenWhisk as your serverless engine.
 
-One of the functions defined in the `serverless.yaml` is called `hello`. The corresponding code lives in the file `handler.js` and, to be more precise, in a function the handler is pointing to (which is the function `main`).
+One of the functions defined in the `serverless.yml` is called `hello`. The corresponding code lives in the file `handler.js` and, to be more precise, in a function the handler is pointing to (which is the function `main`).
 
 Now, let's use the `invoke` command to test your newly deployed service:
 
@@ -2069,7 +2069,7 @@ $ serverless invoke --function mySequence --data '{"lines":["c","b","a"]}'
 
 ### Connecting API Endpoints
 
-Open the `serverless.yaml` file and define an API endpoint for the `hello_world` action we have worked with prior. To define the endpoint simply extend the `functions` section like this:
+Open the `serverless.yml` file and define an API endpoint for the `hello_world` action we have worked with prior. To define the endpoint simply extend the `functions` section like this:
 
 <pre>
 functions:
@@ -2099,7 +2099,7 @@ $ curl --request GET <endpoint_URL>
 
 ### Working with Triggers and Rules
 
-Open the `serverless.yaml` file and define an triggers and rules for the `hello_world` action we have worked with prior. To define the endpoint simply extend the `functions` section like this:
+Open the `serverless.yml` file and define an triggers and rules for the `hello_world` action we have worked with prior. To define the endpoint simply extend the `functions` section like this:
 
 <pre>
 functions:
