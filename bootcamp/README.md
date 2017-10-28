@@ -674,7 +674,7 @@ You should see the following result:
 }
 </pre>
 
-Next, to see how things work when working with an action accepting parameters click the `Create An Action` button again.  
+Next, to see how things work when working with an action accepting parameters click the `Create an Action` button again.  
 Then, once again, specify a name (e.g. `helloUI2`) and click the `Create Action` button.
 
 Next, copy the following code into the code editor replacing any existing code:
@@ -831,7 +831,7 @@ To see the result click the `View Activity` button which redirects you to the da
 
 Of course, OpenWhisk allows you to add custom log statements to your actions, too.
 
-To see how logging works click the `Create An Action` button again.  
+To see how logging works click the `Create an Action` button again.  
 Then, once again, specify a name (e.g. `helloLogging`) and click the `Create action` button.
 
 Next, copy the following code into the code editor replacing any existing code:
@@ -883,7 +883,7 @@ Let's play with the `wordCount` action.
 Hence, select the `wordCount` action and read the description to understand its purpose. Also review the sample input to understand how to properly feed the action when invoking it as well as the sample output to understand what you can expect after having invoked it.  
 Click the `Run This Action` button.
 
-Based on the sample input you have been shown before, specify the following input and click the `Run With This Value` button:
+Based on the sample input you have been shown before, specify the following input and click the `Run with this Value` button:
 
 ```json
 {
@@ -944,7 +944,7 @@ Then, specify an arbitrary name and select the `Language Translator` instance yo
 
 Next, select the binding (if not already selected), make sure that the `translator` action is still being selected, and click `Run This Action`.
 
-Specify the following input and click the `Run With This Value` (you may need to click `Make It Live` before) button:
+Specify the following input and click the `Run with this Value` (you may need to click `Make It Live` before) button:
 
 ```json
 {
@@ -974,7 +974,7 @@ Then, click the `Add To Sequence` button and then the `This Looks Good` button.
 Finally, specify a `name` for your sequence (optional) and click the `Save Action Sequence` and afterwards the `Done` button.  
 To test the sequence select it and click the `Run This Sequence` button.
 
-Specify the following input and click the `Run With This Value` button:
+Specify the following input and click the `Run with this Value` button:
 
 ```json
 {
@@ -1020,8 +1020,8 @@ Next, click the `This Looks Good` button and, finally, the `Save Rule `button.
 For testing purposes let's first fire the trigger manually.
 
 To be able to observe what's going on click the `View Activity` button to open the monitoring dashboard (details about this will be explained further below). At the top right you can see triggers that fired as well as actions that have been invoked.   The view updates itself periodically. You can also refresh it manually by clicking the `refresh` icon.  
-To continue with the test select the browser tab showing your actions, triggers, and rules and hover over the trigger you have just created and click the `lightning` icon followed by the `Run With This Value` button to fire it.  
-In the next screen appearing click the `Run With This Value` button.  
+To continue with the test select the browser tab showing your actions, triggers, and rules and hover over the trigger you have just created and click the `lightning` icon followed by the `Run with this Value` button to fire it.  
+In the next screen appearing click the `Run with this Value` button.  
 Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.  
 
 Finally, open another browser tab and log into *Github*.
