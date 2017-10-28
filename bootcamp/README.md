@@ -1124,7 +1124,7 @@ Hence, we first need to create an instance of the *Weather Company Data service*
 To do so click the `Catalog` link at the top right of the screen.  
 From the menu appearing on the left of the screen select `Data & Analytics`.  
 Next, click `Weather Company Data`.  
-Leave all settings as they are and click the `Create button` at the bottom right of the screen.  
+Leave all settings as they are and click the `Create` button at the bottom right of the screen.  
 Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
 Note down `username` and `password`. If you use the service not in US-South also note down the `host`.
 
