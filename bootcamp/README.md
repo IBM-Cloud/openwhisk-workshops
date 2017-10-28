@@ -42,6 +42,10 @@
     + [Creating a Cloudant Instance](#creating-a-cloudant-instance)
     + [Creating a Database](#creating-a-database)
   * [Expose your weather services](#expose-your-weather-services)
+- [Composing more complex serverless applications](#ibm-app-connect---message-hub)
+  * [Getting started](#ibm-app-connect---message-hub)
+  * [Your first Composition](#ibm-app-connect---message-hub)
+  * [More Compositions](#ibm-app-connect---message-hub)
 - [IBM App Connect & Message Hub](#ibm-app-connect---message-hub)
 - [Special fuel for your engine!](#special-fuel-for-your-engine-)
   * [Developing with VS Code](#developing-with-vs-code)
@@ -1899,7 +1903,6 @@ $ fsh app invoke demo_if
 </pre>
 
 Finally, invoke the Composition again, this time with specifing the password `andreas` which should cause the function `condition` to return `true` and hence the function `success` to be invoked:
-}
 
 <pre>
 fsh app invoke demo_if -p password andreas
@@ -1907,6 +1910,8 @@ fsh app invoke demo_if -p password andreas
    message: "Success"
 }
 </pre>
+
+By entering `fsh session get &lt;sessionid&gt;` one can also visualize the results of an invocation - try it out!
 
 ## More Compositions
 
