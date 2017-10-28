@@ -1905,7 +1905,7 @@ $ fsh app invoke demo_if
 Finally, invoke the Composition again, this time with specifing the password `andreas` which should cause the function `condition` to return `true` and hence the function `success` to be invoked:
 
 <pre>
-fsh app invoke demo_if -p password andreas
+$ fsh app invoke demo_if -p password andreas
 {
    message: "Success"
 }
@@ -1931,12 +1931,13 @@ const app = composer.repeat(5, 'task_repeat')
 // compile action composition
 composer.compile(app, 'demo_repeat.json')
 ```
-Now, let's define the three function `task_repeat` (to be stored in a file named `task_repeat.js`):
+
+Now, let's define the function `task_repeat` (to be stored in a file named `task_repeat.js`):
 
 ```javascript
 function main(params) {
-	x = params.count;
-	x++;
+    x = params.count;
+    x++;
 
     return { count: x };
 }
@@ -1954,9 +1955,68 @@ $ fsh app create demo_repeat demo_repeat.js
 Next, invoke the Composition:
 
 <pre>
-fsh app invoke demo_repeat -p count 10
+$ fsh app invoke demo_repeat -p count 10
 {
-   message: "Success"
+   count: 15
+}
+</pre>
+
+And finally, another easy to understand and out-of-the-box available Composition methods is the `while`:
+`composer.while(condition, task)` runs `task` repeatedly while `condition` evaluates to true. 
+
+Let's first define the Composition (and store it in a file named `demo_while.js`):
+
+```javascript
+'use strict'
+
+const composer = require('@ibm-functions/composer')
+
+// author action composition
+const app = composer.while('condition_while', 'task_while')
+
+// compile action composition
+composer.compile(app, 'demo_while.json')
+```
+
+Now, let's define the function `condition_while` (to be stored in a file named `condition_while.js`):
+
+```javascript
+function main(params) {
+    x = Math.random();
+    
+    if (x > 0.2) {
+        return { value: true};
+    }
+
+    return { value: false };
+}
+```
+
+Next, let's define the function `task_while` (to be stored in a file named `task_while.js`):
+
+```javascript
+function main(params) {
+    x = params.count;
+    x++;
+
+    return { count: x };
+}
+```
+
+Next, deploy the functions and Composition:
+
+<pre>
+$ fsh action create condition_while condition_while.js
+$ fsh action create task_while task_while.js
+$ fsh app create demo_repeat demo_repeat.js
+</pre>
+
+Next, invoke the Composition:
+
+<pre>
+$ fsh app invoke demo_while -p count 10
+{
+   count: 15
 }
 </pre>
 
