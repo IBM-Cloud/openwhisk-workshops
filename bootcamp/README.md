@@ -2079,7 +2079,7 @@ Open the `serverless.yml` file and define an API endpoint for the `hello_world` 
 functions:
     [...]
     hello_world:
-        handler: hello_world.handler
+        handler: hello.handler
         events:
             - http: GET /api-demo/hello_world
 </pre>
