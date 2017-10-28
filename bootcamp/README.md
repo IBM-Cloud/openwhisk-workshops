@@ -970,7 +970,7 @@ Now, let's chain the two actions together as a sequence.
 Hence, select the `echo` action you have created earlier.  
 Click the `Link into a Sequence` button from the bottom right of the screen.  
 Then, from the next screen appearing select the `Watson Translator` package and the `translator` action as well as the binding you have created earlier.  
-Then, click the `Add To Sequence` button and then the `This Looks Good` button.  
+Then, click the `Add to Sequence` button and then the `This Looks Good` button.  
 Finally, specify a `name` for your sequence (optional) and click the `Save Action Sequence` and afterwards the `Done` button.  
 To test the sequence select it and click the `Run This Sequence` button.
 
