@@ -374,7 +374,7 @@ function main(msg) {
 
 Notice that the action above uses the *JavaScript request library* to make an *HTTP* request to the *Yahoo Weather API* and to extract certain fields from the *JSON* result.
 
-The example also shows the need for asynchronous actions. The action returns a Promise to indicate that the result of this action is not available yet when the function returns. Instead, the result is available in the callback after the *HTTP* call completes, and is passed as an argument to the `resolve` function just as we have seen it earlier.
+The example also shows the need for asynchronous actions. The action returns a `Promise` to indicate that the result of this action is not available yet when the function returns. Instead, the result is available in the callback after the *HTTP* call completes, and is passed as an argument to the `resolve` function just as we have seen it earlier.
 
 Now, run the following commands to create the action and invoke it:
 
@@ -390,7 +390,7 @@ $ bx wsk action invoke --blocking --result yahooWeather --param location "Brookl
 
 ### Working with packages and sequencing actions
 
-You can also create a *composite* action that chains together a *sequence* of actions.
+You can also create an action that chains together a *sequence* of actions.
 We will demonstrate how to use such sequences using actions shipped with *packages* available out of the box.
 
 Generally, to reveal which packages are available out of the box run the following command:
