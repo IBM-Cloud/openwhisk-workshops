@@ -660,9 +660,9 @@ function main() {
 }
 ```
 
-Next, click the `Run This Action` button to test the action directly from within your browser.  
+Next, click the `Run this Action` button to test the action directly from within your browser.  
 Before being able to run your action you need to make it live, hence click the `Make It Live` button when being prompted to do so.  
-Afterwards click the `Run With this Value` button.
+Afterwards click the `Run with this Value` button.
 
 Notice that you do not need to specify any *JSON* input as the action is not expecting any parameters to be handed over.
 
@@ -685,7 +685,7 @@ function main(msg) {
 }
 ```
 
-Once again, click the `Run This Action` button and follow the same procedure as before to test this action directly from within your browser.
+Once again, click the `Run this Action` button and follow the same procedure as before to test this action directly from within your browser.
 
 Notice that you this time need to specify some *JSON* input to specify proper parameter values. For instance, you could specify the following input:
 
@@ -843,7 +843,7 @@ function main(msg) {
 }
 ```
 
-Once again, click the `Run This Action` button and follow the same procedure as before to test this action directly from within your browser.
+Once again, click the `Run this Action` button and follow the same procedure as before to test this action directly from within your browser.
 
 You should see the following result:
 
@@ -881,7 +881,7 @@ You can choose between the following actions: `curl`, `greeting`, `helloWorld`, 
 
 Let's play with the `wordCount` action.  
 Hence, select the `wordCount` action and read the description to understand its purpose. Also review the sample input to understand how to properly feed the action when invoking it as well as the sample output to understand what you can expect after having invoked it.  
-Click the `Run This Action` button.
+Click the `Run this Action` button.
 
 Based on the sample input you have been shown before, specify the following input and click the `Run with this Value` button:
 
@@ -942,7 +942,7 @@ Next, to be able to use Watson, we need to create a binding.
 Hence, click the `New Binding` button at the left of the screen.  
 Then, specify an arbitrary name and select the `Language Translator` instance you have created before (or specify an arbitrary name and the `username` and `password` you noted down before) and click `Save Configuration`.
 
-Next, select the binding (if not already selected), make sure that the `translator` action is still being selected, and click `Run This Action`.
+Next, select the binding (if not already selected), make sure that the `translator` action is still being selected, and click `Run this Action`.
 
 Specify the following input and click the `Run with this Value` (you may need to click `Make It Live` before) button:
 
