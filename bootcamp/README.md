@@ -2018,7 +2018,7 @@ web-actions:
 
 ### Working with Actions
 
-First open the `serverless.yaml` file and try to understand its basic structure which is pretty self-explanatory. It defines some of the OpenWhisk entities you have learned about before. For instance, it defines the name of your service (which represents the collection of all your artifacts), some functions (aka actions) and properties of these (like the handlers containing their code) and so forth. It also defines that you are working with OpenWhisk as your serverless engine.
+First open the `serverless.yml` file and try to understand its basic structure which is pretty self-explanatory. It defines some of the OpenWhisk entities you have learned about before. For instance, it defines the name of your service (which represents the collection of all your artifacts), some functions (aka actions) and properties of these (like the handlers containing their code) and so forth. It also defines that you are working with OpenWhisk as your serverless engine.
 
 One of the functions defined in the `serverless.yaml` is called `hello`. The corresponding code lives in the file `handler.js` and, to be more precise, in a function the handler is pointing to (which is the function `main`).
 
