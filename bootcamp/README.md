@@ -2073,12 +2073,12 @@ $ serverless invoke --function mySequence --data '{"lines":["c","b","a"]}'
 
 ### Connecting API Endpoints
 
-Open the `serverless.yml` file and define an API endpoint for the `hello_world` action we have worked with prior. To define the endpoint simply extend the `functions` section like this:
+Open the `serverless.yml` file and define an API endpoint for the `hello` action we have worked with prior. To define the endpoint simply extend the `functions` section like this:
 
 <pre>
 functions:
     [...]
-    hello_world:
+    hello:
         handler: hello.handler
         events:
             - http: GET /api-demo/hello
@@ -2108,8 +2108,8 @@ Open the `serverless.yml` file and define an triggers and rules for the `hello` 
 <pre>
 functions:
     [...]
-    hello_world:
-        handler: hello_world.handler
+    hello:
+        handler: hello.handler
         events:
             - http: GET /api-demo/hello
             - trigger: myHelloTrigger
