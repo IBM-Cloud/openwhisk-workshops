@@ -249,7 +249,7 @@ entities in namespace: <b>default</b>
 Again, use your editor of choice to create a file called `asyncAction.js` with the following content:
 
 ```javascript
-function main(msg) {
+function main(params) {
     return new Promise(function(resolve, reject) {
         setTimeout(function() {
             resolve({ message: "Hello world" });
@@ -303,8 +303,8 @@ Actions may be invoked with several named parameters.
 Change (and save) your `hello` action as follows:
 
 ```javascript
-function main(msg) {
-    return { message: "Hello, " + msg.name + " from " + msg.place };
+function main(params) {
+    return { message: "Hello, " + params.name + " from " + params.place };
 }
 ```
 
@@ -355,8 +355,8 @@ Again, use your editor of choice to create a file called `weather.js` with the f
 ```javascript
 var request = require("request");
 
-function main(msg) {
-    var location = msg.location || "Vermont";
+function main(params) {
+    var location = params.location || "Vermont";
     var url = "https://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + location + "')&format=json";
 
     return new Promise(function(resolve, reject) {
@@ -370,7 +370,7 @@ function main(msg) {
                 var temperature = condition.temp;
                 var output = "It is " + temperature + " degrees Fahrenheit in " + location + " and " + text;
 
-                resolve({msg: output});
+                resolve({params: output});
             }
         });
     });
@@ -389,7 +389,7 @@ $ bx wsk action create yahooWeather weather.js
 
 $ bx wsk action invoke --blocking --result yahooWeather --param location "Brooklyn, NY"
 {
-    "msg": "It is 28 degrees Fahrenheit in Brooklyn, NY and Cloudy"
+    "params": "It is 28 degrees Fahrenheit in Brooklyn, NY and Cloudy"
 }
 </pre>
 
@@ -685,8 +685,8 @@ Then, once again, specify a name (e.g. `helloUI2`) and click the `Create Action`
 Next, copy the following code into the code editor replacing any existing code:
 
 ```javascript
-function main(msg) {
-    return { message: "Hello, " + msg.name + " from " + msg.place };
+function main(params) {
+    return { message: "Hello, " + params.name + " from " + params.place };
 }
 ```
 
@@ -842,7 +842,7 @@ Then, once again, specify a name (e.g. `helloLogging`) and click the `Create Act
 Next, copy the following code into the code editor replacing any existing code:
 
 ```javascript
-function main(msg) {
+function main(params) {
     console.log("Running helloLogging... ");
     return { message: "Hello world!" };
 }
@@ -920,8 +920,8 @@ Next, let's visually model a simple sequence similar to the one we have created 
 Therefore, let's first create a very simple action (name it `echo`) the same way you learned to create actions before:
 
 ```javascript
-function main(msg) {
-    return { payload: "Life is " + msg.payload };
+function main(params) {
+    return { payload: "Life is " + params.payload };
 }
 ```
 
@@ -1969,8 +1969,8 @@ In the OpenWhisk UI switch to the Develop tab if not already there.
 Create a new action (name it `newContact`) the way you learned it before containing the following code:
 
 ```javascript
-function main(msg) {
-    return { "message": "New Salesforce contact data: " + msg.message };
+function main(params) {
+    return { "message": "New Salesforce contact data: " + params.message };
 }
 ```
 
@@ -2361,11 +2361,11 @@ Copy the following code into the function field:
 
 ```javascript
 // Create a Date object from the payload
-var date = new Date(msg.payload);
+var date = new Date(params.payload);
 // Change the payload to be a formatted Date string
-msg.payload = date.toString();
+params.payload = date.toString();
 // Return the message so it can be sent on
-return msg;
+return params;
 ```
 
 Next, click `Done` button to close the edit dialog and then click the `Deploy` button.   
@@ -2473,7 +2473,7 @@ Therefore, select the `Allow Edits` checkbox.
 Modify the greeting string to be:
 
 <pre>
-"Salutations " + msg.name + "!"
+"Salutations " + params.name + "!"
 </pre>
 
 Now, add a new parameter with `key` (`name`) and `value` (`Donald`).  
