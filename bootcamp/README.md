@@ -2020,7 +2020,9 @@ $ fsh app invoke demo_while -p count 10
 }
 </pre>
 
-Notice that you can get a different result (count) due to the random number being relevant here.
+Notice that you may get a different result (count) due to the random number being relevant here.
+
+Once again, we recommend entering `fsh session get &lt;sessionid&gt;` again to visualize the results of the invocations.
 
 An overview of all currently available Compositions can be found here:
 https://github.com/ibm-functions/composer/tree/master/docs#compositions-by-example
