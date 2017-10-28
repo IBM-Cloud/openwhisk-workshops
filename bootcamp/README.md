@@ -2081,7 +2081,7 @@ functions:
     hello_world:
         handler: hello.handler
         events:
-            - http: GET /api-demo/hello_world
+            - http: GET /api-demo/hello
 </pre>
 
 Next, redeploy the service:
@@ -2092,7 +2092,7 @@ $ serverless deploy
 
 Watch the output of the redeployment.
 
-Use the shown endpoints' `URL` to invoke the `hello_world` action:
+Use the shown endpoints' `URL` to invoke the `hello` action:
 
 <pre>
 $ curl --request GET <endpoint_URL>
@@ -2103,7 +2103,7 @@ $ curl --request GET <endpoint_URL>
 
 ### Working with Triggers and Rules
 
-Open the `serverless.yml` file and define an triggers and rules for the `hello_world` action we have worked with prior. To define the endpoint simply extend the `functions` section like this:
+Open the `serverless.yml` file and define an triggers and rules for the `hello` action we have worked with prior. To define the endpoint simply extend the `functions` section like this:
 
 <pre>
 functions:
@@ -2111,9 +2111,9 @@ functions:
     hello_world:
         handler: hello_world.handler
         events:
-            - http: GET /api-demo/hello_world
-            - trigger: myHelloWorldTrigger
-            - rule: myHelloWorldRule
+            - http: GET /api-demo/hello
+            - trigger: myHelloTrigger
+            - rule: myHelloRule
 </pre>
 
 Next, redeploy the service:
