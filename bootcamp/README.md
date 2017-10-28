@@ -129,7 +129,7 @@ In order to use OpenWhisk proceed as follows:
 2. Navigate to https://console.ng.bluemix.net/openwhisk/
 3. Log-in with your Bluemix account  
    Create one if you do not yet have one by clicking the `Sign Up` link or by directly navigating to https://console.ng.bluemix.net/registration/
-4. Click the `Download CloudFunctions CLI` button
+4. Click the `Download CLI` button
 5. Follow steps 1 to 3 (you do not necessarily need to perform step 4), i.e. download the CLI for your particular platform, install OpenWhisk plugin, login to Bluemix specifying the api endpoint, organization and namespace.
 
 # Start your engines!
