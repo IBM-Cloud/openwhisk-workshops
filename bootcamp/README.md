@@ -130,7 +130,7 @@ In order to use OpenWhisk proceed as follows:
 3. Log-in with your Bluemix account  
    Create one if you do not yet have one by clicking the `Sign Up` link or by directly navigating to https://console.ng.bluemix.net/registration/
 4. Make sure to pick one of the following regions (pick the one closer to where you are): `US South` or `United Kingdom`
-   Note that when not picking `US South` the `.ng.` fragment of some of the `URLs` show later needs to be replaced with other fragments, for instance the region `United Kingdom` with `.eu-gb.`.
+   Note that when not picking `US South` the `.ng.` fragment of some of the `URLs` shown later needs to be replaced with other fragments, for instance for the region `United Kingdom` with `.eu-gb.`.
 5. Click the `Download CLI` button
 6. Follow steps 1 to 3 (you do not necessarily need to perform step 4), i.e. download the CLI for your particular platform, install OpenWhisk plugin, login to Bluemix specifying the api endpoint, organization and namespace.
 
