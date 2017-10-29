@@ -2050,7 +2050,7 @@ fsh invoke demo_nesting -p input myText -r
 }
 </pre>
 
-It seems as if the sequencing (i.e. the nesting) itself works but the value of the initial input parameter being lost.
+It seems as if the sequencing (i.e. the nesting) itself works but the value of the initial input parameter is being lost.
 This is because the output of the `task_reverse` is only the reverted *String*; the initial input *String* gets indeed lost.
 Hence, what we need in addition to the sequencing as some data-forwarding capability.
 
@@ -2062,7 +2062,7 @@ That being said let's change our composition like that:
 composer.sequence(composer.retain('task_reverse'), 'task_output')
 ```
 
-Let's change our `output` action like that:
+Let's change our `task_output` action like that:
 
 ```javascript
 function main(params) {
@@ -2085,13 +2085,15 @@ And try again:
 <pre>
 fsh invoke demo_nesting -p input myText -r
 {
-    message: "undefined reverted is: txeTym"
+    message: "myText reverted is: txeTym"
 }
 </pre>
 
 Works like a charm.
 
 Once again, we recommend entering `fsh session get <session id>` again to visualize the results of the invocations.
+
+To learn more about Composer visit: https://github.com/ibm-functions/composer
 
 # IBM App Connect & Message Hub
 
@@ -2694,5 +2696,6 @@ Important resources:
 * OpenWhisk additional material on Youtube: https://www.youtube.com/channel/UCbzgShnQk8F43NKsvEYA1SA
 * OpenWhisk on Slack: http://slack.openwhisk.org/
 * Other OpenWhisk material: https://github.com/openwhisk/awesome-openwhisk
+* Composer: https://github.com/ibm-functions/composer
 * The Serverless Framework: https://github.com/serverless/serverless-openwhisk
 * Node-RED: https://nodered.org/
