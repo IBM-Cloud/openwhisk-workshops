@@ -1826,16 +1826,16 @@ Compositions can be defined via JSON or, alternatively, using Node code that rel
 
 Combinators accept either inline Node functions or functions (aka actions) by name. For the latter, you can either use functions' fully qualified or short names.
 
-One of the easiest to understand and out-of-the-box available Composition methods is the `if`:
+One of the easiest to understand and out-of-the-box available composition methods is the `if`:
 `composer.if(condition, consequent, alternate)` runs either the `consequent` task if the condition evaluates to true or the `alternate` task if not. The `condition`, `consequent`, and `alternate` tasks are all invoked on the input parameter object for the composition. The output parameter object of the condition task is discarded.
 
-Let's first define the Composition (and store it in a file named `demo_if.js`):
+Let's first define the composition (and store it in a file named `demo_if.js`):
 
 ```javascript
 composer.if('condition', /* then */ 'success', /* else */ 'failure')
 ```
 
-This Composition defines that if the function `condition` evaluates to `true` the function `success` is being executed and the function `failure` otherwise.
+This composition defines that if the function `condition` evaluates to `true` the function `success` is being executed and the function `failure` otherwise.
 
 Now, let's define the three aforementioned functions.
 
@@ -1877,15 +1877,15 @@ $ fsh action create success success.js
 $ fsh action create failure failure.js
 </pre>
 
-Next, deploy the actual Composition:
+Next, deploy the actual composition:
 
 <pre>
 $ fsh app create demo_if demo_if.js
 </pre>
 
-Before invoking the Composition one can visualize it by entering `fsh app preview demo_if.js`.
+Before invoking the composition one can visualize it by entering `fsh app preview demo_if.js`.
 
-Next, invoke the Composition, first without specifing a password which should cause the function `condition` to return `false` and hence the function `failure` to be invoked:
+Next, invoke the composition, first without specifing a password which should cause the function `condition` to return `false` and hence the function `failure` to be invoked:
 
 <pre>
 $ fsh app invoke demo_if
@@ -1894,7 +1894,7 @@ $ fsh app invoke demo_if
 }
 </pre>
 
-Finally, invoke the Composition again, this time with specifing the password `andreas` which should cause the function `condition` to return `true` and hence the function `success` to be invoked:
+Finally, invoke the composition again, this time with specifing the password `andreas` which should cause the function `condition` to return `true` and hence the function `success` to be invoked:
 
 <pre>
 $ fsh app invoke demo_if -p password andreas
@@ -1907,10 +1907,10 @@ By entering `fsh session get <session id>` one can also visualize the results of
 
 ## More Compositions
 
-Another easy to understand and out-of-the-box available Composition methods is the `repeat`:
+Another easy to understand and out-of-the-box available composition methods is the `repeat`:
 `composer.repeat(count, task)` runs `task` `count` times.
 
-Let's first define the Composition (and store it in a file named `demo_repeat.js`):
+Let's first define the composition (and store it in a file named `demo_repeat.js`):
 
 ```javascript
 composer.repeat(5, 'task_repeat')
@@ -1929,14 +1929,14 @@ function main(params) {
 
 Notice that the output of each invocation serves as input for the next invocation.
 
-Next, deploy the function and Composition:
+Next, deploy the function and composition:
 
 <pre>
 $ fsh action create task_repeat task_repeat.js
 $ fsh app create demo_repeat demo_repeat.js
 </pre>
 
-Next, invoke the Composition:
+Next, invoke the composition:
 
 <pre>
 $ fsh app invoke demo_repeat -p count 10
@@ -1945,10 +1945,10 @@ $ fsh app invoke demo_repeat -p count 10
 }
 </pre>
 
-And finally, another easy to understand and out-of-the-box available Composition methods is the `while`:
+And finally, another easy to understand and out-of-the-box available composition methods is the `while`:
 `composer.while(condition, task)` runs `task` repeatedly while `condition` evaluates to true. 
 
-Let's first define the Composition (and store it in a file named `demo_while.js`):
+Let's first define the composition (and store it in a file named `demo_while.js`):
 
 ```javascript
 composer.while('condition_while', 'task_while')
@@ -1979,7 +1979,7 @@ function main(params) {
 }
 ```
 
-Next, deploy the functions and Composition:
+Next, deploy the functions and composition:
 
 <pre>
 $ fsh action create condition_while condition_while.js
@@ -1987,7 +1987,7 @@ $ fsh action create task_while task_while.js
 $ fsh app create demo_while demo_while.js
 </pre>
 
-Next, invoke the Composition:
+Next, invoke the composition:
 
 <pre>
 $ fsh app invoke demo_while -p count 10
@@ -2000,7 +2000,7 @@ Notice that you may get a different result (count) due to the random number bein
 
 Once again, we recommend entering `fsh session get <session id>` again to visualize the results of the invocations.
 
-An overview of all currently available Compositions can be found here:
+An overview of all currently available compositions can be found here:
 https://github.com/ibm-functions/composer/tree/master/docs#compositions-by-example
 
 # IBM App Connect & Message Hub
