@@ -2003,6 +2003,42 @@ Once again, we recommend entering `fsh session get <session id>` again to visual
 An overview of all currently available compositions can be found here:
 https://github.com/ibm-functions/composer/tree/master/docs#compositions-by-example
 
+## Nesting and data-forwarding
+
+An important property of combinators is that they can be nested. This encourages modularity and reuse.
+
+Nesting and data-forwarding between nested compositions can best be explained along another example. Let's say you want to chain together two actions. The first action called `reverse` is supposed to reverse any *String* being handed over. The second action called `output` is supposed to dump the original (non-reverted) input *String* as well as the (reverted) *String*.
+
+The `reverse` action (to be stored in `reverse.js`) could look as follows:
+
+```javascript
+function main(params) {
+    return { reverse: params.input.split("").reverse().join("") };
+}
+```
+
+The `output` action (to be stored in `output.js`) could look as follows:
+
+```javascript
+function main(params) {
+    return { message: params.input + " reverted is: " + params.reverse };
+}
+```
+
+The composition to chain both actions together (to be stored in `demo_nesting.js`) could look as follows:
+
+```javascript
+composer.sequence('reverse', 'output')
+```
+
+Now, let's deploy all artifacts:
+
+<pre>
+$ fsh action create task_reverse task_reverse.js
+$ fsh action create task_output task_output.js
+$ fsh app create demo_nesting demo_nesting.js
+</pre>
+
 # IBM App Connect & Message Hub
 
 *IBM App Connect* allows you to connect different applications to make your business more efficient. It allows you to set up automation flows to direct how events in one application trigger actions in another. It also allows you to map the information you want to share between them.
