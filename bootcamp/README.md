@@ -1832,15 +1832,7 @@ One of the easiest to understand and out-of-the-box available Composition method
 Let's first define the Composition (and store it in a file named `demo_if.js`):
 
 ```javascript
-'use strict'
-
-const composer = require('@ibm-functions/composer')
-
-// author action composition
-const app = composer.if('condition', /* then */ 'success', /* else */ 'failure')
-
-// compile action composition
-composer.compile(app, 'demo_if.json')
+composer.if('condition', /* then */ 'success', /* else */ 'failure')
 ```
 
 This Composition defines that if the function `condition` evaluates to `true` the function `success` is being executed and the function `failure` otherwise.
@@ -1921,15 +1913,7 @@ Another easy to understand and out-of-the-box available Composition methods is t
 Let's first define the Composition (and store it in a file named `demo_repeat.js`):
 
 ```javascript
-'use strict'
-
-const composer = require('@ibm-functions/composer')
-
-// author action composition
-const app = composer.repeat(5, 'task_repeat')
-
-// compile action composition
-composer.compile(app, 'demo_repeat.json')
+composer.repeat(5, 'task_repeat')
 ```
 
 Now, let's define the function `task_repeat` (to be stored in a file named `task_repeat.js`):
@@ -1967,15 +1951,7 @@ And finally, another easy to understand and out-of-the-box available Composition
 Let's first define the Composition (and store it in a file named `demo_while.js`):
 
 ```javascript
-'use strict'
-
-const composer = require('@ibm-functions/composer')
-
-// author action composition
-const app = composer.while('condition_while', 'task_while')
-
-// compile action composition
-composer.compile(app, 'demo_while.json')
+composer.while('condition_while', 'task_while')
 ```
 
 Now, let's define the function `condition_while` (to be stored in a file named `condition_while.js`):
