@@ -46,6 +46,7 @@
   * [Getting started](#getting-started)
   * [Your first Composition](#your-first-composition)
   * [More Compositions](#more-compositions)
+  * [Nesting and data-forwarding](#nesting-and-data-forwarding)
 - [IBM App Connect & Message Hub](#ibm-app-connect---message-hub)
 - [Special fuel for your engine!](#special-fuel-for-your-engine-)
   * [Developing with VS Code](#developing-with-vs-code)
