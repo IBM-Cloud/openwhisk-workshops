@@ -2094,6 +2094,32 @@ Works like a charm.
 
 Once again, we recommend entering `fsh session get <session id>` again to visualize the results of the invocations.
 
+## Inline coding
+
+As said before it is not always necessary to define functions' code within separate files.
+Especially simple logic can always be defined inline.
+
+Let's define a composition (and store it in a file named `demo_inline.js`):
+
+```javascript
+composer.task(params => ({message: `Hello ${params.name}!`}))
+```
+
+Then, deploy it:
+
+<pre>
+$ fsh app create demo_inline demo_inline.js
+</pre>
+
+Finally, let's simply invoke it:
+
+<pre>
+fsh invoke demo_inline -p name Andreas -r
+{
+    message: "Hello Andreas!"
+}
+</pre>
+
 To learn more about Composer visit: https://github.com/ibm-functions/composer
 
 # IBM App Connect & Message Hub
