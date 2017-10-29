@@ -1890,7 +1890,7 @@ Next, invoke the composition, first without specifing a password which should ca
 <pre>
 $ fsh app invoke demo_if
 {
-   message: "Failure"
+    message: "Failure"
 }
 </pre>
 
@@ -1899,7 +1899,7 @@ Finally, invoke the composition again, this time with specifing the password `an
 <pre>
 $ fsh app invoke demo_if -p password andreas
 {
-   message: "Success"
+    message: "Success"
 }
 </pre>
 
@@ -1941,7 +1941,7 @@ Next, invoke the composition:
 <pre>
 $ fsh app invoke demo_repeat -p count 10
 {
-   count: 15
+    count: 15
 }
 </pre>
 
@@ -1992,7 +1992,7 @@ Next, invoke the composition:
 <pre>
 $ fsh app invoke demo_while -p count 10
 {
-   count: 18
+    count: 18
 }
 </pre>
 
@@ -2031,6 +2031,8 @@ The composition to chain both actions together (to be stored in `demo_nesting.js
 composer.sequence('task_reverse', 'task_output')
 ```
 
+The `composer.sequence(task_1, task_2, ...)` composition runs a sequence of tasks (possibly empty). The input parameter object for the composition is the input parameter object of the first task in the sequence. The output parameter object of one task in the sequence is the input parameter object for the next task in the sequence. The output parameter object of the last task in the sequence is the output parameter object for the composition.
+
 Now, let's deploy all artifacts:
 
 <pre>
@@ -2038,6 +2040,58 @@ $ fsh action create task_reverse task_reverse.js
 $ fsh action create task_output task_output.js
 $ fsh app create demo_nesting demo_nesting.js
 </pre>
+
+Unfortunately, when invoking the composition we do not get really what we want:
+
+<pre>
+fsh invoke demo_nesting -p input myText -r
+{
+    message: "undefined reverted is: txeTym"
+}
+</pre>
+
+It seems as if the sequencing (i.e. the nesting) itself works but the value of the initial input parameter being lost.
+This is because the output of the `task_reverse` is only the reverted *String*; the initial input *String* gets indeed lost.
+Hence, what we need in addition to the sequencing as some data-forwarding capability.
+
+This is what the `retain` composition is good for: `composer.retain(task[, flag])` runs `task` on the input parameter object producing an object with two fields `params` and `result` such that `params` is the input parameter object of the composition and `result` is the output parameter object of `task`.
+
+That being said let's change our composition like that:
+
+```javascript
+composer.sequence(composer.retain('task_reverse'), 'task_output')
+```
+
+Let's change our `output` action like that:
+
+```javascript
+function main(params) {
+    return { message: params.params.input + " reverted is: " + params.result.reverse };
+}
+```
+
+Notice that the "first" `params` refers to the argument being passed to the `main` method.
+The "second" `params` results from the use of the `retain` composition and provides access to the initial `input` as well as the `result` of the invocation of the `task_reverse` action.
+
+Let's update the artifacts:
+
+<pre>
+$ fsh action update task_output task_output.js
+$ fsh app update demo_nesting demo_nesting.js
+</pre>
+
+And try again:
+
+<pre>
+fsh invoke demo_nesting -p input myText -r
+{
+    message: "undefined reverted is: txeTym"
+}
+</pre>
+
+Works like a charm.
+
+Once again, we recommend entering `fsh session get <session id>` again to visualize the results of the invocations.
 
 # IBM App Connect & Message Hub
 
