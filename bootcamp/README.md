@@ -2009,7 +2009,7 @@ An important property of combinators is that they can be nested. This encourages
 
 Nesting and data-forwarding between nested compositions can best be explained along another example. Let's say you want to chain together two actions. The first action called `reverse` is supposed to reverse any *String* being handed over. The second action called `output` is supposed to dump the original (non-reverted) input *String* as well as the (reverted) *String*.
 
-The `reverse` action (to be stored in `reverse.js`) could look as follows:
+The `task_reverse` action (to be stored in `task_reverse.js`) could look as follows:
 
 ```javascript
 function main(params) {
@@ -2017,7 +2017,7 @@ function main(params) {
 }
 ```
 
-The `output` action (to be stored in `output.js`) could look as follows:
+The `task_output` action (to be stored in `task_output.js`) could look as follows:
 
 ```javascript
 function main(params) {
@@ -2028,7 +2028,7 @@ function main(params) {
 The composition to chain both actions together (to be stored in `demo_nesting.js`) could look as follows:
 
 ```javascript
-composer.sequence('reverse', 'output')
+composer.sequence('task_reverse', 'task_output')
 ```
 
 Now, let's deploy all artifacts:
