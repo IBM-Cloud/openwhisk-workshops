@@ -79,6 +79,8 @@
 
 # Preface
 
+はじめに、** IBM Bluemix OpenWhisk **は最近** IBM Cloud Functions **に改名されました。これは、公式の見解では、** Apache OpenWhisk **は、Apacheで利用可能なオープンソース・プロジェクトを意味し、** IBM Cloud Functions **はIBMのパブリック・クラウド上で動作するIBMのサーバーレス・プラットフォームを指します（ IBM Bluemix）。 IBM Cloud Functions は、両方のプロジェクトが同じコアコードベースを共有するため、Apache OpenWhiskに完全に基づいています。
+
 Before you start, please note that **IBM Bluemix OpenWhisk** has recently been renamed to **IBM Cloud Functions**. This means that, from an official point of view, **Apache OpenWhisk** refers to the open-source project being available on Apache, while **IBM Cloud Functions** refers to IBM's serverless platform running on top of IBM's public cloud (IBM Bluemix). IBM Cloud Functions is entirely based on Apache OpenWhisk as both projects share the same core codebase. 
 
 In the following we will, for reasons of simplicity and since most examples would also work on any (locally) hosted OpenWhisk deployment, refer to **OpenWhisk** only and not distinguish between Apache OpenWhisk and IBM Cloud Functions even though we will run many of the examples on top of IBM Bluemix. 
