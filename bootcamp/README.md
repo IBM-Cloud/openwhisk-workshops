@@ -89,13 +89,25 @@ During this workshop you will learn how to develop **serverless applications** c
 
 We wish you a lot of fun and success...
 
-# Serverless Computing
 
-**Serverless computing** (aka **Funcions-as-a-Service (FaaS)**) refers to a model where the existence of servers is entirely abstracted away. I.e. that even though servers still exist, developers are relieved from the need to care about their operation. They are relieved from the need to worry about low-level infrastructural and operational details such as scalability, high-availability, infrastructure-security, and so forth. Hence, serverless computing is essentially about reducing maintenance efforts to allow developers to quickly focus on developing value-adding code.
+# サーバーレスコンピューティング
 
-Serverless computing simplifies developing cloud-native applications, especially microservice-oriented solutions that decompose complex applications into small and independent modules that can be easily exchanged.
+**サーバーレスコンピューティング**（別名**Funcions-as-a-Service (FaaS)**）は、サーバーの存在が完全に抽象化されているモデルを指します。
+つまり、サーバーがまだ存在していても、開発者はサーバの運用を気にする必要から解放されます。
+スケーラビリティ、高可用性、インフラストラクチャセキュリティなどの低レベルのインフラストラクチャと運用を考慮する必要から解放されています。 
+したがって、サーバーレスコンピューティングは、開発者が付加価値の高いコードを開発することに迅速に集中できるように、基本的にメンテナンスの労力を軽減することです。
 
-Serverless computing does not refer to a specific technology; instead if refers to the concepts underlying the model described prior. Nevertheless, some promising solutions have recently emerged easing development approaches that follow the serverless model – such as OpenWhisk.
+>**Serverless computing** (aka **Funcions-as-a-Service (FaaS)**) refers to a model where the existence of servers is entirely abstracted away. I.e. that even though servers still exist, developers are relieved from the need to care about their operation. 
+They are relieved from the need to worry about low-level infrastructural and operational details such as scalability, high-availability, infrastructure-security, and so forth.
+Hence, serverless computing is essentially about reducing maintenance efforts to allow developers to quickly focus on developing value-adding code.
+
+サーバレスコンピューティングは、クラウドネイティブアプリケーションの開発を簡素化し、
+  特に複雑なアプリケーションを簡単に交換できる小さな独立したモジュールに分解するマイクロサービス指向のソリューションです。
+>Serverless computing simplifies developing cloud-native applications, especially microservice-oriented solutions that decompose complex applications into small and independent modules that can be easily exchanged.
+
+サーバレスコンピューティングは、特定のテクノロジを参照するものではありません。その代わりに前に説明したモデルの基礎をなす概念を参照します。
+それにもかかわらず、OpenWhiskのようなサーバレスモデルに続く開発アプローチの緩和が近年浮上しています。
+>Serverless computing does not refer to a specific technology; instead if refers to the concepts underlying the model described prior. Nevertheless, some promising solutions have recently emerged easing development approaches that follow the serverless model – such as OpenWhisk.
 
 OpenWhisk is a cloud-first distributed event-based programming service and represents a FaaS platform that allows you to execute code in response to an event.
 
@@ -122,9 +134,11 @@ The (basic) OpenWhisk model consists of three concepts:
 * `action`, an event handler -- some code that runs in response to an event, and
 * `rule`, an association between a trigger and an action.
 
-Services define the events they emit as triggers, and developers define the actions to handle the events.
+サービスはトリガとして発行するイベントを定義し、開発者はイベントを処理するアクションを定義します。
+>Services define the events they emit as triggers, and developers define the actions to handle the events.
 
-Developers only need to care about implementing the desired application logic - the system handles the rest.
+開発者は、必要なアプリケーションロジックの実装に注意するだけで済みます。システムは残りの部分を処理します。
+>Developers only need to care about implementing the desired application logic - the system handles the rest.
 
 # Prepare your engines!
 
