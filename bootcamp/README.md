@@ -126,22 +126,22 @@ Services define the events they emit as triggers, and developers define the acti
 
 Developers only need to care about implementing the desired application logic - the system handles the rest.
 
-# Prepare your engines!
+# 環境の準備
 
-A few important notes before you start:
-* When working through the lab you may see slightly different responses being returned from your CLI than those printed as part of these instructions.<br/>You do not need to worry about this. The reason is that you may use a different namespace than the one we used when generating this document; the differences will be minor and only result in some name-prefixing.
-* Important remark for *Linux* users: You may need to install a few additional tools like `cURL` (e.g. for *Ubuntu* you can install this via `sudo apt-get update && sudo apt-get install curl`)
-* Important remark for *Windows* users: Windows users are strongly advised to download *Git* (https://git-for-windows.github.io/) and to work from the *Git bash*. They are also advised to download `cURL` for Windows (https://curl.haxx.se/download.html)
+はじめる前に:
+* 作業を進めていくうちに、CLIがこのガイドとは異なるレスポンスを示すかもしれません。これはあなたがこの文書が作成された際とは異なるnamespaceを利用していることに起因するものです。これに伴う差異は極めて小さく、nameの関わる箇所でのみ起きる事象となります。
+* 【重要】*Linux* ユーザーの方へ:`cURL`などいくつかのツールを追加でインストールする必要があります。(e.g. *Ubuntu* の場合以下のコマンドでインストールできます。`sudo apt-get update && sudo apt-get install curl`)
+* 【重要】*Windows* ユーザーの方へ: *Git* (https://git-for-windows.github.io/)をダウンロードし *Git bash* から作業を行うことを推奨しています。また`cURL` for Windows (https://curl.haxx.se/download.html)のダウンロードも推奨しています。
 
-In order to use OpenWhisk proceed as follows:
-1. Open a browser window
-2. Navigate to https://console.ng.bluemix.net/openwhisk/
-3. Log-in with your Bluemix account  
-   Create one if you do not yet have one by clicking the `Sign Up` link or by directly navigating to https://console.ng.bluemix.net/registration/
-4. Make sure to pick one of the following regions (pick the one closer to where you are): `US South` or `United Kingdom`
-   Note that when not picking `US South` the `.ng.` fragment of some of the `URLs` shown later needs to be replaced with other fragments, for instance for the region `United Kingdom` with `.eu-gb.`.
-5. Click the `Download CLI` button
-6. Follow steps 1 to 3 (you do not necessarily need to perform step 4), i.e. download the CLI for your particular platform, install OpenWhisk plugin, login to Bluemix specifying the api endpoint, organization and namespace.
+IBM Cloud Functionsの利用のはじめの一歩:
+1. ブラウザウィンドウを開きます。
+2. https://console.ng.bluemix.net/openwhisk/ にアクセスします。
+3. IBM Cloudにログインします。  
+   アカウントを持っていない場合は`「フリーアカウントの作成」`をクリックするか,
+   https://console.ng.bluemix.net/registration/ に直接アクセスしてアカウントを作成します。
+4. `アメリカ南部`または`英国`のどちらかのリージョンを選択します。(自国に近い地域を選択すると良いでしょう。) `アメリカ南部`を選択しなかった場合、今後出てくる`URL`内の`.ng`フラグメントを他のものに変える必要があります。`英国`の場合は`.eu-gb`となります。Make sure to pick one of the following regions (pick the one closer to where you are): `US South` or `United Kingdom`
+5. `「CLIのダウンロード」`をクリックします。
+6. 手順の1から3に従って作業します。(4は必須ではありません) ここには、CLIのダウンロード、Cloud Functionsプラグインをインストール、 APIのエンドポイント・組織・namespaceを選択してBluemixにログインするという作業が含まれます。
 
 # Start your engines!
 
