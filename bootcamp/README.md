@@ -81,9 +81,9 @@
 
 はじめに、 **IBM Bluemix OpenWhisk** は最近 **IBM Cloud Functions** に改名されました。 これは、公式の見解では、 **Apache OpenWhisk** は、Apacheで利用可能なオープンソース・プロジェクトを意味し、 **IBM Cloud Functions** はIBMのパブリック・クラウド上で動作するIBMのサーバーレス・プラットフォームを指します（ IBM Bluemix）。 IBM Cloud Functions は、両方のプロジェクトが同じコアコードベースを共有するため、Apache OpenWhiskに完全に基づいています。
 
-> Before you start, please note that **IBM Bluemix OpenWhisk** has recently been renamed to **IBM Cloud Functions**. This means that, from an official point of view, **Apache OpenWhisk** refers to the open-source project being available on Apache, while **IBM Cloud Functions** refers to IBM's serverless platform running on top of IBM's public cloud (IBM Bluemix). IBM Cloud Functions is entirely based on Apache OpenWhisk as both projects share the same core codebase. 
+> Before you start, please note that **IBM Bluemix OpenWhisk** has recently been renamed to **IBM Cloud Functions**. This means that, from an official point of view, **Apache OpenWhisk** refers to the open-source project being available on Apache, while **IBM Cloud Functions** refers to IBM's serverless platform running on top of IBM's public cloud (IBM Bluemix). IBM Cloud Functions is entirely based on Apache OpenWhisk as both projects share the same core codebase.
 
-In the following we will, for reasons of simplicity and since most examples would also work on any (locally) hosted OpenWhisk deployment, refer to **OpenWhisk** only and not distinguish between Apache OpenWhisk and IBM Cloud Functions even though we will run many of the examples on top of IBM Bluemix. 
+In the following we will, for reasons of simplicity and since most examples would also work on any (locally) hosted OpenWhisk deployment, refer to **OpenWhisk** only and not distinguish between Apache OpenWhisk and IBM Cloud Functions even though we will run many of the examples on top of IBM Bluemix.
 
 During this workshop you will learn how to develop **serverless applications** composed of loosely coupled microservice-like functions. You'll explore OpenWhisk's latest *CLI* (command line interface) and UI and become an OpenWhisk star by implementing a weather bot using *IBM's Weather Company Data service* and *Slack*. You will also investigate how to use other capabilities such us our API Gateway integration allowing you to easily expose functions via API endpoints. You will have a first glance at our research-driven tech-preview called *Composer* allowing you to compose more complex serverless applications by combining multiple functions using control logic and state. Finally, you will find out how to package and deploy your entire serverless application together using the *Serverless Framework*.
 
@@ -94,10 +94,10 @@ We wish you a lot of fun and success...
 
 **サーバーレスコンピューティング**（別名**Funcions-as-a-Service (FaaS)**）は、サーバーの存在が完全に抽象化されているモデルを指します。
 つまり、サーバーがまだ存在していても、開発者はサーバの運用を気にする必要から解放されます。
-スケーラビリティ、高可用性、インフラストラクチャセキュリティなどの低レベルのインフラストラクチャと運用を考慮する必要から解放されています。 
+スケーラビリティ、高可用性、インフラストラクチャセキュリティなどの低レベルのインフラストラクチャと運用を考慮する必要から解放されています。
 したがって、サーバーレスコンピューティングは、開発者が付加価値の高いコードを開発することに迅速に集中できるように、基本的にメンテナンスの労力を軽減することです。
 
->**Serverless computing** (aka **Funcions-as-a-Service (FaaS)**) refers to a model where the existence of servers is entirely abstracted away. I.e. that even though servers still exist, developers are relieved from the need to care about their operation. 
+>**Serverless computing** (aka **Funcions-as-a-Service (FaaS)**) refers to a model where the existence of servers is entirely abstracted away. I.e. that even though servers still exist, developers are relieved from the need to care about their operation.
 They are relieved from the need to worry about low-level infrastructural and operational details such as scalability, high-availability, infrastructure-security, and so forth.
 Hence, serverless computing is essentially about reducing maintenance efforts to allow developers to quickly focus on developing value-adding code.
 
@@ -109,30 +109,53 @@ Hence, serverless computing is essentially about reducing maintenance efforts to
 それにもかかわらず、OpenWhiskのようなサーバレスモデルに続く開発アプローチの緩和が近年浮上しています。
 >Serverless computing does not refer to a specific technology; instead if refers to the concepts underlying the model described prior. Nevertheless, some promising solutions have recently emerged easing development approaches that follow the serverless model – such as OpenWhisk.
 
-OpenWhisk is a cloud-first distributed event-based programming service and represents a FaaS platform that allows you to execute code in response to an event.
+OpenWhiskはクラウドファーストの分散イベントベースのプログラミングサービスで、イベントに応じてコードを実行できるFaaSプラットフォームです。
+>OpenWhisk is a cloud-first distributed event-based programming service and represents a FaaS platform that allows you to execute code in response to an event.
 
-It provides you with the previously mentioned serverless deployment and operations model, with a granular pricing model at any scale that provides you with exactly the resources – not more not less – you need and only charges you for code really running. It offers a flexible programming model. incl. support for languages like *Java, JavaScript, PHP, Python, and Swift* and even for the execution of custom logic via *Docker* containers. This allows small agile teams to reuse existing skills and to develop in a fit-for-purpose fashion. It also provides you with tools to declaratively chain together the building blocks you have developed. It is open and can run anywhere to avoid and kind of vendor lock-in.
+前述のサーバレスデプロイメントモデルとオペレーションモデルを提供し、
+どのような規模でも細かい価格設定モデルを使用して、正確なリソースを提供します。- それ以上でもそれ以下でもありません - 実際に実行されるコードに対してのみ料金を請求します。柔軟なプログラミングモデルを提供します。*Java, JavaScript, PHP, Python, and Swift* などの言語や、*Docker* コンテナを使用してカスタムロジックの実行をサポートします。これにより、小さなアジャイルチームは既存のスキルを再利用し、目的に合った方法で開発することができます。また、開発したビルディングブロックをつなげて動作させるツールも提供します。オープンであり、ベンダーロックインを避けるためにどこでも実行できます。
+>It provides you with the previously mentioned serverless deployment and operations model, with a granular pricing model at any scale that provides you with exactly the resources – not more not less – you need and only charges you for code really running. It offers a flexible programming model. incl. support for languages like *Java, JavaScript, PHP, Python, and Swift* and even for the execution of custom logic via *Docker* containers. This allows small agile teams to reuse existing skills and to develop in a fit-for-purpose fashion. It also provides you with tools to declaratively chain together the building blocks you have developed. It is open and can run anywhere to avoid and kind of vendor lock-in.
 
-In summary, OpenWhisk provides...
-* ... a rich set of building blocks that you can easily glue/stitch together
-* ... the ability to focus more on value-adding business logic and less on low-level infrastructural and operational details
-* ... the ability to easily chain together microservices via sequences
-* ... the ability to compose more complex serverless applications by combining multiple functions using control logic and state (*tech-preview*)
+まとめると、OpenWhiskは以下を提供します。
+* ... 豊富なビルディングブロックを簡単につけたりはずしたりできます
+* ... 低レベルで少ないインフラストラクチャと運用によりビジネスへの付加価値を重視することに注力出来ます
+* ... シーケンスを利用して、簡単にマイクロサービスをつなげることが出来ます
+* ... 制御ロジックと状態を使用して複数の機能を組み合わせることで、より複雑なサーバレスアプリケーションを構成することが出来ます（ * tech-preview * ）
+>In summary, OpenWhisk provides...
+>* ... a rich set of building blocks that you can easily glue/stitch together
+>* ... the ability to focus more on value-adding business logic and less on low-level infrastructural and operational details
+>* ... the ability to easily chain together microservices via sequences
+>* ... the ability to compose more complex serverless applications by combining multiple functions using control logic and state (*tech-preview*)
 
-In summary, our value proposition and what makes us different is:
-* OpenWhisk hides infrastructural complexity allowing developers to focus on business logic
-* OpenWhisk takes care of low-level details such as scaling, load balancing, logging, fault tolerance, and message queues
-* OpenWhisk provides a rich ecosystem of building blocks from various domains (analytics, cognitive, data, IoT, etc.)
-* OpenWhisk is open and designed to support an open community
-* OpenWhisk supports an open ecosystem that allows sharing microservices via OpenWhisk packages
-* OpenWhisk allows developers to compose solutions using modern abstractions and chaining
-* OpenWhisk supports multiple runtimes including Java, JavaScript, PHP, Python, and Swift, and arbitrary binary programs encapsulated in Docker containers
-* OpenWhisk charges only for code that runs
+まとめると、我々のバリューポジションと他との違いは:
+* OpenWhiskはインフラストラクチャの複雑さを隠し、開発者がビジネスロジックに集中できるようにします。
+* OpenWhiskはスケーリング、ロードバランシング、ロギング、フォールトトレランス、メッセージキューなどの低レベルの詳細を処理します。
+* OpenWhiskは、さまざまな分野（分析、コグニティブ、データ、IoTなど）からのビルディングブロックの豊富なエコシステムを提供します。
+* OpenWhiskは公開されており、オープンコミュニティをサポートするように設計されています。
+* OpenWhiskはOpenWhiskパッケージ経由でマイクロサービスを共有できるオープンエコシステムをサポートしています
+* OpenWhiskは、開発者が近代的な抽象化と連鎖を使用してソリューションを構成することを可能にします。
+* OpenWhiskはJava、JavaScript、PHP、Python、Swiftなどの複数のランタイムやDockerコンテナにカプセル化された任意のバイナリプログラムをサポートします。
+* OpenWhiskは実行するコードに対してのみ課金されます
 
-The (basic) OpenWhisk model consists of three concepts:
-* `trigger`, a class of events that can happen,
-* `action`, an event handler -- some code that runs in response to an event, and
-* `rule`, an association between a trigger and an action.
+>In summary, our value proposition and what makes us different is:
+>* OpenWhisk hides infrastructural complexity allowing developers to focus on business logic
+>* OpenWhisk takes care of low-level details such as scaling, load balancing, logging, fault tolerance, and message queues
+>* OpenWhisk provides a rich ecosystem of building blocks from various domains (analytics, cognitive, data, IoT, etc.)
+>* OpenWhisk is open and designed to support an open community
+>* OpenWhisk supports an open ecosystem that allows sharing microservices via OpenWhisk packages
+>* OpenWhisk allows developers to compose solutions using modern abstractions and chaining
+>* OpenWhisk supports multiple runtimes including Java, JavaScript, PHP, Python, and Swift, and arbitrary binary programs encapsulated in Docker containers
+>* OpenWhisk charges only for code that runs
+
+OpenWhiskモデルは基本的に３つの概念で構成されています。
+* `trigger`はトリガーは、ある種のイベントに対して指定されたチャネルです。
+* `action`, イベントハンドラ -- イベントに応答して実行されるコード。
+* `rule`, トリガーとアクションの関連付け。
+
+>The (basic) OpenWhisk model consists of three concepts:
+>* `trigger`, a class of events that can happen
+>* `action`, an event handler -- some code that runs in response to an event, and
+*  `rule`, an association between a trigger and an action.
 
 サービスはトリガとして発行するイベントを定義し、開発者はイベントを処理するアクションを定義します。
 >Services define the events they emit as triggers, and developers define the actions to handle the events.
@@ -1813,7 +1836,7 @@ So far we have developed application logic only contained in single actions (aka
 
 While the implementation of such microservices is rather simple, their composition or orchestration is way more complex. That's why frameworks like Kubernetes with additions like Istio have meanwhile become very popular. With IBM's new *Composer*  developers can now build apps that leverage multiple functions and that require more complex, coordinated flows for end to end solutions.
 
-Composer is a programming model (extension) for composing individual functions into larger applications. *Compositions*, informally named *apps*, run in the cloud using automatically managed compute and memory resources. Composer enables stateful computation, control flow, and rich patterns of data flow. 
+Composer is a programming model (extension) for composing individual functions into larger applications. *Compositions*, informally named *apps*, run in the cloud using automatically managed compute and memory resources. Composer enables stateful computation, control flow, and rich patterns of data flow.
 
 This means Composer allows to develop more complex serverless applications by combining multiple functions using control logic and state.
 
@@ -1965,7 +1988,7 @@ $ fsh app invoke demo_repeat -p count 10
 </pre>
 
 And finally, another easy to understand and out-of-the-box available composition methods is the `while`:
-`composer.while(condition, task)` runs `task` repeatedly while `condition` evaluates to true. 
+`composer.while(condition, task)` runs `task` repeatedly while `condition` evaluates to true.
 
 Let's first define the composition (and store it in a file named `demo_while.js`):
 
@@ -1978,7 +2001,7 @@ Now, let's define the function `condition_while` (to be stored in a file named `
 ```javascript
 function main(params) {
     x = Math.random();
-    
+
     if (x > 0.2) {
         return { value: true};
     }
