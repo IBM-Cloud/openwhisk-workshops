@@ -97,35 +97,22 @@ We wish you a lot of fun and success...
 スケーラビリティ、高可用性、インフラストラクチャセキュリティなどの低レベルのインフラストラクチャと運用を考慮する必要から解放されています。
 したがって、サーバーレスコンピューティングは、開発者が付加価値の高いコードを開発することに迅速に集中できるように、基本的にメンテナンスの労力を軽減することです。
 
->**Serverless computing** (aka **Funcions-as-a-Service (FaaS)**) refers to a model where the existence of servers is entirely abstracted away. I.e. that even though servers still exist, developers are relieved from the need to care about their operation.
-They are relieved from the need to worry about low-level infrastructural and operational details such as scalability, high-availability, infrastructure-security, and so forth.
-Hence, serverless computing is essentially about reducing maintenance efforts to allow developers to quickly focus on developing value-adding code.
-
 サーバレスコンピューティングは、クラウドネイティブアプリケーションの開発を簡素化し、
   特に複雑なアプリケーションを簡単に交換できる小さな独立したモジュールに分解するマイクロサービス指向のソリューションです。
->Serverless computing simplifies developing cloud-native applications, especially microservice-oriented solutions that decompose complex applications into small and independent modules that can be easily exchanged.
 
 サーバレスコンピューティングは、特定のテクノロジを参照するものではありません。その代わりに前に説明したモデルの基礎をなす概念を参照します。
 それにもかかわらず、OpenWhiskのようなサーバレスモデルに続く開発アプローチの緩和が近年浮上しています。
->Serverless computing does not refer to a specific technology; instead if refers to the concepts underlying the model described prior. Nevertheless, some promising solutions have recently emerged easing development approaches that follow the serverless model – such as OpenWhisk.
 
 OpenWhiskはクラウドファーストの分散イベントベースのプログラミングサービスで、イベントに応じてコードを実行できるFaaSプラットフォームです。
->OpenWhisk is a cloud-first distributed event-based programming service and represents a FaaS platform that allows you to execute code in response to an event.
 
 前述のサーバレスデプロイメントモデルとオペレーションモデルを提供し、
 どのような規模でも細かい価格設定モデルを使用して、正確なリソースを提供します。- それ以上でもそれ以下でもありません - 実際に実行されるコードに対してのみ料金を請求します。柔軟なプログラミングモデルを提供します。*Java, JavaScript, PHP, Python, and Swift* などの言語や、*Docker* コンテナを使用してカスタムロジックの実行をサポートします。これにより、小さなアジャイルチームは既存のスキルを再利用し、目的に合った方法で開発することができます。また、開発したビルディングブロックをつなげて動作させるツールも提供します。オープンであり、ベンダーロックインを避けるためにどこでも実行できます。
->It provides you with the previously mentioned serverless deployment and operations model, with a granular pricing model at any scale that provides you with exactly the resources – not more not less – you need and only charges you for code really running. It offers a flexible programming model. incl. support for languages like *Java, JavaScript, PHP, Python, and Swift* and even for the execution of custom logic via *Docker* containers. This allows small agile teams to reuse existing skills and to develop in a fit-for-purpose fashion. It also provides you with tools to declaratively chain together the building blocks you have developed. It is open and can run anywhere to avoid and kind of vendor lock-in.
 
 まとめると、OpenWhiskは以下を提供します。
 * ... 豊富なビルディングブロックを簡単につけたりはずしたりできます
 * ... 低レベルで少ないインフラストラクチャと運用によりビジネスへの付加価値を重視することに注力出来ます
 * ... シーケンスを利用して、簡単にマイクロサービスをつなげることが出来ます
 * ... 制御ロジックと状態を使用して複数の機能を組み合わせることで、より複雑なサーバレスアプリケーションを構成することが出来ます（ * tech-preview * ）
->In summary, OpenWhisk provides...
->* ... a rich set of building blocks that you can easily glue/stitch together
->* ... the ability to focus more on value-adding business logic and less on low-level infrastructural and operational details
->* ... the ability to easily chain together microservices via sequences
->* ... the ability to compose more complex serverless applications by combining multiple functions using control logic and state (*tech-preview*)
 
 まとめると、我々のバリューポジションと他との違いは:
 * OpenWhiskはインフラストラクチャの複雑さを隠し、開発者がビジネスロジックに集中できるようにします。
@@ -137,31 +124,14 @@ OpenWhiskはクラウドファーストの分散イベントベースのプロ�
 * OpenWhiskはJava、JavaScript、PHP、Python、Swiftなどの複数のランタイムやDockerコンテナにカプセル化された任意のバイナリプログラムをサポートします。
 * OpenWhiskは実行するコードに対してのみ課金されます
 
->In summary, our value proposition and what makes us different is:
->* OpenWhisk hides infrastructural complexity allowing developers to focus on business logic
->* OpenWhisk takes care of low-level details such as scaling, load balancing, logging, fault tolerance, and message queues
->* OpenWhisk provides a rich ecosystem of building blocks from various domains (analytics, cognitive, data, IoT, etc.)
->* OpenWhisk is open and designed to support an open community
->* OpenWhisk supports an open ecosystem that allows sharing microservices via OpenWhisk packages
->* OpenWhisk allows developers to compose solutions using modern abstractions and chaining
->* OpenWhisk supports multiple runtimes including Java, JavaScript, PHP, Python, and Swift, and arbitrary binary programs encapsulated in Docker containers
->* OpenWhisk charges only for code that runs
-
 OpenWhiskモデルは基本的に３つの概念で構成されています。
-* `trigger`はトリガーは、ある種のイベントに対して指定されたチャネルです。
-* `action`, イベントハンドラ -- イベントに応答して実行されるコード。
-* `rule`, トリガーとアクションの関連付け。
-
->The (basic) OpenWhisk model consists of three concepts:
->* `trigger`, a class of events that can happen
->* `action`, an event handler -- some code that runs in response to an event, and
-*  `rule`, an association between a trigger and an action.
+* `trigger` イベントが発生するクラス
+* `action`, イベントハンドラ -- イベントに応答して実行されるコード
+* `rule`, トリガーとアクションの関連付け
 
 サービスはトリガとして発行するイベントを定義し、開発者はイベントを処理するアクションを定義します。
->Services define the events they emit as triggers, and developers define the actions to handle the events.
 
 開発者は、必要なアプリケーションロジックの実装に注意するだけで済みます。システムは残りの部分を処理します。
->Developers only need to care about implementing the desired application logic - the system handles the rest.
 
 # Prepare your engines!
 
