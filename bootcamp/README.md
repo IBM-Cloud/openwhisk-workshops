@@ -1064,27 +1064,27 @@ At the center the dashboard visualizes the invocation counts over time represent
 
 Play around with the actions, triggers, etc., you have created before, i.e. fire triggers, invoke actions and have a look at the monitoring dashboard while doing so.
 
-# Build a weather engine!
+# 天気予報エンジンを作る！
 
-Now, let's build, based on all you learned, a more reasonable and useful demo.
+さあ、あなたが学んだことをもとに、役立つデモを構築しましょう
 
-The demo creates a bot for *Slack* that can help notify users about weather forecasts. Users can ask the bot for a forecast for a specific location by sending a chat message. The bot can also be configured to send the forecast for a location at regular intervals, e.g. every day at 8am.
+このデモでは、ユーザーに天気予報を通知する*Slack*用のボットを作成します。ユーザーはチャットメッセージを送信する事により、ボットに特定の場所の予測を尋ねることが出来ます。例えば毎日午前８時のように、ボットは定期的な感覚で位置の予測を送信するように設定することも出来ます。
 
-The bot needs to perform a few functions, e.g. convert addresses to locations, retrieve weather forecasts for locations and integrate with *Slack*. Rather than implementing the bot as a monolithic application, containing the logic for all of these features, we want to go and deploy it as separate services.
+ボットはいくつかの機能が必要です。例えばアドレスを場所に変換し、場所の天気予報を取得し、*Slack*と統合します。ボットをモノシリックアプリケーションとして実装するのではなく、これらすべての機能のロジックを含んでいるため、別のサービスとして展開したいと考えています。
 
-Later, we'll look at using sequences to bind them together to create our bot without writing any code.
+後に、シーケンスを使用してバインドする方法を見ていきます。コードを書かずにボットを作成することができます。
 
-Notice that you can create (most of) the artifacts discussed below using either the CLI (as shown further below) or the OpenWhisk UI – up to you.
+Notice ここで説明する成果物のほとんどの物は、CLIもしくはOpenWhisk UIのどちらかで作成できます。　あなた次第です。
 
-## Address to locations service
+## 住所を位置情報へ
 
-This service handles retrieving `latitude` and `longitude` coordinates for addresses using an external Geocoding API.
+このサービスは外部のジオコーディングAPIを使用して住所の「緯度」と「経度」の座標値の取得を行います。
 
-The action (microservice) implements the application logic within a single function (`main`) just the way we have learned it earlier. The same way we did it before, parameters are passed in as an object argument (`params`) to the function call. The service makes an API call to the *Google* Geocoding API, returning the results from the calls' response for the first address match.
+アクション（マイクロサービス）は、以前に触れたように、単一の関数(`main`)内でアプリケーションロジックを実装します。以前と同じように、パラメータはオブジェクトの引数(`params`)として関数呼び出しに渡されます。サービスは*Google*ジオコーディングAPIへのAPI呼び出し行い、最初のアドレス一致の呼び出しの応答から結果を返します。
 
-Notice that returning a `Promise` from the function means we can return the service response asynchronously.
+Notice 関数から`Promise`を返すことは、サービス応答を非同期に返すことが出来ることを意味します。
 
-Let's first create the action (name it `location_to_latlong`) using the following code. As said before, you can create it using the CLI or the OpenWhisk UI just the way you have learned it earlier:
+では、次のコードを使ってアクション(名前は`location_to_latlong`)を作りましょう。これまで述べたように、CLIやOpenWhisk UIを使用して、以前に学んだ方法と同じように作成する事ができます:
 
 ```javascript
 var request = require("request");
@@ -1114,14 +1114,14 @@ function main(params) {
 }
 ```
 
-Next, let's deploy the action the way you learned it earlier:
+次に、以前に学習した方法でアクションを展開しましょう:
 
 <pre>
 $ bx wsk action create location_to_latlong location_to_latlong.js
 <b>ok:</b> created action <b>location_to_latlong</b>
 </pre>
 
-Next, let's test the action:
+次に、アクションをテストしましょう:
 
 <pre>
 $ bx wsk action invoke location_to_latlong -b -r -p text "London"
@@ -1131,21 +1131,22 @@ $ bx wsk action invoke location_to_latlong -b -r -p text "London"
 }
 </pre>
 
-## Forecast from location service
+## 位置情報からの予測
 
-Now, let's implement the service for finding forecasts for locations.
+ここで、位置情報から予測を検索するサービスを実装しましょう。
 
-The service uses an external API to retrieve weather forecasts for locations, returning the text description for weather in the next 24 hours.
+このサービスでは、外部APIを使用して地域の天気予報を取得し、24時間以内に天気のテキストの説明を返します。
 
-Hence, we first need to create an instance of the *Weather Company Data service*.  
-To do so click the `Catalog` link at the top right of the screen.  
-From the menu appearing on the left of the screen select `Data & Analytics`.  
-Next, click `Weather Company Data`.  
-Leave all settings as they are and click the `Create` button at the bottom right of the screen.  
-Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
-Note down `username` and `password`. If you use the service not in US-South also note down the `host`.
+まず、*Weather Company Data service*.のインスタンスを作成する必要があります。
+これをするには、画面の右上にある「カタログ」リンクをクリックしてください。
+画面の左側に表示されるメニューから「データ＆分析」を選択します。
+次に`Weather Company Data`をクリックします。
+すべての設定をそのままにして、画面右下にある「作成」ボタンをクリックします。
+次に、`サービス資格情報`タブに切り替え`資格情報の表示`リンクをクリックします。
+※訳注）`資格情報の表示`が存在しない場合、`新規資格情報`を一度クリックし、作成します。
+Note `username` and `password`を書き留めてください。もし米国南部に無いサービスを使用する場合は、`host`を書き留めてください。
 
-Again, let's create the action (name it `forecast_from_latlong`) using the following code:
+次のコードを使用してアクション(名前は`forecast_from_latlong`)を作成しましょう:
 
 ```javascript
 var request = require("request");
@@ -1178,16 +1179,16 @@ function main(params) {
 }
 ```
 
-Next, let's deploy the action again:
+次に、アクションを再度デプロイしてみましょう:
 
 <pre>
 $ bx wsk action create forecast_from_latlong forecast_from_latlong.js
 <b>ok:</b> created action <b>forecast_from_latlong</b>
 </pre>
 
-Notice that the service expects four parameters, `latitude` and `longitude` coordinates along with the `API credentials` (the ones you noted down before). Passing in `API credentials` as parameters means you don't have to embed them within the code and can change them dynamically at runtime.
+Notice サービスは４つのパラメータ、`緯度`と`経度｀が`サービス資格情報`(これまでに書き留めたもの)と一緒になることを期待しています。パラメータとして、`サービス資格情報`を渡すと、コード内に埋め込む必要がなくなり、実行時に動的に変更することが出来ます。
 
-Let's test the action again:
+アクションをもう一度試してみましょう:
 
 <pre>
 $ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt; -b -r
@@ -1196,16 +1197,16 @@ $ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p us
 }
 </pre>
 
-Since we do not want to pass in the `API credentials` with every request, let's bind them as default aka bound parameters to the action. This means we only need to invoke the service with the `latitude` and `longitude` parameters.
+リクエストごとに`サービス資格情報`を渡したくないので、デフォルトの別名バインドされたパラメータをアクションにバインドしましょう。つまり、`緯度`と`経度`パラメータでサービスを呼び出すだけです。
 
-Let's update the action and bind said parameters:
+アクションを更新し、上記のパラメータをバインドしましょう:
 
 <pre>
 $ bx wsk action update forecast_from_latlong -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt;
 <b>ok:</b> updated action <b>forecast_from_latlong</b>
 </pre>
 
-Let's test the action again:
+アクションをもう一度試してみましょう:
 
 <pre>
 $ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
@@ -1214,32 +1215,32 @@ $ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
 }
 </pre>
 
-## Sending messages to Slack
+## Slackへのメッセージ送信
 
-Once we have a forecast, we need to send it to *Slack* as a message from our bot. *Slack* provides an easy method for writing simple bots using their *webhook* integration. Incoming webhooks provide applications with `URLs` to send data to using normal *HTTP* requests. The contents of the *JSON* request body will be posted into the channel as a bot message.
+予測ができたら、ボットのメッセージとして*Slack*に送信する必要があります。*Slack*は、*webhook*を利用して単純なボットを書く簡単な方法を提供します。着信webhookは、通常の*HTTP*リクエストを使用してデータを送信するURLをアプリケーションに提供します。*JSON*リクエスト本文の内容はぼっとメッセージとしてチャンネルに投稿されます。
 
-First, create a new team on *Slack* by navigating to https://slack.com/ and clicking the `Create new team` link at the very top of the screen.
+まず、https://slack.com/にアクセスし、画面の一番上にある「新しいチームを作成」リンクをクリックして、*Slack*上に新しいチームを作成します。
 
-Just follow the instructions to create a team:  
-Provide your `mail address` and click the `Next` button.  
-Provide the `confirmation code` you have been send via mail.  
-Provide your `first name`, `last name`, and `username` and click the `Continue to password` button.  
-Specify a `password` and click the `Continue to Team Info` button.  
-Select an option like `Shared interest group` to specify what you will use *Slack* for and click the `Continue to Group Name` button.  
-Provide an arbitrary `group name` and click the `Continue to Team URL` button.  
-Provide an arbitrary `team URL` and click the `Create Team` button.  
-Skip the process for sending invitations by clicking the `Skip for Now` button, then click the `Explore Slack` button to get started.  
-Finally, type something into the text field at the very bottom to get started.
+指示に従ってチームを作成してください:
+あなたの`メールアドレス`を入力し、`次へ`ボタンをクリックしてください。
+メールで送信した`確認コード`を入力してください。
+あなたの`名前`、`名字`、`ユーザ名`を入力して、`パスワード設定へ進む`ボタンをクリックします。
+`パスワード`を設定し、`チーム情報設定へ進む`ボタンをクリックしてください。
+`関心のあるグループ`のようなオプションを選択して*Slack*を使用する物を指定し、`グループ名設定に進む`ボタンをクリックします。
+任意の`グループ名`を入力し、`チームURL指定へ進む`ボタンをクリックします。
+任意の`チームURL`を入力し、`チームの作成`ボタンをクリックします。
+`スキップ`ボタンをクリックして招待状を送信するプロセスをスキップし、`Slackを探索`ボタンをクリックして開始してください。
+最後に、最下部のテキストフィールドに何かを入力して開始します。
 
-To create a communication channel proceed as follows:  
-Click the little `+` icon next to the text `CHANNELS` on the left of the screen.  
-Then, simply provide the name `weather` for your channel and click the `Create Channel` button.
+コミュニケーションチャンネルを作成する方法は次のとおりです:
+画面左側の`チャンネル`という文字の隣にある小さな`+`アイコンをクリックします
+そして、あなたのチャンネルに`weather`という名前をつけて、`チャンネルを作成する`ボタンをクリックするだけです。
 
-*Slack* is set up.
+*Slack*が設定できました。
 
-We could now write another action (microservice) to handle sending these *HTTP* requests but, as you already know, OpenWhisk comes with integrations (provided by packages) for a number of third-party systems meaning we don't have to.
+これらの*HTTP*リクエストの送信を行う別のアクション(マイクロサービス)を書くことが出来ましたが、既にご存知のように、OpenWhiskには、多くのサードパーティ製システムのインテグレーション(パッケージ提供)が付属しています。
 
-Let's once again review which packages are available:
+利用可能なパッケージをもう一度見直してみましょう:
 
 <pre>
 $ bx wsk package list /whisk.system
@@ -1257,7 +1258,7 @@ $ bx wsk package list /whisk.system
 /whisk.system/pushnotifications        shared
 </pre>
 
-The package potentially being of interest is the `Slack` package; so let's see what's in there:
+ここでは`Slack`パッケージに注目します。この中にあるものを見てみましょう:
 
 <pre>
 $ bx wsk package get --summary /whisk.system/slack
@@ -1266,57 +1267,55 @@ $ bx wsk package get --summary /whisk.system/slack
  <b>action</b> /whisk.system/slack/post: Post a message to Slack
 </pre>
 
-We can invoke the action to post messages to *Slack* without writing any code.
+コードを記述することなく*Slack*にメッセージを投稿するアクションを呼び出す事ができます。
 
-Notice that you first have to replace the incoming webhook `URL` with yours. To find out about yours proceed as follows:
+Notice 最初に着信webhookの`URL`をあなたのものに置き換える必要があります。あなたの着信webhookを知るには、次の手順で進めてください:
 
-Click on your teams' name at top left of the screen.  
-From the menu appearing select `Customize Slack`.  
-Click the `hamburger` icon and the top left of the screen and select `Configure Apps`.  
-Click `Custom Integrations`.  
-On the new screen enter the word `incoming` into the search field, then select the entry `Incoming WebHooks`.  
-Next, click the `Add Configuration` button.  
-Next, select the `weather`channel you have created before and click the `Add Incoming WebHooks integration` button.  
-Then copy the `URL` being shown under `Webhook URL`.
+画面左上のあなたのチーム名をクリックします。
+表示されるメニューから`App管理`を選択します。
+画面上の`Appディレクトリを検索`に`incoming`を入力し、`着信Web フック`というエントリを選択します。
+次に`設定を追加`をクリックします。
+次に先ほど作成した`weather`チャンネルを選択し、`着信Web フック インテグレーションの追加`ボタンをクリックします。
+次に`Webhook URL`項目に表示された`URL`をコピーします。
 
 <pre>
 $ bx wsk action invoke /whisk.system/slack/post -p url https://hooks.slack.com/services/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 -p channel weather -p text "Hello"
 <b>ok:</b> invoked <b>/whisk.system/slack/post</b> with id <b>78070fe2acb54c70ae49c0fa047aee51</b>
 </pre>
 
-The fact that we can now see the message popping up in your *Slack* channel verifies that this has worked out.
+あなたの*Slack*チャンネルでメッセージがポップアップしているのが見えるということは、これがうまく行ったことを証明します。
 
-Again, we would like to bind default parameters for the action but this isn't (yet) supported without copying global packages to your local namespace first.
+繰り返しますが、アクションのデフォルトパラメータをバインドしたいのですが、グローバルパッケージをローカルネームスペースに最初にコピーしない限り、これはサポートされていません。
 
-So, let's do this now:
+では、やってみましょう:
 
 <pre>
 $ bx wsk action create --copy webhook /whisk.system/slack/post -p url https://hooks.slack.com/services/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 -p channel weather -p username "Weather Bot" -p icon_emoji ":sun_with_face:"
 <b>ok:</b> created action <b>webhook</b>
 </pre>
 
-This customized *Slack* service can be invoked with just the `text` parameter and gives us a friendly bot message in the `weather` channel:
+カスタマイズされた*Slack*サービスは`text`パラメータだけで呼び出すことができ、`weather`チャンネルにフレンドリーなメッセージを送れます:
 
 <pre>
 $ bx wsk action invoke webhook -p text "Hello again"
 <b>ok:</b> invoked <b>webhook</b> with id <b>a4044f7192544d69bc179a991a970559</b>
 </pre>
 
-## Creating the weather bot using sequences
+## シーケンスを利用してお天気ボットを作成する
 
-Right, we have the three actions (microservices) to handle the logic in our bot. Now let's create a sequence to chain these three pieces together just the way we have learned it earlier:
+ボットのロジックを処理する3つのアクション(マイクロサービス)があります。ここでは、これらの3つの要素を以前に学習した方法でつなげるシーケンスを作成しましょう:
 
-Let's define a new sequence for our bot to join these services together.
+それではボットがこれらのサービスに参加するための新しいシーケンスを定義しましょう。
 
 <pre>
 $ bx wsk action create location_forecast --sequence location_to_latlong,forecast_from_latlong,webhook
 <b>ok:</b> created action <b>location_forecast</b>
 </pre>
 
-With this meta-service defined, we can invoke the `location_forecast` action with the input parameter for the first service (`text`). As a result the forecast for that location should appear in *Slack*.
+このメタサービスを定義すると、最初のサービス（`text`）の入力パラメータで` location_forecast`アクションを呼び出すことができます。 その結果、その場所の予報が*Slack*に表示されます。
 
-Let's test this.  
-The result should look similar to this:
+それでは試してみましょう。
+結果は次のようになります:
 
 <pre>
 $ bx wsk action invoke location_forecast -p text "London" -b
@@ -1340,38 +1339,39 @@ $ bx wsk action invoke location_forecast -p text "London" -b
 }
 </pre>
 
-To enable the action to be called as a web action finally enter:
+アクションをWebアクションとして呼び出すには、次のように入力します:
 
 <pre>
 $ bx wsk action update location_forecast --web true
 <b>ok:</b> updated action <b>location_forecast</b>
 </pre>
 
-## Bot forecasts
+## ボットの予報
+ここでの問題は、ボットが予報に必要な場所をどのようにして知ることができるかです。
 At this point the question is how we can ask the bot for forecasts about a location?
 
-*Slack* provides outgoing webhooks that will post *JSON* messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say `weather: london` and have the bot respond.
+*Slack*は、チャンネルメッセージにキーワードが現れたときに*JSON*メッセージを外部のURLにポストする発信webhookを提供します。あなたのチャンネルに新しい発信Webhookを設定すると、ユーザーは`wetaher: london`という事でボットに応答させることができます。d.
 
-Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel we have created prior.
+したがって、定義されたトリガーワードで始まるメッセージが以前に作成した`weather`チャンネル経由で送信されると、アクションが適切に呼び出されていることを確認する必要があります。
 
-To make that happen proceed as follows:  
-When being in the channel just created click the `Gear` icon at the very top and select the `Add an app or integration` link from the menu appearing.  
-On the new screen enter the word `outgoing` into the search field, then select the entry `Outgoing WebHooks`.  
-Next, click the `Add Configuration` and the `Add Outgoing WebHooks integration` buttons.  
-As `channel` select the channel you have created before.  
-As `trigger` word specify `weather`.  
-As `URL` specify the `web action URL` pointing to the `location_forecast` action – like this:
+これを実現するには、次のように進めます:
+チャンネルに入ったら、一番上にある歯車アイコンをクリックし、表示されたメニューから `アプリを追加する`リンクを選択してください。
+画面上の検索フィールドに`outgoing`という単語を入力し、`発信 Webフック`を選択します。
+次に`設定を追加`と`発信 Webフック インタグレーションの追加`ボタンをクリックします。
+インテグレーションの設定の`チャンネル`に以前に作成したチャンネルを選択します。
+`引き金となる言葉`に`weather`を指定します。
+`URL`には`location_forecast`アクションの`web action URL`を以下のように指定します:
 `https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/location_forecast.json`  
-Then click the `Save Settings` button.
+次に、`設定を保存する`ボタンをクリックします。
 
-Now, navigate back to the browser tab showing your channels and enter the following into the channels' messaging field:
+次に、チャンネルを表示しているブラウザタブに戻り、チャンネルのメッセージ欄に以下を入力します:
 `weather: london`
 
-## Connecting to triggers
+## トリガーに接続する
 
-As you learned earlier, triggers are used to represent event streams from the external world into OpenWhisk. They can be invoked manually, through the *REST* API, or automatically, after connecting to trigger feeds. Actions can be bound to triggers using rules. When a trigger is fired, the action is invoked together with the request parameters. Multiple actions can listen to the same trigger.
+これまで学んだように、トリガーは外部からOpenWhiskへのイベントストリームを表すために使用されます。*REST* APIを使用して手動で呼び出すことも、トリガー フィードに接続してから自動的に呼び出すこともできます。アクションはルールを使用してトリガーにバインド出来ます。複数のアクションが同じトリガーを拾うすることが出来ます。
 
-Let's now look at binding the bot service to a sample trigger and invoke it indirectly by firing that trigger:
+ボットサービスをサンプルトリガーにバインドし、そのトリガーを起動して間接的に呼び出す方法を見てみましょう:
 
 <pre>
 $ bx wsk trigger create forecast
@@ -1384,19 +1384,20 @@ $ bx wsk trigger fire forecast -p text "London"
 <b>ok:</b> triggered <b>forecast</b> with id <b>49914a20416d416d8c90282d59eebee3</b>
 </pre>
 
-Once we fired the trigger, passing in the `text` parameter, the bot was automatically invoked and posted the forecast for `London` to the channel.
+トリガーを起動し、`text`パラメーターを渡すと、ボットは自動的に呼び出され、`London`の予報をチャンネルに投稿しました。
 
 Now let's look at invoking the bot every morning to tell us the forecast before we set off for work.
+では、毎朝ボットを起動して仕事を開始する前に予報をしましょう。
 
-## Morning forecasts
+## 朝の予報
 
-Let's now "configure" the trigger to fire automatically whenever a new external event occurs. This will cause all actions bound to this trigger via a rule to be invoked, too.
+新しい外部イベントが発生するたびに自動的に起動するようにトリガーを設定しましょう。これにより、ルールを介してこのトリガーにバインドされたすべてのアクションが呼び出されます。
 
-As said, triggers bind to external event sources during creation by passing in a reference to the external trigger feed to connect to. OpenWhisk's public packages contain a number of trigger feeds that we can use for external event sources.
+これまでのように、トリガは、外部トリガフィードへの参照を渡すことによって、作成中に外部イベントソースにバインドされます。OpenWhiskのパブリックパッケージには、外部イベントソースに使用できる多数のトリガフィードが含まれています。
 
-One of those public trigger feeds is in the `alarm` package we already used earlier. As seen, this alarm feed executes triggers at pre-specified intervals. Using this feed with our weather bot trigger, we could set it up to execute every morning for a particular address and tell us the forecast every for London before we set off for work.
+これらのパブリックトリガフィードの1つは、既に以前使用した`alarm`パッケージに含まれています。このように、このアラームフィードは予め指定された感覚でトリガを実行します。ウェザーボットのトリガーでこのフィードを使用することで、毎朝特定の住所について実行しロンドンの予報を行うことができます。
 
-Let's do that now:
+ではやってみましょう:
 
 <pre>
 $ bx wsk package get /whisk.system/alarms --summary
@@ -1411,9 +1412,9 @@ $ bx wsk rule create regular_forecast_rule regular_forecast location_forecast
 <b>ok:</b> created rule <b>regular_forecast_rule</b>
 </pre>
 
-The trigger schedule is provided by the `cron` parameter, which we've set up to run every ten seconds to test it out. By binding this new trigger to our bot service, the forecast for London starts to appear in the channel.
+トリガースケジュールは`cron`パラメータによって提供されます。これはテストするために10秒ごとに実行するように設定されています。この新しいトリガーをボットサービスに結びつけることで、ロンドンの予報がチャンネルに表示されはじめます。
 
-Okay, that's great but let's turn off this alarm before it drives us mad:
+さて、うまくいったので怒られる前にアラームを止めておきましょう:
 
 <pre>
 $ bx wsk rule disable regular_forecast_rule
