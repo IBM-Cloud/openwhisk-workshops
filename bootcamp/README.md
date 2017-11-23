@@ -1386,7 +1386,6 @@ $ bx wsk trigger fire forecast -p text "London"
 
 トリガーを起動し、`text`パラメーターを渡すと、ボットは自動的に呼び出され、`London`の予報をチャンネルに投稿しました。
 
-Now let's look at invoking the bot every morning to tell us the forecast before we set off for work.
 では、毎朝ボットを起動して仕事を開始する前に予報をしましょう。
 
 ## 朝の予報
