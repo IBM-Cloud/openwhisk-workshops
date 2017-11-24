@@ -79,7 +79,7 @@
 
 # 序文
 
-はじめに、 **IBM Bluemix OpenWhisk** は最近 **IBM Cloud Functions** に改名されました。 これは、公式の見解では、 **Apache OpenWhisk** は、Apacheで利用可能なオープンソース・プロジェクトを意味し、 **IBM Cloud Functions** はIBMのパブリック・クラウド上で動作するIBMのサーバーレス・プラットフォームを指します（ IBM Bluemix）。 IBM Cloud Functions は、両方のプロジェクトが同じコアコードベースを共有するため、Apache OpenWhiskに完全に基づいています。
+はじめに、 **IBM Bluemix OpenWhisk** は最近 **IBM Cloud Functions** に改名されました。 これは、公式の見解では、 **Apache OpenWhisk** は、Apacheで利用可能なオープンソース・プロジェクトを意味し、 **IBM Cloud Functions** はIBMのパブリック・クラウド上で動作するIBMのサーバレス・プラットフォームを指します（ IBM Bluemix）。 IBM Cloud Functions は、両方のプロジェクトが同じコアコードベースを共有するため、Apache OpenWhiskに完全に基づいています。
 
 > Before you start, please note that **IBM Bluemix OpenWhisk** has recently been renamed to **IBM Cloud Functions**. This means that, from an official point of view, **Apache OpenWhisk** refers to the open-source project being available on Apache, while **IBM Cloud Functions** refers to IBM's serverless platform running on top of IBM's public cloud (IBM Bluemix). IBM Cloud Functions is entirely based on Apache OpenWhisk as both projects share the same core codebase.
 
@@ -90,12 +90,12 @@ During this workshop you will learn how to develop **serverless applications** c
 We wish you a lot of fun and success...
 
 
-# サーバーレスコンピューティング
+# サーバレスコンピューティング
 
-**サーバーレスコンピューティング**（別名**Funcions-as-a-Service (FaaS)**）は、サーバーの存在が完全に抽象化されているモデルを指します。
-つまり、サーバーがまだ存在していても、開発者はサーバの運用を気にする必要から解放されます。
+**サーバレスコンピューティング**（別名**Funcions-as-a-Service (FaaS)**）は、サーバの存在が完全に抽象化されているモデルを指します。
+つまり、サーバがまだ存在していても、開発者はサーバの運用を気にする必要から解放されます。
 スケーラビリティ、高可用性、インフラストラクチャセキュリティなどの低レベルのインフラストラクチャと運用を考慮する必要から解放されています。
-したがって、サーバーレスコンピューティングは、開発者が付加価値の高いコードを開発することに迅速に集中できるように、基本的にメンテナンスの労力を軽減することです。
+したがって、サーバレスコンピューティングは、開発者が付加価値の高いコードを開発することに迅速に集中できるように、基本的にメンテナンスの労力を軽減することです。
 
 サーバレスコンピューティングは、クラウドネイティブアプリケーションの開発を簡素化し、
   特に複雑なアプリケーションを簡単に交換できる小さな独立したモジュールに分解するマイクロサービス指向のソリューションです。
