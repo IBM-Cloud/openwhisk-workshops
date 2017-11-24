@@ -1,7 +1,7 @@
 # Table of Contents
 
 - [Preface](#preface)
-- [Serverless Computing](#serverless-computing)
+- [サーバレスコンピューティング](#サーバレスコンピューティング)
 - [Prepare your engines!](#prepare-your-engines-)
 - [Start your engines!](#start-your-engines-)
   * [Actions](#actions)
