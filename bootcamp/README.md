@@ -1,7 +1,7 @@
 # Table of Contents
 
 - [Preface](#preface)
-- [Serverless Computing](#serverless-computing)
+- [サーバレスコンピューティング](#サーバレスコンピューティング)
 - [Prepare your engines!](#prepare-your-engines-)
 - [Start your engines!](#start-your-engines-)
   * [Actions](#actions)
@@ -27,14 +27,14 @@
   * [Triggers](#triggers)
   * [Rules](#rules)
   * [Monitoring](#monitoring)
-- [Build a weather engine!](#build-a-weather-engine-)
-  * [Address to locations service](#address-to-locations-service)
-  * [Forecast from location service](#forecast-from-location-service)
-  * [Sending messages to Slack](#sending-messages-to-slack)
-  * [Creating the weather bot using sequences](#creating-the-weather-bot-using-sequences)
-  * [Bot forecasts](#bot-forecasts)
-  * [Connecting to triggers](#connecting-to-triggers)
-  * [Morning forecasts](#morning-forecasts)
+- [天気予報エンジンを作る！](#天気予報エンジンを作る)
+  * [住所を位置情報へ](#住所を位置情報へ)
+  * [位置情報からの予測](#位置情報からの予測)
+  * [Slackへのメッセージ送信](#slackへのメッセージ送信)
+  * [シーケンスを利用してお天気ボットを作成する](#シーケンスを利用してお天気ボットを作成する)
+  * [ボットの予報](#ボットの予報)
+  * [トリガーに接続する](#トリガーに接続する)
+  * [朝の予報](#朝の予報)
 - [Build a serverless microservice backend!](#build-a-serverless-microservice-backend-)
   * [Your first API](#your-first-api)
     + [Mapping actions to endpoints](#mapping-actions-to-endpoints)
@@ -77,69 +77,78 @@
   * [Skylink](#skylink)
 - [Learning more](#learning-more)
 
-# Preface
+# 序文
 
-Before you start, please note that **IBM Bluemix OpenWhisk** has recently been renamed to **IBM Cloud Functions**. This means that, from an official point of view, **Apache OpenWhisk** refers to the open-source project being available on Apache, while **IBM Cloud Functions** refers to IBM's serverless platform running on top of IBM's public cloud (IBM Bluemix). IBM Cloud Functions is entirely based on Apache OpenWhisk as both projects share the same core codebase. 
+はじめに、 **IBM Bluemix OpenWhisk** は最近 **IBM Cloud Functions** に改名されました。 これは、公式の見解では、 **Apache OpenWhisk** は、Apacheで利用可能なオープンソース・プロジェクトを意味し、 **IBM Cloud Functions** はIBMのパブリック・クラウド上で動作するIBMのサーバレス・プラットフォームを指します（ IBM Bluemix）。 IBM Cloud Functions は、両方のプロジェクトが同じコアコードベースを共有するため、Apache OpenWhiskに完全に基づいています。
 
-In the following we will, for reasons of simplicity and since most examples would also work on any (locally) hosted OpenWhisk deployment, refer to **OpenWhisk** only and not distinguish between Apache OpenWhisk and IBM Cloud Functions even though we will run many of the examples on top of IBM Bluemix. 
+> Before you start, please note that **IBM Bluemix OpenWhisk** has recently been renamed to **IBM Cloud Functions**. This means that, from an official point of view, **Apache OpenWhisk** refers to the open-source project being available on Apache, while **IBM Cloud Functions** refers to IBM's serverless platform running on top of IBM's public cloud (IBM Bluemix). IBM Cloud Functions is entirely based on Apache OpenWhisk as both projects share the same core codebase.
+
+In the following we will, for reasons of simplicity and since most examples would also work on any (locally) hosted OpenWhisk deployment, refer to **OpenWhisk** only and not distinguish between Apache OpenWhisk and IBM Cloud Functions even though we will run many of the examples on top of IBM Bluemix.
 
 During this workshop you will learn how to develop **serverless applications** composed of loosely coupled microservice-like functions. You'll explore OpenWhisk's latest *CLI* (command line interface) and UI and become an OpenWhisk star by implementing a weather bot using *IBM's Weather Company Data service* and *Slack*. You will also investigate how to use other capabilities such us our API Gateway integration allowing you to easily expose functions via API endpoints. You will have a first glance at our research-driven tech-preview called *Composer* allowing you to compose more complex serverless applications by combining multiple functions using control logic and state. Finally, you will find out how to package and deploy your entire serverless application together using the *Serverless Framework*.
 
 We wish you a lot of fun and success...
 
-# Serverless Computing
 
-**Serverless computing** (aka **Funcions-as-a-Service (FaaS)**) refers to a model where the existence of servers is entirely abstracted away. I.e. that even though servers still exist, developers are relieved from the need to care about their operation. They are relieved from the need to worry about low-level infrastructural and operational details such as scalability, high-availability, infrastructure-security, and so forth. Hence, serverless computing is essentially about reducing maintenance efforts to allow developers to quickly focus on developing value-adding code.
+# サーバレスコンピューティング
 
-Serverless computing simplifies developing cloud-native applications, especially microservice-oriented solutions that decompose complex applications into small and independent modules that can be easily exchanged.
+**サーバレスコンピューティング**（別名**Funcions-as-a-Service (FaaS)**）は、サーバの存在が完全に抽象化されているモデルを指します。
+つまり、サーバがまだ存在していても、開発者はサーバの運用を気にする必要から解放されます。
+スケーラビリティ、高可用性、インフラストラクチャセキュリティなどの低レベルのインフラストラクチャと運用を考慮する必要から解放されています。
+したがって、サーバレスコンピューティングは、開発者が付加価値の高いコードを開発することに迅速に集中できるように、基本的にメンテナンスの労力を軽減することです。
 
-Serverless computing does not refer to a specific technology; instead if refers to the concepts underlying the model described prior. Nevertheless, some promising solutions have recently emerged easing development approaches that follow the serverless model – such as OpenWhisk.
+サーバレスコンピューティングは、クラウドネイティブアプリケーションの開発を簡素化し、
+  特に複雑なアプリケーションを簡単に交換できる小さな独立したモジュールに分解するマイクロサービス指向のソリューションです。
 
-OpenWhisk is a cloud-first distributed event-based programming service and represents a FaaS platform that allows you to execute code in response to an event.
+サーバレスコンピューティングは、特定のテクノロジを参照するものではありません。その代わりに前に説明したモデルの基礎をなす概念を参照します。
+それにもかかわらず、OpenWhiskのようなサーバレスモデルに続く開発アプローチの緩和が近年浮上しています。
 
-It provides you with the previously mentioned serverless deployment and operations model, with a granular pricing model at any scale that provides you with exactly the resources – not more not less – you need and only charges you for code really running. It offers a flexible programming model. incl. support for languages like *Java, JavaScript, PHP, Python, and Swift* and even for the execution of custom logic via *Docker* containers. This allows small agile teams to reuse existing skills and to develop in a fit-for-purpose fashion. It also provides you with tools to declaratively chain together the building blocks you have developed. It is open and can run anywhere to avoid and kind of vendor lock-in.
+OpenWhiskはクラウドファーストの分散イベントベースのプログラミングサービスで、イベントに応じてコードを実行できるFaaSプラットフォームです。
 
-In summary, OpenWhisk provides...
-* ... a rich set of building blocks that you can easily glue/stitch together
-* ... the ability to focus more on value-adding business logic and less on low-level infrastructural and operational details
-* ... the ability to easily chain together microservices via sequences
-* ... the ability to compose more complex serverless applications by combining multiple functions using control logic and state (*tech-preview*)
+前述のサーバレスデプロイメントモデルとオペレーションモデルを提供し、
+どのような規模でも細かい価格設定モデルを使用して、正確なリソースを提供します。- それ以上でもそれ以下でもありません - 実際に実行されるコードに対してのみ料金を請求します。柔軟なプログラミングモデルを提供します。*Java, JavaScript, PHP, Python, and Swift* などの言語や、*Docker* コンテナを使用してカスタムロジックの実行をサポートします。これにより、小さなアジャイルチームは既存のスキルを再利用し、目的に合った方法で開発することができます。また、開発したビルディングブロックをつなげて動作させるツールも提供します。オープンであり、ベンダーロックインを避けるためにどこでも実行できます。
 
-In summary, our value proposition and what makes us different is:
-* OpenWhisk hides infrastructural complexity allowing developers to focus on business logic
-* OpenWhisk takes care of low-level details such as scaling, load balancing, logging, fault tolerance, and message queues
-* OpenWhisk provides a rich ecosystem of building blocks from various domains (analytics, cognitive, data, IoT, etc.)
-* OpenWhisk is open and designed to support an open community
-* OpenWhisk supports an open ecosystem that allows sharing microservices via OpenWhisk packages
-* OpenWhisk allows developers to compose solutions using modern abstractions and chaining
-* OpenWhisk supports multiple runtimes including Java, JavaScript, PHP, Python, and Swift, and arbitrary binary programs encapsulated in Docker containers
-* OpenWhisk charges only for code that runs
+まとめると、OpenWhiskは以下を提供します。
+* ... 豊富なビルディングブロックを簡単につけたりはずしたりできます
+* ... 低レベルで少ないインフラストラクチャと運用によりビジネスへの付加価値を重視することに注力出来ます
+* ... シーケンスを利用して、簡単にマイクロサービスをつなげることが出来ます
+* ... 制御ロジックと状態を使用して複数の機能を組み合わせることで、より複雑なサーバレスアプリケーションを構成することが出来ます（ * tech-preview * ）
 
-The (basic) OpenWhisk model consists of three concepts:
-* `trigger`, a class of events that can happen,
-* `action`, an event handler -- some code that runs in response to an event, and
-* `rule`, an association between a trigger and an action.
+まとめると、我々のバリューポジションと他との違いは:
+* OpenWhiskはインフラストラクチャの複雑さを隠し、開発者がビジネスロジックに集中できるようにします。
+* OpenWhiskはスケーリング、ロードバランシング、ロギング、フォールトトレランス、メッセージキューなどの低レベルの詳細を処理します。
+* OpenWhiskは、さまざまな分野（分析、コグニティブ、データ、IoTなど）からのビルディングブロックの豊富なエコシステムを提供します。
+* OpenWhiskは公開されており、オープンコミュニティをサポートするように設計されています。
+* OpenWhiskはOpenWhiskパッケージ経由でマイクロサービスを共有できるオープンエコシステムをサポートしています
+* OpenWhiskは、開発者が近代的な抽象化と連鎖を使用してソリューションを構成することを可能にします。
+* OpenWhiskはJava、JavaScript、PHP、Python、Swiftなどの複数のランタイムやDockerコンテナにカプセル化された任意のバイナリプログラムをサポートします。
+* OpenWhiskは実行するコードに対してのみ課金されます
 
-Services define the events they emit as triggers, and developers define the actions to handle the events.
+OpenWhiskモデルは基本的に３つの概念で構成されています。
+* `trigger` イベントが発生するクラス
+* `action`, イベントハンドラ -- イベントに応答して実行されるコード
+* `rule`, トリガーとアクションの関連付け
 
-Developers only need to care about implementing the desired application logic - the system handles the rest.
+サービスはトリガとして発行するイベントを定義し、開発者はイベントを処理するアクションを定義します。
 
-# Prepare your engines!
+開発者は、必要なアプリケーションロジックの実装に注意するだけで済みます。システムは残りの部分を処理します。
 
-A few important notes before you start:
-* When working through the lab you may see slightly different responses being returned from your CLI than those printed as part of these instructions.<br/>You do not need to worry about this. The reason is that you may use a different namespace than the one we used when generating this document; the differences will be minor and only result in some name-prefixing.
-* Important remark for *Linux* users: You may need to install a few additional tools like `cURL` (e.g. for *Ubuntu* you can install this via `sudo apt-get update && sudo apt-get install curl`)
-* Important remark for *Windows* users: Windows users are strongly advised to download *Git* (https://git-for-windows.github.io/) and to work from the *Git bash*. They are also advised to download `cURL` for Windows (https://curl.haxx.se/download.html)
+# 環境の準備
 
-In order to use OpenWhisk proceed as follows:
-1. Open a browser window
-2. Navigate to https://console.ng.bluemix.net/openwhisk/
-3. Log-in with your Bluemix account  
-   Create one if you do not yet have one by clicking the `Sign Up` link or by directly navigating to https://console.ng.bluemix.net/registration/
-4. Make sure to pick one of the following regions (pick the one closer to where you are): `US South` or `United Kingdom`
-   Note that when not picking `US South` the `.ng.` fragment of some of the `URLs` shown later needs to be replaced with other fragments, for instance for the region `United Kingdom` with `.eu-gb.`.
-5. Click the `Download CLI` button
-6. Follow steps 1 to 3 (you do not necessarily need to perform step 4), i.e. download the CLI for your particular platform, install OpenWhisk plugin, login to Bluemix specifying the api endpoint, organization and namespace.
+はじめる前に:
+* 作業を進めていくうちに、CLIがこのガイドとは異なるレスポンスを示すかもしれません。これはあなたがこの文書が作成された際とは異なるnamespaceを利用していることに起因するものです。これに伴う差異は極めて小さく、nameの関わる箇所でのみ起きる事象となります。
+* 【重要】*Linux* ユーザーの方へ:`cURL`などいくつかのツールを追加でインストールする必要があります。(e.g. *Ubuntu* の場合以下のコマンドでインストールできます。`sudo apt-get update && sudo apt-get install curl`)
+* 【重要】*Windows* ユーザーの方へ: *Git* (https://git-for-windows.github.io/)をダウンロードし *Git bash* から作業を行うことを推奨しています。また`cURL` for Windows (https://curl.haxx.se/download.html)のダウンロードも推奨しています。
+
+IBM Cloud Functionsの利用のはじめの一歩:
+1. ブラウザウィンドウを開きます。
+2. https://console.ng.bluemix.net/openwhisk/ にアクセスします。
+3. IBM Cloudにログインします。  
+   アカウントを持っていない場合は`「フリーアカウントの作成」`をクリックするか,
+   https://console.ng.bluemix.net/registration/ に直接アクセスしてアカウントを作成します。
+4. `アメリカ南部`または`英国`のどちらかのリージョンを選択します。(自国に近い地域を選択すると良いでしょう。) `アメリカ南部`を選択しなかった場合、今後出てくる`URL`内の`.ng`フラグメントを他のものに変える必要があります。`英国`の場合は`.eu-gb`となります。Make sure to pick one of the following regions (pick the one closer to where you are): `US South` or `United Kingdom`
+5. `「CLIのダウンロード」`をクリックします。
+6. 手順の1から3に従って作業します。(4は必須ではありません) ここには、CLIのダウンロード、Cloud Functionsプラグインをインストール、 APIのエンドポイント・組織・namespaceを選択してBluemixにログインするという作業が含まれます。
 
 # Start your engines!
 
@@ -1055,27 +1064,27 @@ At the center the dashboard visualizes the invocation counts over time represent
 
 Play around with the actions, triggers, etc., you have created before, i.e. fire triggers, invoke actions and have a look at the monitoring dashboard while doing so.
 
-# Build a weather engine!
+# 天気予報エンジンを作る！
 
-Now, let's build, based on all you learned, a more reasonable and useful demo.
+さあ、あなたが学んだことをもとに、役立つデモを構築しましょう
 
-The demo creates a bot for *Slack* that can help notify users about weather forecasts. Users can ask the bot for a forecast for a specific location by sending a chat message. The bot can also be configured to send the forecast for a location at regular intervals, e.g. every day at 8am.
+このデモでは、ユーザーに天気予報を通知する*Slack*用のボットを作成します。ユーザーはチャットメッセージを送信する事により、ボットに特定の場所の予測を尋ねることが出来ます。例えば毎日午前８時のように、ボットは定期的な感覚で位置の予測を送信するように設定することも出来ます。
 
-The bot needs to perform a few functions, e.g. convert addresses to locations, retrieve weather forecasts for locations and integrate with *Slack*. Rather than implementing the bot as a monolithic application, containing the logic for all of these features, we want to go and deploy it as separate services.
+ボットはいくつかの機能が必要です。例えばアドレスを場所に変換し、場所の天気予報を取得し、*Slack*と統合します。ボットをモノシリックアプリケーションとして実装するのではなく、これらすべての機能のロジックを含んでいるため、別のサービスとして展開したいと考えています。
 
-Later, we'll look at using sequences to bind them together to create our bot without writing any code.
+後に、シーケンスを使用してバインドする方法を見ていきます。コードを書かずにボットを作成することができます。
 
-Notice that you can create (most of) the artifacts discussed below using either the CLI (as shown further below) or the OpenWhisk UI – up to you.
+Notice ここで説明する成果物のほとんどの物は、CLIもしくはOpenWhisk UIのどちらかで作成できます。　あなた次第です。
 
-## Address to locations service
+## 住所を位置情報へ
 
-This service handles retrieving `latitude` and `longitude` coordinates for addresses using an external Geocoding API.
+このサービスは外部のジオコーディングAPIを使用して住所の「緯度」と「経度」の座標値の取得を行います。
 
-The action (microservice) implements the application logic within a single function (`main`) just the way we have learned it earlier. The same way we did it before, parameters are passed in as an object argument (`params`) to the function call. The service makes an API call to the *Google* Geocoding API, returning the results from the calls' response for the first address match.
+アクション（マイクロサービス）は、以前に触れたように、単一の関数(`main`)内でアプリケーションロジックを実装します。以前と同じように、パラメータはオブジェクトの引数(`params`)として関数呼び出しに渡されます。サービスは*Google*ジオコーディングAPIへのAPI呼び出し行い、最初のアドレス一致の呼び出しの応答から結果を返します。
 
-Notice that returning a `Promise` from the function means we can return the service response asynchronously.
+Notice 関数から`Promise`を返すことは、サービス応答を非同期に返すことが出来ることを意味します。
 
-Let's first create the action (name it `location_to_latlong`) using the following code. As said before, you can create it using the CLI or the OpenWhisk UI just the way you have learned it earlier:
+では、次のコードを使ってアクション(名前は`location_to_latlong`)を作りましょう。これまで述べたように、CLIやOpenWhisk UIを使用して、以前に学んだ方法と同じように作成する事ができます:
 
 ```javascript
 var request = require("request");
@@ -1105,14 +1114,14 @@ function main(params) {
 }
 ```
 
-Next, let's deploy the action the way you learned it earlier:
+次に、以前に学習した方法でアクションを展開しましょう:
 
 <pre>
 $ bx wsk action create location_to_latlong location_to_latlong.js
 <b>ok:</b> created action <b>location_to_latlong</b>
 </pre>
 
-Next, let's test the action:
+次に、アクションをテストしましょう:
 
 <pre>
 $ bx wsk action invoke location_to_latlong -b -r -p text "London"
@@ -1122,21 +1131,22 @@ $ bx wsk action invoke location_to_latlong -b -r -p text "London"
 }
 </pre>
 
-## Forecast from location service
+## 位置情報からの予測
 
-Now, let's implement the service for finding forecasts for locations.
+ここで、位置情報から予測を検索するサービスを実装しましょう。
 
-The service uses an external API to retrieve weather forecasts for locations, returning the text description for weather in the next 24 hours.
+このサービスでは、外部APIを使用して地域の天気予報を取得し、24時間以内に天気のテキストの説明を返します。
 
-Hence, we first need to create an instance of the *Weather Company Data service*.  
-To do so click the `Catalog` link at the top right of the screen.  
-From the menu appearing on the left of the screen select `Data & Analytics`.  
-Next, click `Weather Company Data`.  
-Leave all settings as they are and click the `Create` button at the bottom right of the screen.  
-Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
-Note down `username` and `password`. If you use the service not in US-South also note down the `host`.
+まず、*Weather Company Data service*.のインスタンスを作成する必要があります。
+これをするには、画面の右上にある「カタログ」リンクをクリックしてください。
+画面の左側に表示されるメニューから「データ＆分析」を選択します。
+次に`Weather Company Data`をクリックします。
+すべての設定をそのままにして、画面右下にある「作成」ボタンをクリックします。
+次に、`サービス資格情報`タブに切り替え`資格情報の表示`リンクをクリックします。
+※訳注）`資格情報の表示`が存在しない場合、`新規資格情報`を一度クリックし、作成します。
+Note `username` and `password`を書き留めてください。もし米国南部に無いサービスを使用する場合は、`host`を書き留めてください。
 
-Again, let's create the action (name it `forecast_from_latlong`) using the following code:
+次のコードを使用してアクション(名前は`forecast_from_latlong`)を作成しましょう:
 
 ```javascript
 var request = require("request");
@@ -1169,16 +1179,16 @@ function main(params) {
 }
 ```
 
-Next, let's deploy the action again:
+次に、アクションを再度デプロイしてみましょう:
 
 <pre>
 $ bx wsk action create forecast_from_latlong forecast_from_latlong.js
 <b>ok:</b> created action <b>forecast_from_latlong</b>
 </pre>
 
-Notice that the service expects four parameters, `latitude` and `longitude` coordinates along with the `API credentials` (the ones you noted down before). Passing in `API credentials` as parameters means you don't have to embed them within the code and can change them dynamically at runtime.
+Notice サービスは４つのパラメータ、`緯度`と`経度｀が`サービス資格情報`(これまでに書き留めたもの)と一緒になることを期待しています。パラメータとして、`サービス資格情報`を渡すと、コード内に埋め込む必要がなくなり、実行時に動的に変更することが出来ます。
 
-Let's test the action again:
+アクションをもう一度試してみましょう:
 
 <pre>
 $ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt; -b -r
@@ -1187,16 +1197,16 @@ $ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p us
 }
 </pre>
 
-Since we do not want to pass in the `API credentials` with every request, let's bind them as default aka bound parameters to the action. This means we only need to invoke the service with the `latitude` and `longitude` parameters.
+リクエストごとに`サービス資格情報`を渡したくないので、デフォルトの別名バインドされたパラメータをアクションにバインドしましょう。つまり、`緯度`と`経度`パラメータでサービスを呼び出すだけです。
 
-Let's update the action and bind said parameters:
+アクションを更新し、上記のパラメータをバインドしましょう:
 
 <pre>
 $ bx wsk action update forecast_from_latlong -p username &lt;username&gt; -p password &lt;password&gt; -p host &lt;host&gt;
 <b>ok:</b> updated action <b>forecast_from_latlong</b>
 </pre>
 
-Let's test the action again:
+アクションをもう一度試してみましょう:
 
 <pre>
 $ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
@@ -1205,32 +1215,32 @@ $ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -b -r
 }
 </pre>
 
-## Sending messages to Slack
+## Slackへのメッセージ送信
 
-Once we have a forecast, we need to send it to *Slack* as a message from our bot. *Slack* provides an easy method for writing simple bots using their *webhook* integration. Incoming webhooks provide applications with `URLs` to send data to using normal *HTTP* requests. The contents of the *JSON* request body will be posted into the channel as a bot message.
+予測ができたら、ボットのメッセージとして*Slack*に送信する必要があります。*Slack*は、*webhook*を利用して単純なボットを書く簡単な方法を提供します。着信webhookは、通常の*HTTP*リクエストを使用してデータを送信するURLをアプリケーションに提供します。*JSON*リクエスト本文の内容はぼっとメッセージとしてチャンネルに投稿されます。
 
-First, create a new team on *Slack* by navigating to https://slack.com/ and clicking the `Create new team` link at the very top of the screen.
+まず、https://slack.com/ にアクセスし、画面の一番上にある「新しいチームを作成」リンクをクリックして、*Slack*上に新しいチームを作成します。
 
-Just follow the instructions to create a team:  
-Provide your `mail address` and click the `Next` button.  
-Provide the `confirmation code` you have been send via mail.  
-Provide your `first name`, `last name`, and `username` and click the `Continue to password` button.  
-Specify a `password` and click the `Continue to Team Info` button.  
-Select an option like `Shared interest group` to specify what you will use *Slack* for and click the `Continue to Group Name` button.  
-Provide an arbitrary `group name` and click the `Continue to Team URL` button.  
-Provide an arbitrary `team URL` and click the `Create Team` button.  
-Skip the process for sending invitations by clicking the `Skip for Now` button, then click the `Explore Slack` button to get started.  
-Finally, type something into the text field at the very bottom to get started.
+指示に従ってチームを作成してください:
+あなたの`メールアドレス`を入力し、`次へ`ボタンをクリックしてください。
+メールで送信した`確認コード`を入力してください。
+あなたの`名前`、`名字`、`ユーザ名`を入力して、`パスワード設定へ進む`ボタンをクリックします。
+`パスワード`を設定し、`チーム情報設定へ進む`ボタンをクリックしてください。
+`関心のあるグループ`のようなオプションを選択して*Slack*を使用する物を指定し、`グループ名設定に進む`ボタンをクリックします。
+任意の`グループ名`を入力し、`チームURL指定へ進む`ボタンをクリックします。
+任意の`チームURL`を入力し、`チームの作成`ボタンをクリックします。
+`スキップ`ボタンをクリックして招待状を送信するプロセスをスキップし、`Slackを探索`ボタンをクリックして開始してください。
+最後に、最下部のテキストフィールドに何かを入力して開始します。
 
-To create a communication channel proceed as follows:  
-Click the little `+` icon next to the text `CHANNELS` on the left of the screen.  
-Then, simply provide the name `weather` for your channel and click the `Create Channel` button.
+コミュニケーションチャンネルを作成する方法は次のとおりです:
+画面左側の`チャンネル`という文字の隣にある小さな`+`アイコンをクリックします
+そして、あなたのチャンネルに`weather`という名前をつけて、`チャンネルを作成する`ボタンをクリックするだけです。
 
-*Slack* is set up.
+*Slack*が設定できました。
 
-We could now write another action (microservice) to handle sending these *HTTP* requests but, as you already know, OpenWhisk comes with integrations (provided by packages) for a number of third-party systems meaning we don't have to.
+これらの*HTTP*リクエストの送信を行う別のアクション(マイクロサービス)を書くことが出来ましたが、既にご存知のように、OpenWhiskには、多くのサードパーティ製システムのインテグレーション(パッケージ提供)が付属しています。
 
-Let's once again review which packages are available:
+利用可能なパッケージをもう一度見直してみましょう:
 
 <pre>
 $ bx wsk package list /whisk.system
@@ -1248,7 +1258,7 @@ $ bx wsk package list /whisk.system
 /whisk.system/pushnotifications        shared
 </pre>
 
-The package potentially being of interest is the `Slack` package; so let's see what's in there:
+ここでは`Slack`パッケージに注目します。この中にあるものを見てみましょう:
 
 <pre>
 $ bx wsk package get --summary /whisk.system/slack
@@ -1257,57 +1267,55 @@ $ bx wsk package get --summary /whisk.system/slack
  <b>action</b> /whisk.system/slack/post: Post a message to Slack
 </pre>
 
-We can invoke the action to post messages to *Slack* without writing any code.
+コードを記述することなく*Slack*にメッセージを投稿するアクションを呼び出す事ができます。
 
-Notice that you first have to replace the incoming webhook `URL` with yours. To find out about yours proceed as follows:
+Notice 最初に着信webhookの`URL`をあなたのものに置き換える必要があります。あなたの着信webhookを知るには、次の手順で進めてください:
 
-Click on your teams' name at top left of the screen.  
-From the menu appearing select `Customize Slack`.  
-Click the `hamburger` icon and the top left of the screen and select `Configure Apps`.  
-Click `Custom Integrations`.  
-On the new screen enter the word `incoming` into the search field, then select the entry `Incoming WebHooks`.  
-Next, click the `Add Configuration` button.  
-Next, select the `weather`channel you have created before and click the `Add Incoming WebHooks integration` button.  
-Then copy the `URL` being shown under `Webhook URL`.
+画面左上のあなたのチーム名をクリックします。
+表示されるメニューから`App管理`を選択します。
+画面上の`Appディレクトリを検索`に`incoming`を入力し、`着信Web フック`というエントリを選択します。
+次に`設定を追加`をクリックします。
+次に先ほど作成した`weather`チャンネルを選択し、`着信Web フック インテグレーションの追加`ボタンをクリックします。
+次に`Webhook URL`項目に表示された`URL`をコピーします。
 
 <pre>
 $ bx wsk action invoke /whisk.system/slack/post -p url https://hooks.slack.com/services/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 -p channel weather -p text "Hello"
 <b>ok:</b> invoked <b>/whisk.system/slack/post</b> with id <b>78070fe2acb54c70ae49c0fa047aee51</b>
 </pre>
 
-The fact that we can now see the message popping up in your *Slack* channel verifies that this has worked out.
+あなたの*Slack*チャンネルでメッセージがポップアップしているのが見えるということは、これがうまく行ったことを証明します。
 
-Again, we would like to bind default parameters for the action but this isn't (yet) supported without copying global packages to your local namespace first.
+繰り返しますが、アクションのデフォルトパラメータをバインドしたいのですが、グローバルパッケージをローカルネームスペースに最初にコピーしない限り、これはサポートされていません。
 
-So, let's do this now:
+では、やってみましょう:
 
 <pre>
 $ bx wsk action create --copy webhook /whisk.system/slack/post -p url https://hooks.slack.com/services/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 -p channel weather -p username "Weather Bot" -p icon_emoji ":sun_with_face:"
 <b>ok:</b> created action <b>webhook</b>
 </pre>
 
-This customized *Slack* service can be invoked with just the `text` parameter and gives us a friendly bot message in the `weather` channel:
+カスタマイズされた*Slack*サービスは`text`パラメータだけで呼び出すことができ、`weather`チャンネルにフレンドリーなメッセージを送れます:
 
 <pre>
 $ bx wsk action invoke webhook -p text "Hello again"
 <b>ok:</b> invoked <b>webhook</b> with id <b>a4044f7192544d69bc179a991a970559</b>
 </pre>
 
-## Creating the weather bot using sequences
+## シーケンスを利用してお天気ボットを作成する
 
-Right, we have the three actions (microservices) to handle the logic in our bot. Now let's create a sequence to chain these three pieces together just the way we have learned it earlier:
+ボットのロジックを処理する3つのアクション(マイクロサービス)があります。ここでは、これらの3つの要素を以前に学習した方法でつなげるシーケンスを作成しましょう:
 
-Let's define a new sequence for our bot to join these services together.
+それではボットがこれらのサービスに参加するための新しいシーケンスを定義しましょう。
 
 <pre>
 $ bx wsk action create location_forecast --sequence location_to_latlong,forecast_from_latlong,webhook
 <b>ok:</b> created action <b>location_forecast</b>
 </pre>
 
-With this meta-service defined, we can invoke the `location_forecast` action with the input parameter for the first service (`text`). As a result the forecast for that location should appear in *Slack*.
+このメタサービスを定義すると、最初のサービス（`text`）の入力パラメータで` location_forecast`アクションを呼び出すことができます。 その結果、その場所の予報が*Slack*に表示されます。
 
-Let's test this.  
-The result should look similar to this:
+それでは試してみましょう。
+結果は次のようになります:
 
 <pre>
 $ bx wsk action invoke location_forecast -p text "London" -b
@@ -1331,38 +1339,39 @@ $ bx wsk action invoke location_forecast -p text "London" -b
 }
 </pre>
 
-To enable the action to be called as a web action finally enter:
+アクションをWebアクションとして呼び出すには、次のように入力します:
 
 <pre>
 $ bx wsk action update location_forecast --web true
 <b>ok:</b> updated action <b>location_forecast</b>
 </pre>
 
-## Bot forecasts
+## ボットの予報
+ここでの問題は、ボットが予報に必要な場所をどのようにして知ることができるかです。
 At this point the question is how we can ask the bot for forecasts about a location?
 
-*Slack* provides outgoing webhooks that will post *JSON* messages to external `URLs` when keywords appear in channel messages. Setting up a new outgoing webhook for your channel will allow users to say `weather: london` and have the bot respond.
+*Slack*は、チャンネルメッセージにキーワードが現れたときに*JSON*メッセージを外部のURLにポストする発信webhookを提供します。あなたのチャンネルに新しい発信Webhookを設定すると、ユーザーは`wetaher: london`という事でボットに応答させることができます。d.
 
-Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel we have created prior.
+したがって、定義されたトリガーワードで始まるメッセージが以前に作成した`weather`チャンネル経由で送信されると、アクションが適切に呼び出されていることを確認する必要があります。
 
-To make that happen proceed as follows:  
-When being in the channel just created click the `Gear` icon at the very top and select the `Add an app or integration` link from the menu appearing.  
-On the new screen enter the word `outgoing` into the search field, then select the entry `Outgoing WebHooks`.  
-Next, click the `Add Configuration` and the `Add Outgoing WebHooks integration` buttons.  
-As `channel` select the channel you have created before.  
-As `trigger` word specify `weather`.  
-As `URL` specify the `web action URL` pointing to the `location_forecast` action – like this:
+これを実現するには、次のように進めます:
+チャンネルに入ったら、一番上にある歯車アイコンをクリックし、表示されたメニューから `アプリを追加する`リンクを選択してください。
+画面上の検索フィールドに`outgoing`という単語を入力し、`発信 Webフック`を選択します。
+次に`設定を追加`と`発信 Webフック インタグレーションの追加`ボタンをクリックします。
+インテグレーションの設定の`チャンネル`に以前に作成したチャンネルを選択します。
+`引き金となる言葉`に`weather`を指定します。
+`URL`には`location_forecast`アクションの`web action URL`を以下のように指定します:
 `https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/location_forecast.json`  
-Then click the `Save Settings` button.
+次に、`設定を保存する`ボタンをクリックします。
 
-Now, navigate back to the browser tab showing your channels and enter the following into the channels' messaging field:
+次に、チャンネルを表示しているブラウザタブに戻り、チャンネルのメッセージ欄に以下を入力します:
 `weather: london`
 
-## Connecting to triggers
+## トリガーに接続する
 
-As you learned earlier, triggers are used to represent event streams from the external world into OpenWhisk. They can be invoked manually, through the *REST* API, or automatically, after connecting to trigger feeds. Actions can be bound to triggers using rules. When a trigger is fired, the action is invoked together with the request parameters. Multiple actions can listen to the same trigger.
+これまで学んだように、トリガーは外部からOpenWhiskへのイベントストリームを表すために使用されます。*REST* APIを使用して手動で呼び出すことも、トリガー フィードに接続してから自動的に呼び出すこともできます。アクションはルールを使用してトリガーにバインド出来ます。複数のアクションが同じトリガーを拾うすることが出来ます。
 
-Let's now look at binding the bot service to a sample trigger and invoke it indirectly by firing that trigger:
+ボットサービスをサンプルトリガーにバインドし、そのトリガーを起動して間接的に呼び出す方法を見てみましょう:
 
 <pre>
 $ bx wsk trigger create forecast
@@ -1375,19 +1384,19 @@ $ bx wsk trigger fire forecast -p text "London"
 <b>ok:</b> triggered <b>forecast</b> with id <b>49914a20416d416d8c90282d59eebee3</b>
 </pre>
 
-Once we fired the trigger, passing in the `text` parameter, the bot was automatically invoked and posted the forecast for `London` to the channel.
+トリガーを起動し、`text`パラメーターを渡すと、ボットは自動的に呼び出され、`London`の予報をチャンネルに投稿しました。
 
-Now let's look at invoking the bot every morning to tell us the forecast before we set off for work.
+では、毎朝ボットを起動して仕事を開始する前に予報をしましょう。
 
-## Morning forecasts
+## 朝の予報
 
-Let's now "configure" the trigger to fire automatically whenever a new external event occurs. This will cause all actions bound to this trigger via a rule to be invoked, too.
+新しい外部イベントが発生するたびに自動的に起動するようにトリガーを設定しましょう。これにより、ルールを介してこのトリガーにバインドされたすべてのアクションが呼び出されます。
 
-As said, triggers bind to external event sources during creation by passing in a reference to the external trigger feed to connect to. OpenWhisk's public packages contain a number of trigger feeds that we can use for external event sources.
+これまでのように、トリガは、外部トリガフィードへの参照を渡すことによって、作成中に外部イベントソースにバインドされます。OpenWhiskのパブリックパッケージには、外部イベントソースに使用できる多数のトリガフィードが含まれています。
 
-One of those public trigger feeds is in the `alarm` package we already used earlier. As seen, this alarm feed executes triggers at pre-specified intervals. Using this feed with our weather bot trigger, we could set it up to execute every morning for a particular address and tell us the forecast every for London before we set off for work.
+これらのパブリックトリガフィードの1つは、既に以前使用した`alarm`パッケージに含まれています。このように、このアラームフィードは予め指定された感覚でトリガを実行します。ウェザーボットのトリガーでこのフィードを使用することで、毎朝特定の住所について実行しロンドンの予報を行うことができます。
 
-Let's do that now:
+ではやってみましょう:
 
 <pre>
 $ bx wsk package get /whisk.system/alarms --summary
@@ -1402,9 +1411,9 @@ $ bx wsk rule create regular_forecast_rule regular_forecast location_forecast
 <b>ok:</b> created rule <b>regular_forecast_rule</b>
 </pre>
 
-The trigger schedule is provided by the `cron` parameter, which we've set up to run every ten seconds to test it out. By binding this new trigger to our bot service, the forecast for London starts to appear in the channel.
+トリガースケジュールは`cron`パラメータによって提供されます。これはテストするために10秒ごとに実行するように設定されています。この新しいトリガーをボットサービスに結びつけることで、ロンドンの予報がチャンネルに表示されはじめます。
 
-Okay, that's great but let's turn off this alarm before it drives us mad:
+さて、うまくいったので怒られる前にアラームを止めておきましょう:
 
 <pre>
 $ bx wsk rule disable regular_forecast_rule
@@ -1797,7 +1806,7 @@ So far we have developed application logic only contained in single actions (aka
 
 While the implementation of such microservices is rather simple, their composition or orchestration is way more complex. That's why frameworks like Kubernetes with additions like Istio have meanwhile become very popular. With IBM's new *Composer*  developers can now build apps that leverage multiple functions and that require more complex, coordinated flows for end to end solutions.
 
-Composer is a programming model (extension) for composing individual functions into larger applications. *Compositions*, informally named *apps*, run in the cloud using automatically managed compute and memory resources. Composer enables stateful computation, control flow, and rich patterns of data flow. 
+Composer is a programming model (extension) for composing individual functions into larger applications. *Compositions*, informally named *apps*, run in the cloud using automatically managed compute and memory resources. Composer enables stateful computation, control flow, and rich patterns of data flow.
 
 This means Composer allows to develop more complex serverless applications by combining multiple functions using control logic and state.
 
@@ -1949,7 +1958,7 @@ $ fsh app invoke demo_repeat -p count 10
 </pre>
 
 And finally, another easy to understand and out-of-the-box available composition methods is the `while`:
-`composer.while(condition, task)` runs `task` repeatedly while `condition` evaluates to true. 
+`composer.while(condition, task)` runs `task` repeatedly while `condition` evaluates to true.
 
 Let's first define the composition (and store it in a file named `demo_while.js`):
 
@@ -1962,7 +1971,7 @@ Now, let's define the function `condition_while` (to be stored in a file named `
 ```javascript
 function main(params) {
     x = Math.random();
-    
+
     if (x > 0.2) {
         return { value: true};
     }
