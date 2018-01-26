@@ -79,9 +79,9 @@
 
 # Preface
 
-Before you start, please note that **IBM Bluemix OpenWhisk** has recently been renamed to **IBM Cloud Functions**. This means that, from an official point of view, **Apache OpenWhisk** refers to the open-source project being available on Apache, while **IBM Cloud Functions** refers to IBM's serverless platform running on top of IBM's public cloud (IBM Bluemix). IBM Cloud Functions is entirely based on Apache OpenWhisk as both projects share the same core codebase. 
+Before you start, please note that **IBM Bluemix OpenWhisk** has recently been renamed to **IBM Cloud Functions**. This means that, from an official point of view, **Apache OpenWhisk** refers to the open-source project being available on Apache, while **IBM Cloud Functions** refers to IBM's serverless platform running on top of IBM's public cloud (IBM Bluemix). IBM Cloud Functions is entirely based on Apache OpenWhisk as both projects share the same core codebase.
 
-In the following we will, for reasons of simplicity and since most examples would also work on any (locally) hosted OpenWhisk deployment, refer to **OpenWhisk** only and not distinguish between Apache OpenWhisk and IBM Cloud Functions even though we will run many of the examples on top of IBM Bluemix. 
+In the following we will, for reasons of simplicity and since most examples would also work on any (locally) hosted OpenWhisk deployment, refer to **OpenWhisk** only and not distinguish between Apache OpenWhisk and IBM Cloud Functions even though we will run many of the examples on top of IBM Bluemix.
 
 During this workshop you will learn how to develop **serverless applications** composed of loosely coupled microservice-like functions. You'll explore OpenWhisk's latest *CLI* (command line interface) and UI and become an OpenWhisk star by implementing a weather bot using *IBM's Weather Company Data service* and *Slack*. You will also investigate how to use other capabilities such us our API Gateway integration allowing you to easily expose functions via API endpoints. You will have a first glance at our research-driven tech-preview called *Composer* allowing you to compose more complex serverless applications by combining multiple functions using control logic and state. Finally, you will find out how to package and deploy your entire serverless application together using the *Serverless Framework*.
 
@@ -134,7 +134,7 @@ A few important notes before you start:
 In order to use OpenWhisk proceed as follows:
 1. Open a browser window
 2. Navigate to https://console.ng.bluemix.net/openwhisk/
-3. Log-in with your Bluemix account  
+3. Log-in with your Bluemix account
    Create one if you do not yet have one by clicking the `Sign Up` link or by directly navigating to https://console.ng.bluemix.net/registration/
 4. Make sure to pick one of the following regions (pick the one closer to where you are): `US South` or `United Kingdom`
    Note that when not picking `US South` the `.ng.` fragment of some of the `URLs` shown later needs to be replaced with other fragments, for instance for the region `United Kingdom` with `.eu-gb.`.
@@ -204,7 +204,7 @@ The ```activation id``` can be used to retrieve the logs or the result of an (as
 <pre>
 $ bx wsk activation list
 <b>activations</b>
-dde9212e686f413bb90f22e79e12df74             hello                                   
+dde9212e686f413bb90f22e79e12df74             hello                                 
 eee9212e686f413bb90f22e79e12df74             hello
 </pre>
 
@@ -625,38 +625,37 @@ As an alternative to the CLI, you can also use the OpenWhisk UI, esp. the visual
 
 ## Getting started with the OpenWhisk UI
 
-First, open a browser window, navigate to https://console.ng.bluemix.net/openwhisk/ and click `Develop`.
+First, open a browser window, navigate to https://console.ng.bluemix.net/openwhisk/. If you are not at the overview page, go to `Getting Started` and `Overview`.
 
 The OpenWhisk UI is comprised of the following sections:
 
-1. `My Actions`  
-   The `My Actions` section lists all actions you have created previously.  
-   Clicking an action loads its code into the code editor.  
-   Hovering over an action lets a trash bin appear allowing to delete the action.  
-   At this point in time you should at least see the `hello` action we have created earlier.  
+1. `Getting started`
+    The `Getting started` section provides some information about IBM Cloud Functions like the pricing, links to the CLI and the documentation.
 
-2. `My Sequences`  
-   The `My Sequences` section lists all the sequences you have created previously.  
-   Clicking a sequence loads its model into the visual modeler.  
-   Hovering over a sequence lets a trash bin appear allowing to delete the sequence.  
+2. `Actions`
+    The `Actions` section lists all actions you have created previously.
+    Clicking an action loads its code into the code editor.
+    At this point in time you should at least see the `hello` action we have created earlier.
 
-3. `My Rules`  
-   The `My Rules` section lists all the rules you have created previously.  
-   Clicking a rule loads its model into the visual modeler.  
-   Hovering over a rule lets a trash bin appear allowing to delete the rule.  
-   At this point in time you should at least see the `myRule` rule we have created earlier.  
+3. `Triggers`
+    The `Triggers` section lists all the triggers you have created previously.
+    Clicking on a trigger loads its connected actions.
 
-4. `My Triggers`  
-   The `My Triggers` section lists all the triggers you have created previously.  
-   Hovering over a trigger lets a flash icon appear allowing to fire the trigger as well as a trash bin allowing to delete the trigger.
+4. `Monitor`
+    The `Monitor` section provides you information about your activations, that were running in the past.
+    Here you can see, how many of them were successful and some statistics about them.
+
+5. `APIs`
+    With the `APIs` section you can create and manage your API-Gateways. They will be described later in this lab.
+
 
 ## Actions
 
 Let's start exploring the UI by creating some simple first actions similar to the ones we have created before when having used the CLI.
 
-First, click the `Create an Action` button.  
-Next, specify a name (e.g. `helloUI`) by entering it into the text field prefilled with the text `Choose a name for your new action`.  
-Leave everything else as-is and click the `Create Action` button at the bottom of the screen.
+When you are on the Overview page, click the `Start Creating` and the `Create Action` button.
+Next, specify a name (e.g. `helloUI`) by entering it into the text field prefilled with the text `Choose a name for your new action`.
+Leave everything else as-is and click the `Create` button at the bottom of the screen.
 
 Notice that even though you did not change any configuration options, you would have had the option to change the `language` you want to implement your action in as well as the `memory quota` and the `time limit`. Click the `Learn more` links for additional details and feel free to play around with these options on your own.
 
@@ -668,9 +667,7 @@ function main() {
 }
 ```
 
-Next, click the `Run this Action` button to test the action directly from within your browser.  
-Before being able to run your action you need to make it live, hence click the `Make It Live` button when being prompted to do so.  
-Afterwards click the `Run with this Value` button.
+Next, click the `Save` button and the `Invoke` button to test the action directly from within your browser.
 
 Notice that you do not need to specify any *JSON* input as the action is not expecting any parameters to be handed over.
 
@@ -682,8 +679,8 @@ You should see the following result:
 }
 </pre>
 
-Next, to see how things work when working with an action accepting parameters click the `Create an Action` button again.  
-Then, once again, specify a name (e.g. `helloUI2`) and click the `Create Action` button.
+Next, to see how things work when working with an action accepting parameters go back to the `Actions` section and click the `Create` button again.
+Then, once again, click `Create Action`, specify a name (e.g. `helloUI2`) and click the `Create` button.
 
 Next, copy the following code into the code editor replacing any existing code:
 
@@ -693,9 +690,9 @@ function main(params) {
 }
 ```
 
-Once again, click the `Run this Action` button and follow the same procedure as before to test this action directly from within your browser.
+Once again, click the `Save` button.
 
-Notice that you this time need to specify some *JSON* input to specify proper parameter values. For instance, you could specify the following input:
+Notice that you this time need to specify some *JSON* input to specify proper parameter values. To do this, click on `Change Input` and specify something like the following input:
 
 ```json
 {
@@ -703,6 +700,8 @@ Notice that you this time need to specify some *JSON* input to specify proper pa
     "place": "Stuttgart, Germany"
 }
 ```
+
+Afterwards, click the `Invoke` button and follow the same procedure as before to test this action directly from within your browser.
 
 You should see the following result:
 
@@ -716,9 +715,9 @@ You should see the following result:
 
 Actions cannot only be invoked via the CLI or the OpenWhisk UI, they can also be invoked via simple *REST* API calls. All you need to do is to `POST` against the correct *REST* API endpoint.
 
-To find out about the correct *REST* API endpoint for a particular action, select the action, e.g. the `helloUI` action we have created earlier, and click the `View REST Endpoint` link at the bottom right of the code editor.
+To find out about the correct *REST* API endpoint for a particular action, select the action, e.g. the `helloUI` action we have created earlier, and click the `Endpoints` link at the left of the code editor.
 
-To test this use the `cURL URL`; just click the `Copy` button displayed next to the `cURL URL` shown and submit it.
+To test this use the `URL`; just click the `Copy` button displayed next to the `URL` shown and submit it.
 
 For instance, to invoke the `helloUI` action we have created earlier submit a call like this:
 
@@ -825,22 +824,20 @@ Again, invoke the web action via your browser. You should see the the message `H
 
 Also, actions cannot only be invoked in a blocking (synchronous) or non-blocking (asynchronous) fashion as explained before, they can also be invoked *periodically*.
 
-To test this open the OpenWhisk UI and select the `helloUI` action we have created earlier.  
-Next, click the `Automate this Action` button at the bottom right of the code editor.  
-Next, from the next screen appearing select the `Periodic` icon.  
-Next, create a new trigger aka alarm by clicking the `New Alarm` icon.  
-To keep things simple select the `:MM minutes` icon and specify `N` to be `1` so that they action is supposed to be executed every minute.  
-Specify a name for the periodic trigger and click the `Create Periodic Trigger` button.  
-Finally, click `Next`, then `This Looks Good`, and then `Save Rule`.
+To test this open the OpenWhisk UI and select the `helloUI` action we have created earlier.
+Next, click the `Connected triggers` button at the left of the code editor.
+Next, from the next screen appearing click `Add Trigger` and select the `Periodic` icon.
+To keep things simple select `Every minute` pattern at `UTC minutes` so that they action is supposed to be executed every minute.
+Specify a name for the periodic trigger and click the `Create & Connect` button.
 
-To see the result click the `View Activity` button which redirects you to the dashboard. You should see a periodic invocation every minute – to stop this you have to disable the rule that has been created – will you find out how this can be done?
+To see the result go to the `Monitoring` section. You should see a periodic invocation every minute – to stop this you have to disable the trigger that has been created – will you find out how this can be done?
 
 ## Logging
 
 Of course, OpenWhisk allows you to add custom log statements to your actions, too.
 
-To see how logging works click the `Create an Action` button again.  
-Then, once again, specify a name (e.g. `helloLogging`) and click the `Create Action` button.
+To see how logging works click the `Create` button on the `Actions` section again.
+Then, once again, click `Create Action`, specify a name (e.g. `helloLogging`) and click the `Create` button.
 
 Next, copy the following code into the code editor replacing any existing code:
 
@@ -851,7 +848,7 @@ function main(params) {
 }
 ```
 
-Once again, click the `Run this Action` button and follow the same procedure as before to test this action directly from within your browser.
+Once again, click the `Save` and the `Invoke` button and follow the same procedure as before to test this action directly from within your browser.
 
 You should see the following result:
 
@@ -861,9 +858,7 @@ You should see the following result:
 }
 </pre>
 
-To review the log you can click the `Show Logs` link after having invoked the action.
-
-You should a log statement like this:
+And you should a log statement like this:
 
 <pre>
 2016-10-18T08:36:34.472273207Z stdout: Running helloLogging...
@@ -880,15 +875,15 @@ https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-dock
 
 As you have already seen before, OpenWhisk provides you, out of the box, with a shared collection of actions and triggers as part of so called packages. The OpenWhisk UI makes it even easier to explore and test available packages. Let's learn how to do so now.
 
-First, click the `Browse Public Packages` button at the top right of the screen.  
+First, click the `Browse Public Packages` button at the top right of the screen.
 You'll be presented with a set of packages, represented by some icons, being available.
 
-Click the `Samples` package.  
-At the left of the screen you will be shown a short description of the functionality this package provides you with. At the top center of the screen you can access the different actions and triggers the package provides you with (notice that the samples package provides you only with actions).  
+Click the `Samples` package.
+At the left of the screen you will be shown a short description of the functionality this package provides you with. At the top center of the screen you can access the different actions and triggers the package provides you with (notice that the samples package provides you only with actions).
 You can choose between the following actions: `curl`, `greeting`, `helloWorld`, `wordCount`. For each action a short description and sample input you can feed it with as well as sample output you can expect to get when invoking the action is being provided.
 
-Let's play with the `wordCount` action.  
-Hence, select the `wordCount` action and read the description to understand its purpose. Also review the sample input to understand how to properly feed the action when invoking it as well as the sample output to understand what you can expect after having invoked it.  
+Let's play with the `wordCount` action.
+Hence, select the `wordCount` action and read the description to understand its purpose. Also review the sample input to understand how to properly feed the action when invoking it as well as the sample output to understand what you can expect after having invoked it.
 Click the `Run this Action` button.
 
 Based on the sample input you have been shown before, specify the following input and click the `Run with this Value` button:
@@ -909,9 +904,9 @@ You should see the following result:
 
 Instead of just reusing a package-provided action as-is you can also view its code (which you may want to use as a basis for your own action).
 
-Let's review the code of the `curl` action.  
-Hence, navigate back to the catalog (to do so you probably want to click the `Close` button to close the invocation console) and click the `Samples` package again.  
-This time select the `curl` action and read the description to understand its purpose.  
+Let's review the code of the `curl` action.
+Hence, navigate back to the catalog (to do so you probably want to click the `Close` button to close the invocation console) and click the `Samples` package again.
+This time select the `curl` action and read the description to understand its purpose.
 Next, click the `View Source` button to (re)view and understand the action's code.
 
 At this point feel free play with the other packages being available.
@@ -924,7 +919,10 @@ Therefore, let's first create a very simple action (name it `echo`) the same way
 
 ```javascript
 function main(params) {
-    return { payload: "Life is " + params.payload };
+    return {
+        payload: "Life is " + params.payload,
+        url: params.url
+    };
 }
 ```
 
@@ -934,25 +932,23 @@ Now, let's assume you want to define a sequence that allows any text you hand ov
 
 To make this happen, let's make use of the `translate` action part of the `Watson` package.
 
-Hence, we first need to create an instance of the `Watson Language Translator` service.  
-To do so click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
-From the menu appearing on the left of the screen select `Watson`.  
-Next, click `Language Translator`.  
-Leave all settings as they are and click the `Create` button at the bottom right of the screen.  
+Hence, we first need to create an instance of the `Watson Language Translator` service.
+To do so click the `Catalog` link at the top right of the screen.
+From the menu appearing on the left of the screen select `Watson`.
+Next, click `Language Translator`.
+Leave all settings as they are and click the `Create` button at the bottom right of the screen.
 Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
 Note down `username` and `password`.
 
-Now, let's try to understand how the mentioned package and action works.  
-Hence, navigate back to the OpenWhisk UI and its catalog (`Browse Public Packages`) and click the `Watson Translator` package.  
-Click the `translator` action and read the description as well as the sample input and output to understand its purpose.
+Now we are ready to use the `Watson Language Translator Service`. To use it, we go back to the `Actions` section and click the `Create` button to create a new action. This time we select `Create Sequence`.
 
-Next, to be able to use Watson, we need to create a binding.  
-Hence, click the `New Binding` button at the left of the screen.  
-Then, specify an arbitrary name and select the `Language Translator` instance you have created before (or specify an arbitrary name and the `username` and `password` you noted down before) and click `Save Configuration`.
+You have to choose a name for your sequence. To use the public `Watson Language Translator` package, you have to select `Use public` packages and select `Watson Translator`.
 
-Next, select the binding (if not already selected), make sure that the `translator` action is still being selected, and click `Run this Action`.
+Afterwards select the `translator` action and create a new binding by clicking `New Binding`. You have to specify a name for your binding. You can take something like `myWatsonTranslator`. As Instance we select `Input your own credentials`. Now you can enter your username and password. Now you can click `Create` to create your sequence.
 
-Specify the following input and click the `Run with this Value` (you may need to click `Make It Live` before) button:
+To view your new action, go back to the `Actions` section. Now you can see a new package on the bottom of the screen, that is called `myWatsonTranslator`. Click on the `translator` action to see its code. You can also invoke the action directly.
+
+To do this, click on `Change Input` and enter the following:
 
 ```json
 {
@@ -960,11 +956,12 @@ Specify the following input and click the `Run with this Value` (you may need to
     "payload": "Wonderful",
     "username": "xxx",
     "translateFrom": "en",
-    "password": "xxx"
+    "password": "xxx",
+    "url": "xxx"
 }
 ```
 
-Notice that you need to replace the values for `username` and `password` with the values you specified when you created the binding. Alternatively, you can remove the parameters `username` and `password` entirely which causes the default bound parameters to be used.
+Notice that you need to replace the values for `username`, `password` and `url` with the values you specified when you created the binding. Alternatively, you can remove the parameters `username` and `password` entirely which causes the default bound parameters to be used.
 
 You should see the following result:
 
@@ -974,21 +971,16 @@ You should see the following result:
 }
 ```
 
-Now, let's chain the two actions together as a sequence.  
-Hence, select the `echo` action you have created earlier.  
-Click the `Link into a Sequence` button from the bottom right of the screen.  
-Then, from the next screen appearing select the `Watson Translator` package and the `translator` action as well as the binding you have created earlier.  
-Then, click the `Add to Sequence` button and then the `This Looks Good` button.  
-Finally, specify a `name` for your sequence (optional) and click the `Save Action Sequence` and afterwards the `Done` button.  
-To test the sequence select it and click the `Run This Sequence` button.
+Now, let's chain the two actions together as a sequence.
+Go back to your sequence, that you have already created. You can find it on the `Actions` section.
+The translator action is already part of the sequence. Now we add the `echo` action by clicking `Add` and select it under the tab `Select Existing`. It will be added by clicking `Add`. As last step, we move the `echo` action to the top of the list, to execute it before the `translator` action.
 
-Specify the following input and click the `Run with this Value` button:
+Now you can set some parameters to execute your sequence. If you did not use the `Watson Translator` in Dallas, you have to specify your URL:
 
-```json
+```JSON
 {
-    "translateTo": "fr",
-    "payload": "wonderful",
-    "translateFrom": "en"
+    "url": "xxx",
+    "payload": "wonderful"
 }
 ```
 
@@ -1006,10 +998,10 @@ You can also work with triggers using the OpenWhisk UI.
 
 Let's assume you want to invoke the `hello` action you have created earlier as soon as something changes in a particular *Github* repository.
 
-First, select the `hello` action.  
-Next, click the `Automate this Action` button at the bottom right of the screen.
-Next, click the `Github` icon.  
-Then, click the `New Trigger` icon.  
+First, select the `hello` action.
+Next, click the `Connected Triggers` button at the left of the screen.
+Next, click `Add Trigger`.
+Next, click the `Github` icon.
 
 Notice that you need a *Github* account to proceed. In case you do not have an account sign-up now.
 
@@ -1021,27 +1013,16 @@ Also notice that you can select the right repository from a pull-down menu after
 
 For events simply specify `*` to listen to all events.
 
-Once you have filled out all input fields click the `Save Configuration` button.  
-Select the trigger you have just created (if not already selected) and click the `Next` button.  
-Next, click the `This Looks Good` button and, finally, the `Save Rule `button.
+Once you have filled out all input fields click the `Create & Connect` button.
 
 For testing purposes let's first fire the trigger manually.
 
-To be able to observe what's going on click the `View Activity` button to open the monitoring dashboard (details about this will be explained further below). At the top right you can see triggers that fired as well as actions that have been invoked.   The view updates itself periodically. You can also refresh it manually by clicking the `refresh` icon.  
-To continue with the test select the browser tab showing your actions, triggers, and rules and hover over the trigger you have just created and click the `lightning` icon followed by the `Run with this Value` button to fire it.  
-In the next screen appearing click the `Run with this Value` button.  
-Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.  
+To be able to observe what's going on click the `Monitor` button to open the monitoring dashboard (details about this will be explained further below). At the top right you can see triggers that fired as well as actions that have been invoked.   The view updates itself periodically. You can also refresh it manually by clicking the `refresh` icon.
 
 Finally, open another browser tab and log into *Github*.
 
-Navigate to your repository and add a file or change a file's content and commit your change.  
+Navigate to your repository and add a file or change a file's content and commit your change.
 Then, navigate back to the browser tab showing the monitoring dashboard where you should see that the trigger has fired and, consequently the `hello` action been invoked.
-
-## Rules
-
-Within the OpenWhisk UI rules are created in a similar way than sequences. You first select an action supposed to become part of the rule. Then you click the `Automate this Action` aka `Create a Rule` button just the way we already did it earlier.
-
-Similarly than triggers rules can be manually invoked by clicking the `Fire This Trigger` button after having selected the rule. Alternatively, you can invoke the action part of a rule only by clicking the `Run Only the Action` button after having selected the rule. Try it out using the rules we have already created earlier.
 
 ## Monitoring
 
@@ -1128,11 +1109,11 @@ Now, let's implement the service for finding forecasts for locations.
 
 The service uses an external API to retrieve weather forecasts for locations, returning the text description for weather in the next 24 hours.
 
-Hence, we first need to create an instance of the *Weather Company Data service*.  
-To do so click the `Catalog` link at the top right of the screen.  
-From the menu appearing on the left of the screen select `Data & Analytics`.  
-Next, click `Weather Company Data`.  
-Leave all settings as they are and click the `Create` button at the bottom right of the screen.  
+Hence, we first need to create an instance of the *Weather Company Data service*.
+To do so click the `Catalog` link at the top right of the screen.
+From the menu appearing on the left of the screen select `Data & Analytics`.
+Next, click `Weather Company Data`.
+Leave all settings as they are and click the `Create` button at the bottom right of the screen.
 Next, switch to the `Service Credentials` tab and click the `View Credentials` link.
 Note down `username` and `password`. If you use the service not in US-South also note down the `host`.
 
@@ -1211,19 +1192,19 @@ Once we have a forecast, we need to send it to *Slack* as a message from our bot
 
 First, create a new team on *Slack* by navigating to https://slack.com/ and clicking the `Create new team` link at the very top of the screen.
 
-Just follow the instructions to create a team:  
-Provide your `mail address` and click the `Next` button.  
-Provide the `confirmation code` you have been send via mail.  
-Provide your `first name`, `last name`, and `username` and click the `Continue to password` button.  
-Specify a `password` and click the `Continue to Team Info` button.  
-Select an option like `Shared interest group` to specify what you will use *Slack* for and click the `Continue to Group Name` button.  
-Provide an arbitrary `group name` and click the `Continue to Team URL` button.  
-Provide an arbitrary `team URL` and click the `Create Team` button.  
-Skip the process for sending invitations by clicking the `Skip for Now` button, then click the `Explore Slack` button to get started.  
+Just follow the instructions to create a team:
+Provide your `mail address` and click the `Next` button.
+Provide the `confirmation code` you have been send via mail.
+Provide your `first name`, `last name`, and `username` and click the `Continue to password` button.
+Specify a `password` and click the `Continue to Team Info` button.
+Select an option like `Shared interest group` to specify what you will use *Slack* for and click the `Continue to Group Name` button.
+Provide an arbitrary `group name` and click the `Continue to Team URL` button.
+Provide an arbitrary `team URL` and click the `Create Team` button.
+Skip the process for sending invitations by clicking the `Skip for Now` button, then click the `Explore Slack` button to get started.
 Finally, type something into the text field at the very bottom to get started.
 
-To create a communication channel proceed as follows:  
-Click the little `+` icon next to the text `CHANNELS` on the left of the screen.  
+To create a communication channel proceed as follows:
+Click the little `+` icon next to the text `CHANNELS` on the left of the screen.
 Then, simply provide the name `weather` for your channel and click the `Create Channel` button.
 
 *Slack* is set up.
@@ -1261,13 +1242,13 @@ We can invoke the action to post messages to *Slack* without writing any code.
 
 Notice that you first have to replace the incoming webhook `URL` with yours. To find out about yours proceed as follows:
 
-Click on your teams' name at top left of the screen.  
-From the menu appearing select `Customize Slack`.  
-Click the `hamburger` icon and the top left of the screen and select `Configure Apps`.  
-Click `Custom Integrations`.  
-On the new screen enter the word `incoming` into the search field, then select the entry `Incoming WebHooks`.  
-Next, click the `Add Configuration` button.  
-Next, select the `weather`channel you have created before and click the `Add Incoming WebHooks integration` button.  
+Click on your teams' name at top left of the screen.
+From the menu appearing select `Customize Slack`.
+Click the `hamburger` icon and the top left of the screen and select `Configure Apps`.
+Click `Custom Integrations`.
+On the new screen enter the word `incoming` into the search field, then select the entry `Incoming WebHooks`.
+Next, click the `Add Configuration` button.
+Next, select the `weather`channel you have created before and click the `Add Incoming WebHooks integration` button.
 Then copy the `URL` being shown under `Webhook URL`.
 
 <pre>
@@ -1306,7 +1287,7 @@ $ bx wsk action create location_forecast --sequence location_to_latlong,forecast
 
 With this meta-service defined, we can invoke the `location_forecast` action with the input parameter for the first service (`text`). As a result the forecast for that location should appear in *Slack*.
 
-Let's test this.  
+Let's test this.
 The result should look similar to this:
 
 <pre>
@@ -1345,14 +1326,14 @@ At this point the question is how we can ask the bot for forecasts about a locat
 
 Hence, we need to make sure that our action is being properly invoked once a message starting with a defined trigger word is being send via the `weather` channel we have created prior.
 
-To make that happen proceed as follows:  
-When being in the channel just created click the `Gear` icon at the very top and select the `Add an app or integration` link from the menu appearing.  
-On the new screen enter the word `outgoing` into the search field, then select the entry `Outgoing WebHooks`.  
-Next, click the `Add Configuration` and the `Add Outgoing WebHooks integration` buttons.  
-As `channel` select the channel you have created before.  
-As `trigger` word specify `weather`.  
+To make that happen proceed as follows:
+When being in the channel just created click the `Gear` icon at the very top and select the `Add an app or integration` link from the menu appearing.
+On the new screen enter the word `outgoing` into the search field, then select the entry `Outgoing WebHooks`.
+Next, click the `Add Configuration` and the `Add Outgoing WebHooks integration` buttons.
+As `channel` select the channel you have created before.
+As `trigger` word specify `weather`.
 As `URL` specify the `web action URL` pointing to the `location_forecast` action – like this:
-`https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/location_forecast.json`  
+`https://openwhisk.ng.bluemix.net/api/v1/web/andreas.nauerz@de.ibm.com_dev/default/location_forecast.json`
 Then click the `Save Settings` button.
 
 Now, navigate back to the browser tab showing your channels and enter the following into the channels' messaging field:
@@ -1530,9 +1511,9 @@ In the following we strongly recommend to use a *REST* client like *Insomnia*
 
 Let's assume you want to store the books in *Cloudant* as this would make things very easy as OpenWhisk already provides you with a *Cloudant* package that allows you to work with *Cloudant* without the need to write code.
 
-From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
-From the menu on the left-side select `Data & Analytics`.  
-Click `Cloudant NoSQL DB`.  
+From the OpenWhisk UI, click the `Catalog` link at the top right of the screen.
+From the menu on the left-side select `Data & Analytics`.
+Click `Cloudant NoSQL DB`.
 As service name specify `bookStore`, leave everything else as-is and click the `Create` button.
 
 Once the instance has been created switch to the `Service Credentials` tab, create new credentials by clicking the `New credential` link and click the `View Credentials` link. You will need the `username`, `password` and `host` shown there throughout the rest of this chapter, hence leave this browser tab open.
@@ -1710,18 +1691,19 @@ Output:
 ```json
 {
     "docs": [
-        {        
-	    "_id": "d67e49d6a85d20e9e2ec45710d12d816",
-	    "_rev": "1-f4e3fbffab0b7dfcf8677c68689bf9c3",
-	    "name": "firstBook"
-	},
-	{
-	    "_id": "26a38a8193722046b2cac60e66dbb0f5",
-	    "_rev": "1-3db09f4b6275c63cafca157112bb01d0",
-	    "name": "secondBook"
-	}
-],
+        {      
+            "_id": "d67e49d6a85d20e9e2ec45710d12d816",
+            "_rev": "1-f4e3fbffab0b7dfcf8677c68689bf9c3",
+            "name": "firstBook"
+	    },
+        {
+            "_id": "26a38a8193722046b2cac60e66dbb0f5",
+            "_rev": "1-3db09f4b6275c63cafca157112bb01d0",
+            "name": "secondBook"
+	    }
+    ],
 [...]
+}
 ```
 
 Next, let's query a particular book.
@@ -1751,16 +1733,17 @@ Output:
 {
     "docs": [
         {
-	    "_id": "d67e49d6a85d20e9e2ec45710d12d816",
-	    "_rev": "1-f4e3fbffab0b7dfcf8677c68689bf9c3",
-	    "name": "firstBook"
-	}
+            "_id": "d67e49d6a85d20e9e2ec45710d12d816",
+            "_rev": "1-f4e3fbffab0b7dfcf8677c68689bf9c3",
+            "name": "firstBook"
+        }
     ],
 [...]
+}
 ```
 
-Now, let's delete the book we just queried.  
-To do so use your *REST* client to submit a `DELETE`.  
+Now, let's delete the book we just queried.
+To do so use your *REST* client to submit a `DELETE`.
 Hand-over the `docid` and `docrev` of the book you just queried as query parameter.
 
 Again, query all books to validate that the book has been properly deleted.
@@ -1769,22 +1752,22 @@ Again, query all books to validate that the book has been properly deleted.
 
 Now, let's make the previously implemented weather services (functions) accessible via some simple APIs, too. This time we will use the UI (instead of the CLI) to define these APIs.
 
-Again, open the OpenWhisk UI.  
-Select the `API` tab.  
-Click the `Create an OpenWhisk API` button (only visible if you haven't created any API before).  
-As `API name` specify `weatherAPI`.  
+Again, open the OpenWhisk UI.
+Select the `API` tab.
+Click the `Create an OpenWhisk API` button (only visible if you haven't created any API before).
+As `API name` specify `weatherAPI`.
 Leave everything else as-is and click the `Save` button at the bottom of the screen.
 
-On the next screen select the `Definition` tab from the navigation on the left of the screen.  
-Click the `Create Operation` button.  
-As `path` specify `location_to_latlong`.  
-As `action` select the `location_to_latlong` action.  
-Leave everything else as-is and click the `Save` button at the bottom of the screen.  
+On the next screen select the `Definition` tab from the navigation on the left of the screen.
+Click the `Create Operation` button.
+As `path` specify `location_to_latlong`.
+As `action` select the `location_to_latlong` action.
+Leave everything else as-is and click the `Save` button at the bottom of the screen.
 Click the `Save` button at the bottom of the screen.
 
-To find out the `URL` to be used to invoke this operation switch to the `API Explorer` tab.  
-From the list at the left select the `getLocationtolatlong` entry and copy the `GET URL` shown.  
-Open a browser window and append they query parameter `?location=London`.  
+To find out the `URL` to be used to invoke this operation switch to the `API Explorer` tab.
+From the list at the left select the `getLocationtolatlong` entry and copy the `GET URL` shown.
+Open a browser window and append they query parameter `?location=London`.
 You should be presented the latitude and longitude of London.
 
 Switch back to the `Definition` tab and, based on what you just learned, expose the `forecast_from_latlong` action by adding another operation, too.
@@ -1797,7 +1780,7 @@ So far we have developed application logic only contained in single actions (aka
 
 While the implementation of such microservices is rather simple, their composition or orchestration is way more complex. That's why frameworks like Kubernetes with additions like Istio have meanwhile become very popular. With IBM's new *Composer*  developers can now build apps that leverage multiple functions and that require more complex, coordinated flows for end to end solutions.
 
-Composer is a programming model (extension) for composing individual functions into larger applications. *Compositions*, informally named *apps*, run in the cloud using automatically managed compute and memory resources. Composer enables stateful computation, control flow, and rich patterns of data flow. 
+Composer is a programming model (extension) for composing individual functions into larger applications. *Compositions*, informally named *apps*, run in the cloud using automatically managed compute and memory resources. Composer enables stateful computation, control flow, and rich patterns of data flow.
 
 This means Composer allows to develop more complex serverless applications by combining multiple functions using control logic and state.
 
@@ -1949,7 +1932,7 @@ $ fsh app invoke demo_repeat -p count 10
 </pre>
 
 And finally, another easy to understand and out-of-the-box available composition methods is the `while`:
-`composer.while(condition, task)` runs `task` repeatedly while `condition` evaluates to true. 
+`composer.while(condition, task)` runs `task` repeatedly while `condition` evaluates to true.
 
 Let's first define the composition (and store it in a file named `demo_while.js`):
 
@@ -1962,7 +1945,7 @@ Now, let's define the function `condition_while` (to be stored in a file named `
 ```javascript
 function main(params) {
     x = Math.random();
-    
+
     if (x > 0.2) {
         return { value: true};
     }
@@ -2134,44 +2117,44 @@ In the following we will show you can use *App Connect* to post data to a dedica
 
 First, let's set up a *Message Hub* instance and a topic:
 
-From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
-From the menu appearing on the left of the screen select `Application Services`.  
-Click `Message Hub`.  
-Leave all settings as they are and click the `Create` button at the bottom right of the screen.  
-Switch to the `Manage` tab and click the `+` icon to create a new topic. As topic name specify `openwhisk`.  
+From the OpenWhisk UI, click the `Catalog` link at the top right of the screen.
+From the menu appearing on the left of the screen select `Application Services`.
+Click `Message Hub`.
+Leave all settings as they are and click the `Create` button at the bottom right of the screen.
+Switch to the `Manage` tab and click the `+` icon to create a new topic. As topic name specify `openwhisk`.
 Leave all other settings as they are and click the `Create topic` button.
 
-Second, let's set up an *App Connect* instance:  
-Open a new browser tab.  
-From the OpenWhisk UI, click the `Catalog` (not the `Browse Public Packages`) link at the top right of the screen.  
-From the menu appearing on the left of the screen select `Integrate`.  
-Click `App Connect`.  
+Second, let's set up an *App Connect* instance:
+Open a new browser tab.
+From the OpenWhisk UI, click the `Catalog` link at the top right of the screen.
+From the menu appearing on the left of the screen select `Integrate`.
+Click `App Connect`.
 Leave all settings as they are and click the `Create` button at the bottom right of the screen.
 
 Now, sign-up for a *Salesforce* test account as we would like *App Connect* to post something to *Message Hub* (then causing the OpenWhisk trigger to fire and the action to be invoked) as soon as a new contact is being created:
 
-Open a new browser tab and navigate to https://www.salesforce.com/form/signup/freetrial-sales.jsp  
+Open a new browser tab and navigate to https://www.salesforce.com/form/signup/freetrial-sales.jsp
 Fill out all fields shown on the right-hand side and click the `Start free trial` button.
 
-Navigate back to the browser tab showing your *App Connect* instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Apps` and then `Dashboard`).  
-If necessary click the `Launch App Connect` button and skip the dialogs offering initial help.  
-Click the `New` button and select `Create an event-driven flow` button.  
-Click `Salesforce` and `New Contact`.  
-Click the `Connect to Salesforce` button.  
-In the new browser tab appearing click the `Allow` button.  
-Back in the *App Connect* view click `Message Hub` and `Send Message`.  
-Click the `Connect to Message Hub` button.  
-Now, navigate back to the browser tab showing your *Message Hub* instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Services` and then `Dashboard`).  
-Switch to the `Service Credentials` tab and click the `View Credentials` link.  
-Click the icon that allows you to copy the entire *JSON* being shown.  
-Next, navigate back to the browser tab showing your *App Connect* instance and paste the entire *JSON* you have just copied into the field labeled `Message Hub Service Credentials` and click the `Connect` button.  
-As topic specify `openwhisk`.  
-As payload select (after having clicked the little helper icon next to the input field) `lastname` for instance.  
-Finally, click the `Exit and switch on button` at the top right of the screen.  
+Navigate back to the browser tab showing your *App Connect* instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Apps` and then `Dashboard`).
+If necessary click the `Launch App Connect` button and skip the dialogs offering initial help.
+Click the `New` button and select `Create an event-driven flow` button.
+Click `Salesforce` and `New Contact`.
+Click the `Connect to Salesforce` button.
+In the new browser tab appearing click the `Allow` button.
+Back in the *App Connect* view click `Message Hub` and `Send Message`.
+Click the `Connect to Message Hub` button.
+Now, navigate back to the browser tab showing your *Message Hub* instance (if you do not have it anymore, click `Catalog` again, then, click the `hamburger` icon at the very left of the screen select `Services` and then `Dashboard`).
+Switch to the `Service Credentials` tab and click the `View Credentials` link.
+Click the icon that allows you to copy the entire *JSON* being shown.
+Next, navigate back to the browser tab showing your *App Connect* instance and paste the entire *JSON* you have just copied into the field labeled `Message Hub Service Credentials` and click the `Connect` button.
+As topic specify `openwhisk`.
+As payload select (after having clicked the little helper icon next to the input field) `lastname` for instance.
+Finally, click the `Exit and switch on button` at the top right of the screen.
 
 Now, let's make sure a trigger fires whenever something is being posted to the *Message Hub* topic we just created:
 
-In the OpenWhisk UI switch to the Develop tab if not already there.  
+In the OpenWhisk UI switch to the Actions tab if not already there.
 Create a new action (name it `newContact`) the way you learned it before containing the following code:
 
 ```javascript
@@ -2180,18 +2163,16 @@ function main(params) {
 }
 ```
 
-Click the `Automate this Action` button at the bottom right of the screen to make sure it gets fired by a trigger.  
-Click `Messaging`.  
-Click `New Trigger`.  
-Provide all the details being asked for (which you can get by navigating back to the browser tab showing your *Message Hub* instance and having a look at the service credentials).  
-Click the `Save Configuration` button.  
-Click the `This Looks Good` and the `Save Rule` buttons.  
-Finally, switch to the `Monitor` tab to see what's going on.  
+Click the `Connected Triggers` button at the left of the screen to make sure it gets fired by a trigger.
+Click `Add Trigger`.
+Click `MessageHub`.
+Provide all the details being asked for after selecting `Input your own credentials` (which you can get by navigating back to the browser tab showing your *Message Hub* instance and having a look at the service credentials).
+Click the `Create & Connect` button.
 
-Navigate back to the browser tab showing the *Salesforce* application.  
-From the main menu click `Contacts`.  
-Click the `New` button at the top right of the screen.  
-Provide at least a `given` and `family name` and click `Save`.  
+Navigate back to the browser tab showing the *Salesforce* application.
+From the main menu click `Contacts`.
+Click the `New` button at the top right of the screen.
+Provide at least a `given` and `family name` and click `Save`.
 
 When navigating back to the OpenWhisk UI monitoring should reveal that the action we just created has been invoked with information about the *Salesforce* contact that has just been created.
 
@@ -2210,18 +2191,18 @@ The key point for this extension is that it has full round trip for OpenWhisk ac
 
 In the future we plan to provide more such plug-ins for additional IDEs (this is no official commitment) and hence seek for early feedback.
 
-First, download *VS Code* for your platform from here: https://code.visualstudio.com/  
+First, download *VS Code* for your platform from here: https://code.visualstudio.com/
 Next, download the extension from here: https://ibm.box.com/s/r4pdwpdmmceubzpnmsskp3hoh65r9zmm (in the near future you will also get the latest code from here: https://github.com/openwhisk/openwhisk-vscode#downloads)
 
-To install the extension open *VS Code* and switch to the extensions view (`View → Extensions`).  
-Click the `more` menu (represented by the `•••` icon at the very top) and select `install from VSIX...`  
+To install the extension open *VS Code* and switch to the extensions view (`View → Extensions`).
+Click the `more` menu (represented by the `•••` icon at the very top) and select `install from VSIX...`
 Point to the `VSIX file` you downloaded.
 
 Once you have the extension installed, you will have to run `wsk property set` inside of *VS Code* to set the `apihost`, `auth`, and `namespace` values the same way you did configure your local CLI at the very beginning of this workshop:
 
 Open the command palette via `View → Command Palette` or by pressing `F1` and entering: `wsk property set`
 
-When prompted select the option `apihiost` and press `enter`.  
+When prompted select the option `apihiost` and press `enter`.
 Next enter the correct value for the apihost property.
 
 In the console you should see a result like this:
@@ -2520,7 +2501,7 @@ Welcome to Node-RED
 24 Oct 10:33:01 - [info] Started flows
 </pre>
 
-Once you have started *Node-RED*, the server is running on port 1880.  
+Once you have started *Node-RED*, the server is running on port 1880.
 Open a web browser and visit the following URL to open the editor: http://localhost:1880
 
 *Nodes* are available in the palette on the left-hand side of the screen. Users build "message flows" by dragging the nodes from the left-hand panel and dropping them on the grid. Nodes on the grid can be connected together with "wires" to exchange messages.
@@ -2535,8 +2516,8 @@ Let's start by building a "Hello World" example to get you started:
 
 The `Inject` node allows you to inject messages into a flow, either by clicking the button on the node, or setting a time interval between injects.
 
-Drag one onto the workspace from the palette.  
-Next, open the sidebar (`Ctrl-Space`, or via the dropdown menu) and select the `Info` tab.  
+Drag one onto the workspace from the palette.
+Next, open the sidebar (`Ctrl-Space`, or via the dropdown menu) and select the `Info` tab.
 Then, select the newly added `Inject` node to see information about its properties and a description of what it does.
 
 ### Add a Debug node
@@ -2551,7 +2532,7 @@ Connect the `Inject` and `Debug` nodes together by dragging between the output p
 
 ### Deploy
 
-At this point, the nodes only exist in the editor and must be deployed to the server.  
+At this point, the nodes only exist in the editor and must be deployed to the server.
 Therefore, click the `Deploy` button - simple as that.
 
 With the debug sidebar tab selected, click the (little left rectangle of the) `Inject` button. You should see numbers appear in the sidebar. By default, the `Inject` node uses the number of milliseconds since January 1st, 1970 as its payload. Let's do something more useful with that.
@@ -2562,7 +2543,7 @@ The `Function` node allows you to pass each message though a *JavaScript* functi
 
 Wire the `Function` node in between the `Inject` and `Debug` nodes. You may need to delete the existing wire (select it and hit `delete` on the keyboard).
 
-Next, double-click on the `Function` node to bring up the edit dialog.  
+Next, double-click on the `Function` node to bring up the edit dialog.
 Copy the following code into the function field:
 
 ```javascript
@@ -2574,7 +2555,7 @@ params.payload = date.toString();
 return params;
 ```
 
-Next, click `Done` button to close the edit dialog and then click the `Deploy` button.   
+Next, click `Done` button to close the edit dialog and then click the `Deploy` button.
 Now, when you click the `Inject` button again, the messages in the sidebar will be more readable time stamps.
 
 That example should give you an idea about how to use the editor to connect nodes together to build flows and deploy them to the *Node-RED* runtime.
@@ -2587,7 +2568,7 @@ Node-RED has a huge community of external developers who publish nodes for conne
 
 This website catalogues all the available nodes: http://flows.nodered.org/
 
-Let's look at installing the OpenWhisk nodes into *Node-RED*:  
+Let's look at installing the OpenWhisk nodes into *Node-RED*:
 If you type `openwhisk` into the search box, we see there are two entities that can be installed.
 
 We want to install the result named `node-red-node-openwhisk`, which contains the officially supported OpenWhisk nodes for *Node-RED*.
@@ -2595,7 +2576,7 @@ We want to install the result named `node-red-node-openwhisk`, which contains th
 So, if you go back into the *Node-RED* editor and click the menu icon in the top-right of the screen, it presents a menu including the `Manage palette` item.
 Selecting this option will bring up the node installation dialoge in the left-hand panel. This panel shows you the list of installed nodes and also allows you to install extra nodes. We're going to use this to install the OpenWhisk nodes.
 
-Select the `Install` tab and type in `node-red-node-openwhisk`.  
+Select the `Install` tab and type in `node-red-node-openwhisk`.
 Click the `install` button.
 
 Now, once you return to the main palette menu, you should see the OpenWhisk nodes.
@@ -2604,10 +2585,10 @@ Now, once you return to the main palette menu, you should see the OpenWhisk node
 
 Now that we have the nodes installed, let's start by creating a flow which invokes an OpenWhisk action:
 
-First, drag the OpenWhisk `action` node onto the flow panel.  
+First, drag the OpenWhisk `action` node onto the flow panel.
 Make sure you drag the `action` node (not the `trigger` node) that has both input and output ports. The input port receives messages that triggers the action and (optionally) passes in parameters for the invocation. The output port returns the activation response message.
 
-Next, double-click the node icon to open the editor panel.  
+Next, double-click the node icon to open the editor panel.
 This editor panel allows us to define the name and namespace for the action to invoke when messages are received on the flow. These parameters can be overridden at runtime by passing parameters in as properties on the message object.
 
 But, before we can invoke the action, we need to setup the OpenWhisk platform that *Node-RED* will talk to.
@@ -2621,10 +2602,10 @@ Fill in the form with the following details:
 
 Finally, click the `Add` button to add this service to *Node-RED*.
 
-Now, we can fill in the `action name` and `namespace` values (which you can, once again, obtain when clicking Use the CLI) for the action we want to invoke.  
-Let's try it with the `hello` action you defined in the previous exercises.  
-Then, once again, add an `Inject` node and a `Debug` node to the flow grid (unless you still have them because you haven't deleted them earlier). Wire up both nodes to the OpenWhisk action node.  
-Then, deploy the flow using the `Deploy` button on the top-right hand corner.  
+Now, we can fill in the `action name` and `namespace` values (which you can, once again, obtain when clicking Use the CLI) for the action we want to invoke.
+Let's try it with the `hello` action you defined in the previous exercises.
+Then, once again, add an `Inject` node and a `Debug` node to the flow grid (unless you still have them because you haven't deleted them earlier). Wire up both nodes to the OpenWhisk action node.
+Then, deploy the flow using the `Deploy` button on the top-right hand corner.
 Now, once you click the `Inject` node a few times, it should trigger our action and print the results of the invocation to the debug panel:
 
 <pre>
@@ -2653,15 +2634,15 @@ Drag the OpenWhisk `Trigger` node onto the flow panel.
 
 The `Trigger` node has a single input port which receives messages that fires the trigger and (optionally) passes in parameters for the invocation.
 
-Now, double-click the node icon to open the editor panel.  
-This editor panel allows us to define the `name` and `namespace` for the trigger to fire when messages are received on the flow. These parameters can be overridden at runtime by passing parameters in as properties on the message object.  
+Now, double-click the node icon to open the editor panel.
+This editor panel allows us to define the `name` and `namespace` for the trigger to fire when messages are received on the flow. These parameters can be overridden at runtime by passing parameters in as properties on the message object.
 Once again, we can fill in the `service`, `name` and `namespace` values for the trigger we want to invoke. Since we have already setup the service credentials for OpenWhisk in the previous task, we don't need to this again.
 
 Let's try it with the `locationUpdate` trigger you defined in the previous exercises:
 
-First, save your node configuration before returning to the flow editor screen.  
-Next, connect the `Inject` node on the screen to the `trigger` node you have just created.  
-Next, deploy the flow using the `Deploy` button on the top-right hand corner.  
+First, save your node configuration before returning to the flow editor screen.
+Next, connect the `Inject` node on the screen to the `trigger` node you have just created.
+Next, deploy the flow using the `Deploy` button on the top-right hand corner.
 Now, test out this new invocation by clicking the `Inject` node a few times.
 
 If you check the invocation logs using the `wsk` command-line utility, do you see the activations appear?
@@ -2672,10 +2653,10 @@ The OpenWhisk nodes also allow you to define new actions through the *Node-RED* 
 
 Let's try updating the source code for our existing `hello` action:
 
-First, double-click the OpenWhisk `action` node to reveal the editor panel.  
-The source code for the action should automatically be displayed.  
-Next, let's change the greeting string that the action returns.  
-Therefore, select the `Allow Edits` checkbox.  
+First, double-click the OpenWhisk `action` node to reveal the editor panel.
+The source code for the action should automatically be displayed.
+Next, let's change the greeting string that the action returns.
+Therefore, select the `Allow Edits` checkbox.
 Modify the greeting string to be:
 
 <pre>
@@ -2683,8 +2664,8 @@ Modify the greeting string to be:
 </pre>
 
 Now, add a new parameter with `key` (`name`) and `value` (`Donald`).  
-Next, click `Done` to save your changes.  
-Before we update the flow, let's set the payload of the `Inject` node back to timestamp, so that the action uses the default parameter.  
+Next, click `Done` to save your changes.
+Before we update the flow, let's set the payload of the `Inject` node back to timestamp, so that the action uses the default parameter.
 Finally, once you have done this, deploy the flow and check out the results in the console. This time it should return us the new message with the update greeting and default parameter.
 
 # The coolest engines out there!
@@ -2693,21 +2674,21 @@ At this point in time we would like to show you four publicly available samples 
 
 ## Vision App
 
-Details about Vision App can be found here:  
+Details about Vision App can be found here:
 https://github.com/IBM-Bluemix/openwhisk-visionapp
 
 Vision App is a sample iOS application to automatically tag images and detect faces by using IBM visual recognition technologies. It allows you to take a photo or select an existing picture to let the application generate a list of tags and detect people, buildings, objects in the picture. It then allows you to share the results with your (social) network.
 
 ## Dark Vision
 
-Details about Dark Vision can be found here:  
+Details about Dark Vision can be found here:
 https://github.com/IBM-Bluemix/openwhisk-darkvisionapp
 
 Dark Vision processes videos to discover dark data. By analyzing video frames with IBM Watson Visual Recognition, Dark Vision builds a summary with a set of tags and famous people or building detected in the video. Use this summary to enhance video search and categorization.
 
 ## Skylink
 
-Details about Skylink can be found here:  
+Details about Skylink can be found here:
 https://github.com/IBM-Bluemix/skylink
 
 Skylink is a sample application that lets you connect a DJI drone aircraft to the *IBM Cloud* with near realtime image analysis leveraging *IBM Cloudant, OpenWhisk, IBM Watson, and Alchemy Vision*.
