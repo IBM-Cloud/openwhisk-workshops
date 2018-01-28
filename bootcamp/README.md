@@ -625,7 +625,7 @@ As an alternative to the CLI, you can also use the OpenWhisk UI, esp. the visual
 
 ## Getting started with the OpenWhisk UI
 
-First, open a browser window, navigate to https://console.ng.bluemix.net/openwhisk/. If you are not at the overview page, go to `Getting Started` and `Overview`.
+First, open a browser window, navigate to https://console.ng.bluemix.net/openwhisk/. If you are not at the `Overview` page, navigate to `Getting Started` and `Overview`.
 
 The OpenWhisk UI is comprised of the following sections:
 
@@ -653,11 +653,11 @@ The OpenWhisk UI is comprised of the following sections:
 
 Let's start exploring the UI by creating some simple first actions similar to the ones we have created before when having used the CLI.
 
-When you are on the Overview page, click the `Start Creating` and the `Create Action` button.
-Next, specify a name (e.g. `helloUI`) by entering it into the text field prefilled with the text `Choose a name for your new action`.
+When at the `Overview` page, click the `Start Creating` and the `Create Action` button.
+Next, specify a name (e.g. `helloUI`).
 Leave everything else as-is and click the `Create` button at the bottom of the screen.
 
-Notice that even though you did not change any configuration options, you would have had the option to change the `language` you want to implement your action in as well as the `memory quota` and the `time limit`. Click the `Learn more` links for additional details and feel free to play around with these options on your own.
+Notice that you also would have had the option to change the `language` you want to implement your action in. Click the `Learn more` links for additional details and feel free to play around with these options on your own.
 
 Copy the following code into the code editor replacing any existing code:
 
