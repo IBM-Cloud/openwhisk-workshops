@@ -657,7 +657,7 @@ When at the `Overview` page, click the `Start Creating` and the `Create Action` 
 Next, specify a name (e.g. `helloUI`).
 Leave everything else as-is and click the `Create` button at the bottom of the screen.
 
-Notice that you also would have had the option to change the `language` you want to implement your action in. Click the `Learn more` links for additional details and feel free to play around with these options on your own.
+Notice that you also would have had the option to change the `language` you want to implement your action in. Click the `Learn more` links for additional details.
 
 Copy the following code into the code editor replacing any existing code:
 
