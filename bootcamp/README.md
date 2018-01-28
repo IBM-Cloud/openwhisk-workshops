@@ -725,7 +725,7 @@ Therefore click the `API-KEY` and copy the key being shown, again by clicking th
 Now, to invoke the `helloUI` action we have created earlier submit a call like this:
 
 <pre>
-$ curl -u &lt;API-KEY&gt; "&lt;URL&gt;?blocking=true" -XPOST -H "Content-Type: application/json"
+$ curl -u &lt;API-KEY&gt; &lt;URL&gt;?blocking=true -X POST -H "Content-Type: application/json"
 </pre>
 
 You should see the following result:
