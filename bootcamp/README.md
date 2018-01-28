@@ -873,44 +873,6 @@ https://github.com/openwhisk/openwhisk/blob/master/docs/actions.md#creating-dock
 
 ## Working with packages
 
-As you have already seen before, OpenWhisk provides you, out of the box, with a shared collection of actions and triggers as part of so called packages. The OpenWhisk UI makes it even easier to explore and test available packages. Let's learn how to do so now.
-
-First, click the `Browse Public Packages` button at the top right of the screen.
-You'll be presented with a set of packages, represented by some icons, being available.
-
-Click the `Samples` package.
-At the left of the screen you will be shown a short description of the functionality this package provides you with. At the top center of the screen you can access the different actions and triggers the package provides you with (notice that the samples package provides you only with actions).
-You can choose between the following actions: `curl`, `greeting`, `helloWorld`, `wordCount`. For each action a short description and sample input you can feed it with as well as sample output you can expect to get when invoking the action is being provided.
-
-Let's play with the `wordCount` action.
-Hence, select the `wordCount` action and read the description to understand its purpose. Also review the sample input to understand how to properly feed the action when invoking it as well as the sample output to understand what you can expect after having invoked it.
-Click the `Run this Action` button.
-
-Based on the sample input you have been shown before, specify the following input and click the `Run with this Value` button:
-
-```json
-{
-    "payload": "OpenWhisk is simply super cool"
-}
-```
-
-You should see the following result:
-
-<pre>
-{
-    "count": "5"
-}
-</pre>
-
-Instead of just reusing a package-provided action as-is you can also view its code (which you may want to use as a basis for your own action).
-
-Let's review the code of the `curl` action.
-Hence, navigate back to the catalog (to do so you probably want to click the `Close` button to close the invocation console) and click the `Samples` package again.
-This time select the `curl` action and read the description to understand its purpose.
-Next, click the `View Source` button to (re)view and understand the action's code.
-
-At this point feel free play with the other packages being available.
-
 ### Sequencing actions
 
 Next, let's visually model a simple sequence similar to the one we have created earlier when having used the CLI.
