@@ -715,14 +715,17 @@ You should see the following result:
 
 Actions cannot only be invoked via the CLI or the OpenWhisk UI, they can also be invoked via simple *REST* API calls. All you need to do is to `POST` against the correct *REST* API endpoint.
 
-To find out about the correct *REST* API endpoint for a particular action, select the action, e.g. the `helloUI` action we have created earlier, and click the `Endpoints` link at the left of the code editor.
+To find out about the correct *REST* API endpoint for a particular action, select the action, e.g. the `helloUI` action we have created earlier and click the `Endpoints` link at the left of the code editor.
 
-To test this use the `URL`; just click the `Copy` button displayed next to the `URL` shown and submit it.
+To use the `URL` being shown under the section `REST API` just click the `Copy` icon displayed next to it.
 
-For instance, to invoke the `helloUI` action we have created earlier submit a call like this:
+Notice that you also need to properly authenticate before posting.
+Therefore click the `API-KEY` and copy the key being shown, again by clicking the `Copy` icon.
+
+Now, to invoke the `helloUI` action we have created earlier submit a call like this:
 
 <pre>
-$ curl -d "{\"arg\":\"value\"}" "https://openwhisk.ng.bluemix.net/api/v1/namespaces/andreas.nauerz%40de.ibm.com_dev/actions/helloUI?blocking=true" -XPOST -H "Content-Type: application/json" -H "Authorization: Basic xxx="
+$ curl -u <API-KEY> "<URL>?blocking=true" -XPOST -H "Content-Type: application/json"
 </pre>
 
 You should see the following result:
