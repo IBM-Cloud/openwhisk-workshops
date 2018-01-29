@@ -2387,7 +2387,7 @@ Watch the output of the redeployment.
 Use the shown endpoints' `URL` to invoke the `hello` action:
 
 <pre>
-$ curl --request GET <endpoint_URL>
+$ curl --request GET &lt;endpoint_URL&gt;
 {
   "payload": "Hello, World!"
 }
