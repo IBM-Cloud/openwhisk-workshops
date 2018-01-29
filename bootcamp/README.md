@@ -2568,7 +2568,7 @@ Click on the `pencil` icon next to the service configuration drop-down:
 
 Fill in the form with the following details:
 * `API URL`: `https://openwhisk.ng.bluemix.net/api/v1`
-* `Auth Key`: Once again the auth key you can obtain when clicking Use the CLI (https://console.ng.bluemix.net/openwhisk/cli)
+* `Auth Key`: Again, to be retrieved from here: https://console.ng.bluemix.net/openwhisk/cli
 * `Name`: `OpenWhisk`
 
 Finally, click the `Add` button to add this service to *Node-RED*.
