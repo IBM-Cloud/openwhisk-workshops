@@ -886,7 +886,9 @@ Therefore, let's first create a very simple action (name it `echo`) the same way
 function main(params) {
     return {
         payload: "Life is " + params.payload,
-        url: params.url
+        url: params.url,
+        translateFrom: params.translateFrom,
+        translateTo: params.translateTo
     };
 }
 ```
@@ -956,6 +958,8 @@ You should see the following result:
     "payload": "La vie est belle"
 }
 ```
+
+Note, that the translator translates its input from English to French, because this is the default. If you want to translate into another language, you can pass the parameter `translateTo` into your sequence.
 
 ## Triggers
 
@@ -1719,9 +1723,9 @@ Now, let's make the previously implemented weather services (functions) accessib
 
 Again, open the OpenWhisk UI.
 Select the `API` tab.
-Click the `Create an OpenWhisk API` button (only visible if you haven't created any API before).
+Click the `Create an OpenWhisk API` button (only visible if you haven't created any API before). If you already have an API, click `Create Managed API` instead.
 As `API name` specify `weatherAPI`.
-Leave everything else as-is and click the `Save` button at the bottom of the screen.
+Leave everything else as-is and click the `Save & Expose` button at the bottom of the screen.
 
 On the next screen select the `Definition` tab from the navigation on the left of the screen.
 Click the `Create Operation` button.
