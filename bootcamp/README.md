@@ -2157,13 +2157,15 @@ The key point for this extension is that it has full round trip for OpenWhisk ac
 In the future we plan to provide more such plug-ins for additional IDEs (this is no official commitment) and hence seek for early feedback.
 
 First, download *VS Code* for your platform from here: https://code.visualstudio.com/
-Next, download the extension from here: https://ibm.box.com/s/r4pdwpdmmceubzpnmsskp3hoh65r9zmm (in the near future you will also get the latest code from here: https://github.com/openwhisk/openwhisk-vscode#downloads)
+Next, download the extension from here: https://github.com/openwhisk/openwhisk-vscode#downloads
 
 To install the extension open *VS Code* and switch to the extensions view (`View → Extensions`).
 Click the `more` menu (represented by the `•••` icon at the very top) and select `install from VSIX...`
 Point to the `VSIX file` you downloaded.
 
-Once you have the extension installed, you will have to run `wsk property set` inside of *VS Code* to set the `apihost`, `auth`, and `namespace` values the same way you did configure your local CLI at the very beginning of this workshop:
+Once you have the extension installed, you will have to run `wsk property set` inside of *VS Code* to set the `apihost`, `auth`, and `namespace` values the same way you did configure your local CLI at the very beginning of this workshop.
+If you cannot remember you can retrieve `apihost` and `namespace` from here (step 3): https://console.bluemix.net/openwhisk/learn/cli
+And the auth (i.e. API Key) from here:https://console.bluemix.net/openwhisk/learn/api-key
 
 Open the command palette via `View → Command Palette` or by pressing `F1` and entering: `wsk property set`
 
