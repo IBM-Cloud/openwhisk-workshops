@@ -2519,11 +2519,11 @@ Copy the following code into the function field:
 
 ```javascript
 // Create a Date object from the payload
-var date = new Date(params.payload);
+var date = new Date(msg.payload);
 // Change the payload to be a formatted Date string
-params.payload = date.toString();
+msg.payload = date.toString();
 // Return the message so it can be sent on
-return params;
+return msg;
 ```
 
 Next, click `Done` button to close the edit dialog and then click the `Deploy` button.
