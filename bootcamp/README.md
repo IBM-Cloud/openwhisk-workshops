@@ -2161,7 +2161,7 @@ The key point for this extension is that it has full round trip for OpenWhisk ac
 In the future we plan to provide more such plug-ins for additional IDEs (this is no official commitment) and hence seek for early feedback.
 
 First, download *VS Code* for your platform from here: https://code.visualstudio.com/
-Next, download the extension from here: https://github.com/openwhisk/openwhisk-vscode#downloads
+Next, download the extension from here: https://github.com/triceam/incubator-openwhisk-vscode/releases/tag/0.0.6
 
 To install the extension open *VS Code* and switch to the extensions view (`View → Extensions`).
 Click the `more` menu (represented by the `•••` icon at the very top) and select `install from VSIX...`
