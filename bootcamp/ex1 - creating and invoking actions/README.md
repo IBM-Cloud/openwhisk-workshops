@@ -1,4 +1,4 @@
-# exercise 1 - creating and invoking actions
+# creating and invoking actions
 
 This exercise will introduce the concepts needed to create and use actions with IBM Cloud Functions.
 
