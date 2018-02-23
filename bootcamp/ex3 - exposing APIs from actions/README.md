@@ -336,7 +336,7 @@ ok: updated action hello
 2. Create a new API Gateway endpoint for the web action.
 
 ```
-$ bx wsk api create /api/hello get hello --response-type json
+$ bx wsk api create /api/hello get hello --response-type json --apiname "hello-world"
 ok: created API /api/hello GET for action /_/hello
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello
 ```
@@ -360,7 +360,7 @@ $ curl -XPOST "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UU
 5. Enable other endpoints and verbs.
 
 ```
-$ bx wsk api create /api/hello/world get hello --response-type json
+$ bx wsk api create /api/hello/world get hello --response-type json --apiname "hello-world"
 ok: created API /api/hello/world GET for action /_/hello
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello/world
 $ curl "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello/world?name=Bernie&place=Vermont"
@@ -370,7 +370,7 @@ $ curl "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api
 ```
 
 ```
-$ bx wsk api create /api/hello post hello --response-type json
+$ bx wsk api create /api/hello post hello --response-type json --apiname "hello-world"
 ok: created API /api/hello POST for action /_/hello
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello
 $ curl -XPOST "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie&place=Vermont"
