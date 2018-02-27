@@ -16,16 +16,22 @@ Once this exercise is finished, we will be able to create simple serverless func
 
 * [Background](#background)
 * [Creating And Invoking Actions](#creating-and-invoking-actions)
-  * [Creating Node.js actions](creating-node.js-actions)
-  * [Invoking actions](invoking-actions)
+  * [Creating Node.js actions](#creating-node.js-actions)
+  * [Creating Swift actions](#creating-swift-actions)
+  * [Invoking actions](#invoking-actions)
 * [Using Action Parameters](#using-action-parameters)
-  * [Passing parameters to an action](#passing-parameters-to-an-action)
+  * [Passing parameters to an action (Node.js)](#passing-parameters-to-an-action-(node.js))
+  * [Passing parameters to an action (Swift)](#passing-parameters-to-an-action-(swift))
   * [Setting default parameters](#setting-default-parameters)
 * [Asynchronous Actions](#asynchronous-actions)
-  * [Returning asynchronous results](#returning-asynchronous-results)
+  * [Returning asynchronous results (Node.js)](#returning-asynchronous-results-(node.js))
+  * [Returning asynchronous results (Swift)](#returning-asynchronous-results-(swift))
   * [Using actions to call an external API](#using-actions-to-call-an-external-api)
 * [Packaging an action as a Node.js module](#packaging-an-action-as-a-nodejs-module)
 * [Using Action Sequences](#using-action-sequences)
+  * [Node.js](#node.js)
+  * [Swift](#swift)
+  * [Creating Actions](#creating-actions)
 
 ## Instructions
 
@@ -64,6 +70,37 @@ ok: created action hello
 $ bx wsk action list
 actions
 hello       private
+```
+
+You can see the `hello` action you just created.
+
+#### Creating Swift actions
+
+Review the following steps and examples to create your first Swift action.
+
+1. Create a Swift file with the following content. For this example, the file name is 'hello.swift'.
+
+```swift
+func main(args: [String:Any]) -> [String:Any] {
+	return [ "payload" : "Hello world" ]
+}
+```
+
+The Swift file might contain additional functions. However, by convention, a function called `main` must exist to provide the entry point for the action.
+
+1. Create an action from the following Swift function. For this example, the action is called 'hello'.
+
+```
+$ bx wsk action create hello hello.swift
+ok: created action hello
+```
+
+1. List the actions that you have created:
+
+```
+$ bx wsk action list
+actions
+/user@host.com_dev/hello                                     private swift:3.1.1
 ```
 
 You can see the `hello` action you just created.
@@ -145,9 +182,9 @@ activations
 
 ### Using Action Parameters
 
-#### Passing parameters to an action
-
 Event parameters can be passed to the action when it is invoked. Let's look at a sample action which uses the parameters to calculate the return values.
+
+#### Passing parameters to an action (Node.js)
 
 1. Update the file `hello.js` with the following following content:
 
@@ -164,6 +201,30 @@ The input parameters are passed as a JSON object parameter to the `main` functio
 ```
 $ bx wsk action update hello hello.js
 ```
+
+#### Passing parameters to an action (Swift)
+
+1. Update the file `hello.swift` with the following following content:
+
+```swift
+func main(args: [String:Any]) -> [String:Any] {
+    if let name = args["name"] as? String, let place = args["place"] as? String {
+        return [ "payload" : "Hello \(name) from \(place)" ]
+    } else {
+        return [ "payload" : "Hello stranger from nowhere" ]
+    }
+}
+```
+
+The input parameters are passed as a Dictionary (`String:Any`) to the `main` function. Functions must return a Dictionary of the same type with response values. Notice how the `name` and `place` parameters are retrieved from the `args` dictionary in this example.
+
+1. Update the `hello` action with the new source code.
+
+```
+$ bx wsk action update hello hello.swift
+```
+
+#### Invoking action with parameters
 
 When invoking actions through the command-line, parameter values can be passed as through explicit command-line parameters `—param/-p` or using an input file containing raw JSON.
 
@@ -198,11 +259,25 @@ $ bx wsk action invoke --result hello --param-file parameters.json
 
 Parameter values can be any valid JSON value, including nested objects. Let's update our action to use child properties of the event parameters.
 
-6. Update the `hello-person` action with the following source code.
+6. Create the `hello-person` action with the following source code.
 
-```
+##### Node.js
+
+```javascript
 function main(params) {
     return {payload:  'Hello, ' + params.person.name + ' from ' + params.person.place};
+}
+```
+
+##### Swift
+
+```swift
+func main(args: [String:Any]) -> [String:Any] {
+    if let person = args["person"] as? [String: String], let name = person["name"] as? String, let place = person["place"] as? String {
+        return [ "payload" : "Hello \(name) from \(place)" ]
+    } else {
+        return [ "payload" : "Hello stranger from nowhere" ]
+    }
 }
 ```
 
@@ -255,7 +330,7 @@ $ bx wsk action update hello --param-file parameters.json
 2. Invoke the action, passing only the `name` parameter this time.
 
 ```
-wsk action invoke --result hello --param name Bernie
+$ bx wsk action invoke --result hello --param name Bernie
 ```
 
 ```
@@ -279,7 +354,7 @@ $ bx wsk action invoke --result hello --param name Bernie --param place "Washing
 
 ### Asynchronous actions
 
-#### Returning asynchronous results
+#### Returning asynchronous results (Node.js)
 
 JavaScript functions that run asynchronously may need to return the activation result after the `main` function has returned. You can accomplish this by returning a Promise in your action.
 
@@ -303,10 +378,39 @@ The Promise's callback takes two arguments, resolve and reject, which are both f
 
 A call to `reject()` can be used to reject the Promise and signal that the activation has completed abnormally.
 
+#### Returning asynchronous results (Swift)
+
+Swift functions that use asynchronous processing must block returning until those asynchronous results are available. Here's an example which prints a message after an interval to demonstrate this approach.
+
+1. Save the following content in a file called `asyncAction.swift`.
+
+```swift
+import Foundation
+import CoreFoundation
+
+func main(args: [String:Any]) -> [String:Any] {
+  Timer.scheduledTimer(withTimeInterval: 2, repeats: false)  { _ in
+    print("Timer fired.")
+    CFRunLoopStop(CFRunLoopGetMain())
+  }
+  print("Waiting on timer...")
+  CFRunLoopRun()
+  return [ "done" : true ]
+}
+```
+
+Using the `CFRunLoopRun` function, we can wait on the asynchronous timer to fire. Once the timer fires, the run loop is stopped.
+
+Other approaches to blocking on asynchronous results in Swift include semaphores, dispatch barriers and other concurrency primitives in the language.
+
+#### Testing asynchronous timeouts
+
 1. Run the following commands to create the action and invoke it:
 
 ```
 $ bx wsk action create asyncAction asyncAction.js
+// OR....
+$ bx wsk action create asyncAction asyncAction.swift
 ```
 
 ```
@@ -329,13 +433,12 @@ b066ca51e68c4d3382df2d8033265db0             asyncAction
 ```
 $ bx wsk activation get b066ca51e68c4d3382df2d8033265db0
 {
-     "start": 1455881628103,
-     "end":   1455881648126,
+     "duration": 2026,
      ...
 }
 ```
 
-Comparing the `start` and `end` time stamps in the activation record, you can see that this activation took slightly over two seconds to complete.
+Checking the `duration` field in the activation record, you can see that this activation took slightly over two seconds to complete.
 
 **Actions have a `timeout` parameter that enforces the maximum duration for an invocation.** This value defaults to 60 seconds and can be changed to a maximum of 5 minutes.
 
@@ -359,10 +462,10 @@ $ bx wsk action invoke asyncAction --result
 
 The error message returned by the platform indicates the action didn't return a response within the user-specified timeout. If we change the `timeout` back to a value higher than the artificial delay in the function, it should work again.
 
-1. Update the `asyncAction` timeout to 3000ms.
+1. Update the `asyncAction` timeout to 10000ms.
 
 ```
-$ wsk action update asyncAction --timeout 3000
+$ bx wsk action update asyncAction --timeout 10000
 ok: updated action asyncAction
 ```
 
@@ -379,13 +482,15 @@ $ wsk action invoke asyncAction --result
 
 #### Using actions to call an external API
 
-The examples so far have been simple JavaScript functions. You can also create an action that call external APIs and services.
+The examples so far have been simple functions. You can also create an action that call external APIs and services.
 
 This example invokes a Yahoo Weather service to get the current conditions at a specific location.
 
+##### Node.js
+
 1. Save the following content in a file called `weather.js`.
 
-```
+```javascript
 var request = require('request');
 
 function main(params) {
@@ -417,6 +522,86 @@ This example also shows the need for asynchronous actions. The action returns a 
 
 ```
 $ bx wsk action create weather weather.js
+```
+
+```
+$ bx wsk action invoke --result weather --param location "Brooklyn, NY"
+{
+ "msg": "It is 28 degrees in Brooklyn, NY and Cloudy"
+}   
+```
+
+##### Swift
+
+1. Save the following contents in a file called `weather.swift`.
+
+```swift
+import KituraNet
+import Foundation
+import SwiftyJSON
+
+func httpRequestOptions(location: String) -> [ClientRequest.Options] {
+  let query = "q=select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"\(location)\")&format=json"
+  let escaped = query.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+
+  let request: [ClientRequest.Options] = [
+    .method("GET"),
+    .schema("https://"),
+    .hostname("query.yahooapis.com"),
+    .path("/v1/public/yql?\(escaped!)")
+  ]
+
+  return request
+}
+
+func getWeatherJSON(location: String) -> JSON? {
+  var json: JSON = nil
+  let req = HTTP.request(httpRequestOptions(location: location)) { resp in
+    if let resp = resp, resp.statusCode == HTTPStatusCode.OK {
+      do {
+        var data = Data()
+        try resp.readAllData(into: &data)
+        json = JSON(data: data)
+      } catch {
+        print("Error \(error)")
+      }
+    } else {
+      print("Status error code or nil reponse received from server.")
+    }
+  }
+  req.end()
+
+  return json
+}
+
+func main(args: [String:Any]) -> [String:Any] {
+  var location = "Vermont"
+  if let userLocation = args["location"] as? String {
+    location = userLocation
+  }
+
+  guard let weather = getWeatherJSON(location: location) else {
+    return [ "error": "Unable to retrieve weather." ]
+  }
+
+  guard let report = weather["query"]["results"]["channel"]["item"]["condition"]["text"].string else {
+    return [ "error": "Weather report for location not found." ]
+  }
+
+  guard let temp = weather["query"]["results"]["channel"]["item"]["condition"]["temp"].string else {
+    return [ "error": "Current temperature for location not found." ]
+  }
+
+  return ["msg": "It is \(temp) degress in \(location) and \(report)."]
+}
+```
+
+Note that the action in the example uses the Swift `Kitura-net` library to make an HTTP request to the Yahoo Weather API, and extracts fields from the JSON result. The [References](https://github.com/apache/incubator-openwhisk/blob/master/docs/reference.md#swift-actions) detail the Swift libraries that are pre-installed for use by your actions.
+
+1. Run the following commands to create the action and invoke it:
+
+```
+$ bx wsk action create weather weather.swift
 ```
 
 ```
@@ -515,9 +700,11 @@ $ bx wsk action create my_sequence --sequence a,b,c
 
 Let's look at an example of using sequences.  
 
+#### Node.js
+
 1. Create the file (`funcs.js`) with the following contents:
 
-```
+```javascript
 function split(params) {
   var text = params.text || ""
   var words = text.split(' ')
@@ -545,7 +732,52 @@ $ bx wsk action create reverse funcs.js --main reverse
 $ bx wsk action create join funcs.js --main join
 ```
 
-3. Test each action to verify it is working
+#### Swift
+
+1. Create the file (`funcs.swift`) with the following contents:
+
+```swift
+import Foundation
+
+func split(args: [String:Any]) -> [String:Any] {
+    var words = [String]()
+
+    if let text = args["text"] as? String {
+        words = text.components(separatedBy: " ")
+    }
+    return ["words": words]
+}
+
+func reverse(args: [String:Any]) -> [String:Any] {
+    guard let words = args["words"] as? [String] else {
+        return ["words": []]
+    }
+
+    let reversed = words.map { String($0.characters.reversed()) }
+
+    return ["words": reversed]
+}
+
+func join(args: [String:Any]) -> [String:Any] {
+    guard let words = args["words"] as? [String] else {
+        return ["words": ""]
+    }
+
+    return ["words": words.joined(separator: " ")]
+}
+```
+
+2. Create the following three actions
+
+```
+$ bx wsk action create split funcs.swift --main split
+$ bx wsk action create reverse funcs.swift --main reverse
+$ bx wsk action create join funcs.swift --main join
+```
+
+#### Creating Actions
+
+1. Test each action to verify it is working
 
 ```
 $ bx wsk action invoke split --result --param text "Hello world"
@@ -568,13 +800,13 @@ $ bx wsk action invoke join --result --param words '["hello", "world"]'
 }
 ```
 
-4. Create the following action sequence.
+2. Create the following action sequence.
 
 ```
 $ bx wsk action create reverse_words --sequence split,reverse,join
 ```
 
-5. Test out the action sequence.
+3. Test out the action sequence.
 
 ```
 $ bx wsk action invoke reverse_words --result --param text "hello world"
