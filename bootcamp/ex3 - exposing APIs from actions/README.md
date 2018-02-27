@@ -76,7 +76,7 @@ https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/hello
 3. Invoke the web action URL with the JSON extension, passing in query parameters for `name` and `place`.
 
 ```
-$ curl https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/hello.json?name=Bernie&place=Vermont
+$ curl "https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/hello.json?name=Bernie"
 {
   "message": "Hello Bernie from Vermont!"
 }
@@ -85,14 +85,14 @@ $ curl https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/h
 4. Disable web action support.
 
 ```
-bx wsk action update hello --web false
+$ bx wsk action update hello --web false
 ok: updated action hello
 ```
 
 5. Verify the action is not externally accessible with authentication.
 
 ```
-$ curl https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/hello.json?name=Bernie&place=Vermont
+$ curl "https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/hello.json?name=Bernie"
 {
   "error": "The requested resource does not exist.",
   "code": 4452991
@@ -138,6 +138,8 @@ Web actions have a [lot more features](https://github.com/apache/incubator-openw
 
 1. Create a new web action from the following source code.
 
+##### Node.js example
+
 ```javascript
 function main() {
     return {
@@ -149,6 +151,22 @@ function main() {
 
 ```
 $ bx wsk action create redirect action.js --web true
+ok: created action redirect
+```
+
+##### Swift example
+
+```swift
+func main(args: [String:Any]) -> [String:Any] {
+    return [
+        "headers": ["location": "http://openwhisk.org"],
+        "statusCode": 302
+    ]
+}
+```
+
+```
+$ bx wsk action create redirect action.swift --web true
 ok: created action redirect
 ```
 
@@ -180,6 +198,8 @@ $ curl -v https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/defaul
 
 1. Create a new web action from the following source code.
 
+#####Node.js example
+
 ```javascript
 function main() {
     let html = "<html><body>Hello World!</body></html>"
@@ -194,7 +214,23 @@ $ bx wsk action create html action.js --web true
 ok: created action html
 ```
 
-2. Retrieve URL for new web action
+##### Swift example
+
+```javascript
+function main() {
+    let html = "<html><body>Hello World!</body></html>"
+    return { headers: { "Content-Type": "text/html" },
+             statusCode: 200,
+             body: html };
+}
+```
+
+```
+$ bx wsk action create html action.swift --web true
+ok: created action html
+```
+
+1. Retrieve URL for new web action
 
 ```
 $ bx wsk action get html --url
@@ -220,6 +256,8 @@ $ base64 sanders-square-silo-150.png
 
 2. Create a new web action from the following source code.
 
+##### Node.js
+
 ```javascript
 function main() {
     let png = "<BASE64 ENCODED IMAGE STRING>"
@@ -234,7 +272,26 @@ $ bx wsk action create image action.js --web true
 ok: created action image
 ```
 
-2. Retrieve URL for new web action
+##### Swift
+
+```swift
+func main(args: [String:Any]) -> [String:Any] {
+    let png = "<BASE64 ENCODED IMAGE STRING>"
+
+    return [
+        "headers": ["Content-Type": "image/png"],
+        "statusCode": 200,
+        "body": png
+    ]
+}
+```
+
+```
+$ bx wsk action create image action.swift --web true
+ok: created action image
+```
+
+3. Retrieve URL for new web action.
 
 ```
 $ bx wsk action get image --url
@@ -242,13 +299,15 @@ ok: got action image
 https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/image
 ```
 
-3. Open URL in web browser to check the following image is returned.
+4. Open URL in web browser to check the following image is returned.
 
 ![Feel the Bern!](https://static01.nytimes.com/newsgraphics/2015/01/30/candidate-tracker/assets/images/sanders-square-silo-150.png)
 
 #### Example - Manual JSON response
 
 1. Create a new web action from the following source code.
+
+##### Node.js
 
 ```javascript
 function main(params) { 
@@ -262,6 +321,23 @@ function main(params) {
 
 ```
 $ bx wsk action create manual action.js --web true
+ok: created action manual
+```
+
+##### Swift
+
+```javascript
+func main(args: [String:Any]) -> [String:Any] {
+    return [
+        "headers": ["Content-Type": "application/json"],
+        "statusCode": 200,
+        "body": args
+    ]
+}
+```
+
+```
+$ bx wsk action create manual action.swift --web true
 ok: created action manual
 ```
 
@@ -344,7 +420,7 @@ https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello
 3. Check HTTP API returns JSON response.
 
 ```
-$ curl "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie&place=Vermont"
+$ curl "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie"
 {
   "payload": "Hello, Bernie from Vermont"
 }
@@ -353,7 +429,7 @@ $ curl "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api
 4. Check other HTTP methods are not supported.
 
 ```
-$ curl -XPOST "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie&place=Vermont"
+$ curl -XPOST "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie"
 {"status":404,"message":"Error: Whoops. Verb not supported."}
 ```
 
@@ -363,7 +439,7 @@ $ curl -XPOST "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UU
 $ bx wsk api create /api/hello/world get hello --response-type json --apiname "hello-world"
 ok: created API /api/hello/world GET for action /_/hello
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello/world
-$ curl "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello/world?name=Bernie&place=Vermont"
+$ curl "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello/world?name=Bernie"
 {
   "payload": "Hello, Bernie from Vermont"
 }
@@ -373,7 +449,7 @@ $ curl "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api
 $ bx wsk api create /api/hello post hello --response-type json --apiname "hello-world"
 ok: created API /api/hello POST for action /_/hello
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello
-$ curl -XPOST "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie&place=Vermont"
+$ curl -XPOST "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie"
 {
   "payload": "Hello, Bernie from Vermont"
 }
@@ -471,7 +547,7 @@ $ curl https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/
 If we now call the same API endpoint with the authentication header, it should succeed.
 
 ```
-$ curl -H X-Auth-Key:<INSERT_YOUR_KEY> "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie&place=Vermont"
+$ curl -H X-Auth-Key:<INSERT_YOUR_KEY> "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie"
 {
   "payload": "Hello, Bernie from Vermont"
 }
@@ -496,11 +572,11 @@ Let's check rate limiting is working.
 1. Call the authenticated endpoint twice in succession.
 
 ```
-$ curl -H X-Auth-Key:<INSERT_YOUR_KEY> "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie&place=Vermont"
+$ curl -H X-Auth-Key:<INSERT_YOUR_KEY> "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie"
 {
   "payload": "Hello, Bernie from Vermont"
 }
-$ curl -H X-Auth-Key:<INSERT_YOUR_KEY> "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie&place=Vermont"
+$ curl -H X-Auth-Key:<INSERT_YOUR_KEY> "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie"
 {
   "status":429,
   "message":"Error: Rate limit exceeded"

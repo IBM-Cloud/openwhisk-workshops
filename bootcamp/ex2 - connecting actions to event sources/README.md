@@ -106,7 +106,7 @@ ok: triggered locationUpdate
 Triggers also support default parameters. Firing this trigger without any parameters will pass in the default values.
 
 ```
-$ bx wsk trigger update location -p name "Donald" -p place "Washington, D.C"
+$ bx wsk trigger update locationUpdate -p name "Donald" -p place "Washington, D.C"
 ok: updated trigger locationUpdate
 $ bx wsk trigger fire locationUpdate
 ok: triggered locationUpdate
@@ -226,8 +226,8 @@ You can create multiple rules that associate the same trigger with different act
 You can also use rules with sequences. For example, one can create an action sequence `recordLocationAndHello`that is activated by the rule `anotherRule`.
 
 ```
-$ wsk action create recordLocationAndHello --sequence /whisk.system/utils/echo,hello
-$ wsk rule create anotherRule locationUpdate recordLocationAndHello
+$ bx wsk action create recordLocationAndHello --sequence /whisk.system/utils/echo,hello
+$ bx wsk rule create anotherRule locationUpdate recordLocationAndHello
 ```
 
 #### Disabling Rules
@@ -298,14 +298,10 @@ The `/whisk.system/alarms/interval` feed has the following parameters we need to
 3. Create a trigger that fires every minute using this feed.
 
 ```
-$ wsk trigger create everyMinute --feed /whisk.system/alarms/interval -p minutes 1 -p trigger_payload "{\"name\":\"Mork\", \"place\":\"Ork\"}"
+$ bx wsk trigger create everyMinute --feed /whisk.system/alarms/interval -p minutes 1 -p trigger_payload "{\"name\":\"Mork\", \"place\":\"Ork\"}"
 ok: invoked /whisk.system/alarms/interval with id b2b4c3cb38224f44b4c3cb38228f44be
 ...
 ok: created trigger everyMinute
-```
-
-```
-ok: created trigger feed everyMinute
 ```
 
 4. Connect this trigger to the `hello` action with a new rule.

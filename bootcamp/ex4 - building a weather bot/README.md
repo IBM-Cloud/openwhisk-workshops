@@ -47,9 +47,9 @@ This service handles retrieving `latitude` and `longitude` coordinates for addre
 
 The action (microservice) implements the application logic within a single function (`main`) just the way we have learned it earlier. The same way we did it before, parameters are passed in as an object argument (`params`) to the function call. The service makes an API call to the *Google* Geocoding API, returning the results from the calls' response for the first address match.
 
-Notice that returning a `Promise` from the function means we can return the service response asynchronously.
-
 Let's first create the action (name it `location_to_latlong`) using the following code. As said before, you can create it using the CLI or the OpenWhisk UI just the way you have learned it earlier:
+
+##### Node.js
 
 ```javascript
 var request = require('request')
@@ -84,10 +84,79 @@ function main (params) {
 }
 ```
 
+##### Swift
+
+```swift
+import KituraNet
+import Foundation
+import SwiftyJSON
+
+func httpRequestOptions(address: String) -> [ClientRequest.Options] {
+  let request: [ClientRequest.Options] = [ 
+    .method("GET"),
+    .schema("https://"),
+    .hostname("maps.googleapis.com"),
+    .path("/maps/api/geocode/json?address=\(address)")
+  ]
+
+  return request
+}
+
+func addressToLocationJson (address: String) -> JSON? {
+  var json: JSON = nil
+  let req = HTTP.request(httpRequestOptions(address: address)) { resp in
+    if let resp = resp, resp.statusCode == HTTPStatusCode.OK {
+      do {
+        var data = Data()
+        try resp.readAllData(into: &data)
+        json = JSON(data: data)
+      } catch {
+        print("Error \(error)")
+      }
+    } else {
+      print(resp!.statusCode)
+      print("Status error code or nil reponse received from geocoding server.")
+    }
+  }
+  req.end()
+
+  return json
+}
+
+func parseAddress(args: [String: Any]) -> String? {
+  guard let text = args["text"] as? String else {
+    return nil
+  }
+
+  if let trigger_word = args["trigger_word"] as? String {
+    return String(text.characters.dropFirst(trigger_word.characters.count)).trimmingCharacters(in: .whitespacesAndNewlines)
+  }
+
+  return text
+}
+
+func main(args: [String:Any]) -> [String:Any] {
+  guard let address = parseAddress(args: args) else {
+    return [ "error": "Missing mandatory argument: address" ]
+  }
+
+  print("Searching for forecast in \(address)")
+  guard let json = addressToLocationJson(address: address) else {
+    return [ "error": "Unable to lookup location for address." ]
+  }
+  
+  guard let location = json["results"][0]["geometry"]["location"].dictionaryObject else {
+    return [ "error": "Location missing from results." ]
+  }
+
+  return location
+}
+```
+
 Let's deploy the action the way you learned it earlier:
 
 ```
-$ bx wsk action create location_to_latlong location_to_latlong.js
+$ bx wsk action create location_to_latlong location_to_latlong.xxx
 ok: created action location_to_latlong
 ```
 
@@ -110,6 +179,8 @@ This service uses an external API to retrieve weather forecasts for locations, r
 **Please ask the workshop coordinator for the temporary API keys to use this service.**
 
 Again, let's create the action (name it `forecast_from_latlong`) using the following code:
+
+##### Node.js
 
 ```javascript
 var request = require('request');
@@ -141,12 +212,97 @@ function main(params) {
 }
 ```
 
+##### Swift
+
+```swift
+import KituraNet
+import Foundation
+import SwiftyJSON
+
+func httpRequestOptions(auth: (username: String, password: String), location: (lat: Double, lng: Double)) -> [ClientRequest.Options] {
+  let request: [ClientRequest.Options] = [ 
+    .method("GET"),
+    .schema("https://"),
+    .hostname("twcservice.mybluemix.net"),
+    .path("/api/weather/v1/geocode/\(location.lat)/\(location.lng)/forecast/daily/3day.json"),
+    .username(auth.username),
+    .password(auth.password)
+  ]
+
+  return request
+}
+
+func forecastForLocationJson(auth: (String, String), location: (Double, Double)) -> JSON? {
+  var json: JSON = nil
+  let req = HTTP.request(httpRequestOptions(auth: auth, location: location)) { resp in
+    if let resp = resp, resp.statusCode == HTTPStatusCode.OK {
+      do {
+        var data = Data()
+        try resp.readAllData(into: &data)
+        json = JSON(data: data)
+      } catch {
+        print("Error \(error)")
+      }
+    } else {
+      print("Status error code or nil reponse received from geocoding server.")
+    }
+  }
+  req.end()
+
+  return json
+}
+
+func parseLocation(args: [String:Any]) -> (Double, Double)? {
+  guard let lat = args["lat"] as? Double else {
+    return nil
+  }
+
+  guard let lng = args["lng"] as? Double else {
+    return nil
+  }
+
+  return (lat, lng)
+}
+
+func parseAuthCredentials(args: [String:Any]) -> (String, String)? {
+  guard let username = args["username"] as? String else {
+    return nil
+  }
+
+  guard let password = args["password"] as? String else {
+    return nil
+  }
+
+  return (username, password)
+}
+
+func main(args: [String:Any]) -> [String:Any] {
+  guard let location = parseLocation(args: args) else {
+    return [ "error": "Missing mandatory location arguments: lat, lng" ]
+  }
+
+  guard let auth = parseAuthCredentials(args: args) else {
+    return [ "error": "Missing mandatory authentication arguments: username, password" ]
+  }
+
+  guard let json = forecastForLocationJson(auth: auth, location: location) else {
+    return [ "error": "Unable to lookup forecast for location." ]
+  }
+  
+  guard let forecast = json["forecasts"][0]["narrative"].string else {
+    return [ "error": "Narrative forecast missing from results." ]
+  }
+
+  return ["text": forecast]
+}
+```
+
 Notice that the service expects four parameters, `lat` and `lng` coordinates along with the `API credentials` (the ones you noted down before). Passing in `API credentials` as parameters means you don't have to embed them within the code and can change them dynamically at runtime.
 
 Let's deploy this service and verify it's working…
 
 ```
-$ bx wsk action create forecast_from_latlong forecast_from_latlong.js
+$ bx wsk action create forecast_from_latlong forecast_from_latlong.xyz
 ok: created action forecast_from_latlong
 $ bx wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p username $WEATHER_USER -p password $WEATHER_PASS -b -r
 {
