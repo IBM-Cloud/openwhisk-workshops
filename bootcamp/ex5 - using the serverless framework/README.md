@@ -323,12 +323,12 @@ functions:
             - http: GET /api-demo/hello
             - schedule: cron(* * * * *)
             - trigger: triggerName
-			- cloudant: 
+            - cloudant: 
                 host: xxx-yyy-zzz-bluemix.cloudant.com
                 username: USERNAME
                 password: PASSWORD
                 db: db_name
-			- message_hub: 
+            - message_hub: 
                 topic: my_kafka_topic
                 brokers: afkaprod01.messagehub.services.us-south.bluemix.net:9093
                 user: USERNAME
