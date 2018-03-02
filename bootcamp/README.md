@@ -14,7 +14,7 @@ Welcome to the future of cloud development, you'll never want to manage another 
 
 ## Exercises
 
-- [exercise 0 - setting up development environment](ex0%20-%20setting%20up%20development%20environment/README.md) - *This exercise will set up your local development environment to use IBM Cloud Functions.*
+- [**exercise 0 - setting up development environment**](ex0%20-%20setting%20up%20development%20environment/README.md) - *This exercise will set up your local development environment to use IBM Cloud Functions.*
 - [**exercise 1 -  creating and invoking actions**](ex1%20-%20creating%20and%20invoking%20actions/README.md) - *This exercise will introduce the concepts needed to create and use actions with IBM Cloud Functions.*
   - [**exercise 1.1 - using pre-compiled swift binarines**](ex1.1%20-%20using%20pre-compiled%20swift%20binaries) - *This exercise will explain how to improve the performance of Swift actions on IBM Cloud Functions. This additional exercise is for developers using the Swift runtime. If this isn't you, feel free to skip…*
 - **[exercise 2 - managing actions with packages](ex2%20-%20managing%20actions%20with%20packages)** - *This exercise will introduce the concepts needed to create and use packages with IBM Cloud Functions.*
