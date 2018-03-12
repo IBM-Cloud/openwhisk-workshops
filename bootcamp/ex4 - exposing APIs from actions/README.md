@@ -54,7 +54,7 @@ OpenWhisk comes with an integrated API Gateway. This allows the developers to cr
 
 Using the API Gateway is an extension to web actions that allows you to build enterprise high-traffic HTTP APIs with minimal effort using IBM Cloud Functions.
 
-###Web Actions
+### Web Actions
 
 Let's turn the `hello` action into a web action. Once it has been converted, we can call this action using a normal HTTP request.
 
@@ -198,7 +198,7 @@ $ curl -v https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/defaul
 
 1. Create a new web action from the following source code.
 
-#####Node.js example
+##### Node.js example
 
 ```javascript
 function main() {
