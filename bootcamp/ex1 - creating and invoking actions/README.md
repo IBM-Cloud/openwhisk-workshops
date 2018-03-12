@@ -4,7 +4,7 @@ This exercise will introduce the concepts needed to create and use actions with 
 
 *Once you have completed this exercise, you will have…*
 
-- **Created and invoked Node.js actions.**
+- **Created and invoked actions.**
 - **Understood how to pass parameters to actions.**
 - **Created actions which return asynchronous results.**
 - **Included external libraries and dependencies in action deployments.**
