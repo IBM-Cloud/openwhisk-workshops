@@ -75,7 +75,7 @@ The three rules establish the following behavior: images in both tweets and uplo
 
 🎉🎉🎉 **Just remember rules allow you to register an observer on a trigger. That's all we need to know for now, let's look at using these new concepts… ** 🎉🎉🎉
 
-###Creating Triggers
+### Creating Triggers
 
 *Triggers* represent a named "channel" for a stream of events.
 
