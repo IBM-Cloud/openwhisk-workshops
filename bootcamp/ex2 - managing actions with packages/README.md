@@ -125,7 +125,7 @@ $ bx wsk action invoke --result /whisk.system/samples/greeting --param name Bern
 
 Notice that the output uses the `name` and `place` parameters that were passed to the action.
 
-###Creating and using package bindings
+### Creating and using package bindings
 
 Although you can use the entities in a package directly, you might find yourself passing the same parameters to the action every time. You can avoid this by binding to a package and specifying default parameters. These parameters are inherited by the actions in the package.
 
@@ -180,7 +180,7 @@ $ bx wsk action invoke --result valhallaSamples/greeting --param name Odin --par
 
 Notice that the `place` parameter value that is specified with the action invocation overwrites the default value set in the `valhallaSamples` package binding.
 
-###Creating new packages
+### Creating new packages
 
 Custom packages can be used to group your own actions, manage default parameters and share entities with other users.
 
@@ -309,7 +309,7 @@ Let's demonstrate how to do this now using the `bx wsk` CLI tool…
   ```
 
 
-###Sharing packages
+### Sharing packages
 
 After the actions and feeds that comprise a package are debugged and tested, the package can be shared with all OpenWhisk users. Sharing the package makes it possible for the users to bind the package, invoke actions in the package, and author OpenWhisk rules and sequence actions.
 
