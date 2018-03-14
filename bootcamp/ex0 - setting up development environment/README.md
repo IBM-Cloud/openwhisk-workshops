@@ -13,6 +13,7 @@ Once this exercise is finished, we can start to develop serverless applications 
 ## Table Of Contents
 
 * [Register IBM Cloud Account](#register-ibm-cloud-account)
+* [Check Default Region (Lite Account Users)](#check-default-region-(lite-account-users))
 * [Install IBM Cloud CLI](#install-ibm-cloud-cli)
 * [Log Into IBM Cloud CLI](#log-into-ibm-cloud-cli)
 * [Install IBM Cloud Functions CLI plugin](#install-ibm-cloud-functions-cli-plugin)
@@ -33,6 +34,25 @@ Once this exercise is finished, we can start to develop serverless applications 
    ![Registration page](images/email.png)
 
 4. [Login into IBM Cloud](https://console.bluemix.net/login) using the account credentials you have registered.
+
+### Check Default Region (Lite Account Users)
+
+New IBM Cloud accounts default to a [new "lite" account version](https://www.ibm.com/cloud/pricing). 
+
+*This account provides free access to a subset of IBM Cloud resources, including IBM Cloud Functions. Lite accounts do not need a credit-card to sign up or expire after a set time period, i.e. 30 days.*
+
+Developers using "*Lite accounts*" are restricted to development within a single region. Accounts are automatically assigned to either `eu-gb` or `us-south` regions depending on user profile location.
+
+**When setting up the IBM Cloud CLI, choose the API endpoint for the default account region.**
+
+Follow these instructions to check which default region your lite account has been assigned.
+
+1. Open the [IBM Cloud homepage](https://console.bluemix.net/).
+2. Check the "*Region*" drop-down value in the page header.
+
+![Registration page](images/default_region.png)
+
+*Accounts which have been upgraded to "Pay-As-You-Go" or "Subscription" can choose any available region for IBM Cloud Functions.*
 
 ### Install IBM Cloud CLI
 
@@ -57,7 +77,7 @@ Once this exercise is finished, we can start to develop serverless applications 
    ```
 
 2. Choose an API endpoint from the list.
-   ***IBM Cloud Functions is available in the following regions: `eu-de`, `eu-gb` and `us-south`.***
+   ***IBM Cloud Functions is available in the following regions: `eu-de`, `eu-gb` and `us-south`. Lite account users must choose their default account region.***
 
    ```
    Select an API endpoint:
