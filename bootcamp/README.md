@@ -19,7 +19,7 @@ Welcome to the future of cloud development, you'll never want to manage another 
   - [**exercise 1.1 - using pre-compiled swift binaries**](ex1.1%20-%20using%20pre-compiled%20swift%20binaries) - *This exercise will explain how to improve the performance of Swift actions on IBM Cloud Functions. This additional exercise is for developers using the Swift runtime. If this isn't you, feel free to skip…*
 - **[exercise 2 - managing actions with packages](ex2%20-%20managing%20actions%20with%20packages)** - *This exercise will introduce the concepts needed to create and use packages with IBM Cloud Functions.*
 - **[exercise 3 - connecting actions to event sources](ex3%20-%20connecting%20actions%20to%20event%20sources/)** - *This exercise introduces concepts (triggers and rules) used by the platform to integrate external event providers.*
-- **[exercise 4 - exposing APIs from actions](#ex4%20-%20exposing%20APIs%20from%20actions)** - *This exercise shows you how to create public HTTP endpoints from actions.* 
+- **[exercise 4 - exposing APIs from actions](ex4%20-%20exposing%20APIs%20from%20actions)** - *This exercise shows you how to create public HTTP endpoints from actions.* 
 - [**exercise 5 - ibm cloud functions web ui**](ex5%20-%20ibm%20cloud%20functions%20web%20ui) - *This exercise will introduce the [IBM Cloud Functions Web UI](https://console.bluemix.net/openwhisk/).* 
 - [**exercise 6 - building a weather bot**](ex6%20-%20building%20a%20weather%20bot) - *This exercise shows you how to build a weather bot for Slack.*
 - [**exercise 7 - using the serverless framework**](ex7%20-%20using%20the%20serverless%20framework) - *This exercise shows you use IBM Cloud Functions with The Serverless Framework.* 
