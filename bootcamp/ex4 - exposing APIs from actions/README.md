@@ -217,11 +217,13 @@ ok: created action html
 ##### Swift example
 
 ```javascript
-function main() {
+func main(args: [String:Any]) -> [String:Any] {
     let html = "<html><body>Hello World!</body></html>"
-    return { headers: { "Content-Type": "text/html" },
-             statusCode: 200,
-             body: html };
+    return [
+        "headers": ["Content-Type": "text/html"],
+        "statusCode": 200,
+        "body": html
+    ]
 }
 ```
 
