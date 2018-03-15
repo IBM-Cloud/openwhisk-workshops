@@ -216,7 +216,7 @@ ok: created action html
 
 ##### Swift example
 
-```javascript
+```swift
 func main(args: [String:Any]) -> [String:Any] {
     let html = "<html><body>Hello World!</body></html>"
     return [
