@@ -234,7 +234,7 @@ ok: created action html
 
 1. Retrieve URL for new web action
 
-```
+```swift
 $ bx wsk action get html --url
 ok: got action html
 https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/html
