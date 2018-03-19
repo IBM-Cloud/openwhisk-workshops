@@ -37,6 +37,8 @@ Once this exercise is finished, we can start to develop serverless applications 
 
 ### Check Default Region (Lite Account Users)
 
+🚨🚨🚨 **PLEASE READ THIS SECTION.** *We know it looks boring but trust us! People often skim this part and then complain they can't login into the CLI. These instructions will save you all that inevitable confusion...* 🚨🚨🚨
+
 New IBM Cloud accounts default to a [new "lite" account version](https://www.ibm.com/cloud/pricing). 
 
 *This account provides free access to a subset of IBM Cloud resources, including IBM Cloud Functions. Lite accounts do not need a credit-card to sign up or expire after a set time period, i.e. 30 days.*
@@ -53,6 +55,8 @@ Follow these instructions to check which default region your lite account has be
 ![Registration page](images/default_region.png)
 
 *Accounts which have been upgraded to "Pay-As-You-Go" or "Subscription" can choose any available region for IBM Cloud Functions.*
+
+🚨🚨🚨 **DID YOU READ THIS SECTION?** *Good, just checking...* 🚨🚨🚨
 
 ### Install IBM Cloud CLI
 
