@@ -883,7 +883,7 @@ $ zip -r action.zip *
 3. Create the action:
 
 ```
-$ bx wsk action create packageAction action.zip
+$ bx wsk action create packageAction action.zip --kind nodejs:default
 ```
 
 Note that when creating an action from a `.zip` archive using the CLI tool, you must explicitly provide a value for the `--kind` flag.
