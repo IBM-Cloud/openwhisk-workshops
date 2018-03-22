@@ -103,7 +103,7 @@ $ curl "https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/
 
 Web actions invoked through the platform API need a content extension to tell the platform how to interpret the content returned from the action. In the example above, we were using the `.json` extension. This tells the platform to serialise the return value out to a JSON response.
 
-The platform supports the following content-types: `.json`, `.html`, `.http`, `.svg` or `.text`. If not content extension is provided, it defaults to `.http` which gives the action full control of the HTTP response.
+The platform supports the following content-types: `.json`, `.html`, `.http`, `.svg` or `.text`. If no content extension is provided, it defaults to `.http` which gives the action full control of the HTTP response.
 
 #### HTTP Request Properties
 
