@@ -691,7 +691,7 @@ ok: updated action asyncAction
 2. Invoke the action and block on the result.
 
 ```
-$ wsk action invoke asyncAction --result
+$ bx wsk action invoke asyncAction --result
 {
     "done": true
 }
