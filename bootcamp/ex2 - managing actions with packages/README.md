@@ -33,14 +33,14 @@ The following sections describe how to use packages with actions…
 
 IBM Cloud Functions comes pre-installed with a number of public packages, which include trigger feeds used to register triggers with event sources.
 
-Actions in public packages can be used by anyone, the caller pays the invocation cost. 
+Actions in public packages can be used by anyone, the caller pays the invocation cost.
 
 Using `bx wsk` CLI you can get a list of packages in a namespace, list the entities in a package and get a description of the entities within a package.
 
 1. Get a list of packages in the `/whisk.system` namespace.
 
 ```
-$ wsk package list /whisk.system
+$ bx wsk package list /whisk.system
 packages
 /whisk.system/combinators                                              shared
 /whisk.system/websocket                                                shared
