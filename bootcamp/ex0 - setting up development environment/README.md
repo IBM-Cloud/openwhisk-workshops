@@ -50,7 +50,10 @@ Developers using "*Lite accounts*" are restricted to development within a single
 Follow these instructions to check which default region your lite account has been assigned.
 
 1. Open the [IBM Cloud homepage](https://console.bluemix.net/).
-2. Check the "*Region*" drop-down value in the page header.
+2. Click the *"Manage"* menu from the page header.
+3. Click the *"[Account > Cloud Foundry Orgs](https://console.bluemix.net/account/organizations)"* option from the drop-down menu.
+4. From the [Cloud Foundry Organisations](https://console.bluemix.net/account/organizations) page, click the organisation name listed in the table.
+5. Check the "*Region*" value listed in the organisation details table.
 
 ![Registration page](images/default_region.png)
 
@@ -61,23 +64,24 @@ Follow these instructions to check which default region your lite account has be
 ### Install IBM Cloud CLI
 
 1. Open the [IBM Cloud Docs](https://console.bluemix.net/docs/) page.
+2. Open the *"[IBM Cloud Developer Tools (CLI)](https://console.bluemix.net/docs/cli/index.html#overview)"* link from the *"IBM Cloud"* section.
+3. Click on the *"[Download and install IBM Cloud CLI](https://console.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install)"* link under *"HOW TO"* section in the left-hand menu.
+4. Follow the steps listed under the *["Install from shell"](https://console.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#shell_install)*  section to download and install the IBM Cloud CLI.
 
-2. Open the *"CLI and Dev Tools"* link from the *"IBM Cloud"* section.
+- MacOS: `curl -fsSL https://clis.ng.bluemix.net/install/osx | sh`
+- Linux: `curl -fsSL https://clis.ng.bluemix.net/install/linux | sh`
+- Windows (Powershell): `iex(New-Object Net.WebClient).DownloadString('https://clis.ng.bluemix.net/install/powershell')`
 
-3. Click on the *"Get Started"* image under *"IBM Cloud CLI"* section.
+![Registration page](images/docs.gif)
 
-4. Follow the steps 1 and 2 from this page to download and install the IBM Cloud CLI .
 
-   ![Registration page](images/docs.gif)
-
-   ​
 
 ### Log Into IBM Cloud CLI
 
 1. Use this command to authenticate the IBM Cloud CLI with your account credentials.
 
    ```
-   $ bx login
+   $ ic login
    ```
 
 2. Choose an API endpoint from the list.
@@ -120,7 +124,7 @@ Follow these instructions to check which default region your lite account has be
 4. Run the following command to configure the organisation and space the CLI is targeting.
 
    ```
-   $ bx target --cf
+   $ ic target --cf
    Targeted org user@email.com
    Targeted space dev
 
@@ -138,7 +142,7 @@ Follow these instructions to check which default region your lite account has be
 1. Use this command to install the Cloud Functions plugin for the IBM Cloud CLI.
 
    ```
-   $ bx plugin install cloud-functions
+   $ ic plugin install cloud-functions
    Looking up 'cloud-functions' from repository 'Bluemix'...
    Plug-in 'cloud-functions 1.0.7' found in repository 'Bluemix'
    Attempting to download the binary file...
@@ -156,7 +160,7 @@ Follow these instructions to check which default region your lite account has be
 1. Run the following command to invoke a test function from the command-line.
 
    ```
-   $ bx wsk action invoke whisk.system/utils/echo -p message hello --result
+   $ ic wsk action invoke whisk.system/utils/echo -p message hello --result
    {
        "message": "hello"
    }

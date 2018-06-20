@@ -69,10 +69,9 @@ The framework is a Node.js [CLI application](https://www.npmjs.com/package/serve
 2. Install The Serverless Framework with the OpenWhisk provider plugin.
 
 ```
-$ npm install --global serverless serverless-openwhisk
+$ npm install --global serverless
 ...
-+ serverless-openwhisk@0.10.1
-+ serverless@1.26.1
++ serverless@1.27.3
 added 339 packages in 11.545s
 ```
 
@@ -80,7 +79,7 @@ added 339 packages in 11.545s
 
 ```
 $ serverless --version
-1.26.1
+1.27.3
 ```
 
 ### Creating Project Templates
@@ -116,8 +115,8 @@ $ cd my_service; tree .
 
 ```
 $ npm install
-> openwhisk-swift@1.0.0 postinstall /private/tmp/my_service
-> npm link serverless-openwhisk
+`-- serverless-openwhisk@0.13.0
+...
 ```
 
 #### Serverless Framework Files

@@ -82,14 +82,14 @@ The three rules establish the following behavior: images in both tweets and uplo
 Let's create a trigger to send *location updates*:
 
 ```
-$ bx wsk trigger create locationUpdate
+$ ic wsk trigger create locationUpdate
 ok: created trigger locationUpdate
 ```
 
 You can check that the trigger has been created like this:
 
 ```
-$ bx wsk trigger list
+$ ic wsk trigger list
 triggers
 locationUpdate                         private
 ```
@@ -99,16 +99,16 @@ So far we have only created a named channel to which events can be fired.
 Let's now fire the trigger by specifying its name and parameters:
 
 ```
-$ bx wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
+$ ic wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
 ok: triggered locationUpdate
 ```
 
 Triggers also support default parameters. Firing this trigger without any parameters will pass in the default values.
 
 ```
-$ bx wsk trigger update locationUpdate -p name "Donald" -p place "Washington, D.C"
+$ ic wsk trigger update locationUpdate -p name "Donald" -p place "Washington, D.C"
 ok: updated trigger locationUpdate
-$ bx wsk trigger fire locationUpdate
+$ ic wsk trigger fire locationUpdate
 ok: triggered locationUpdate
 ```
 
@@ -127,7 +127,7 @@ As an example, create a rule that calls the `hello` action whenever a location u
 1. Check the `hello` action exists and responds to the correct event parameters.
 
 ```
-$ bx wsk action invoke --result hello --param name Bernie --param place Vermont
+$ ic wsk action invoke --result hello --param name Bernie --param place Vermont
 {
     "payload": "Hello, Bernie from Vermont"
 }
@@ -136,7 +136,7 @@ $ bx wsk action invoke --result hello --param name Bernie --param place Vermont
 2. Check the trigger exists.
 
 ```
-$ bx wsk trigger get locationUpdate
+$ ic wsk trigger get locationUpdate
 ok: got trigger a
 {
     "namespace": "user@host.com_dev",
@@ -150,14 +150,14 @@ ok: got trigger a
 3. Create the rule using the command-line. The three parameters are the name of the rule, the trigger, and the action.
 
 ```
-$ bx wsk rule create myRule locationUpdate hello
+$ ic wsk rule create myRule locationUpdate hello
 ok: created rule myRule
 ```
 
 4. Retrieve rule details to show the trigger and action bound by this rule.
 
 ```
-$ bx wsk rule get myRule
+$ ic wsk rule get myRule
 ok: got rule myRule
 {
     "namespace": "user@host.com_dev",
@@ -181,14 +181,14 @@ ok: got rule myRule
 1. Fire the `locationUpdate` trigger. Each time that you fire the trigger with an event, the `hello` action is called with the event parameters.
 
 ```
-$ bx wsk trigger fire locationUpdate --param name Donald --param place "Washington, D.C."
+$ ic wsk trigger fire locationUpdate --param name Donald --param place "Washington, D.C."
 ok: triggered /_/locationUpdate with id 5c153c01d76d49dc953c01d76d99dc34
 ```
 
 2. Verify that the action was invoked by checking the activations list.
 
 ```
-$ bx wsk activation list --limit 2
+$ ic wsk activation list --limit 2
 activations
 5ee74025c2384f30a74025c2382f30c1 hello
 5c153c01d76d49dc953c01d76d99dc34 locationUpdate
@@ -199,7 +199,7 @@ We can see the trigger activation (`5c153c01d76d49dc953c01d76d99dc34`) is record
 3. Retrieving the trigger activation record will show the actions and rules invoked from this activation.
 
 ```
-$ bx wsk activation result 5ee74025c2384f30a74025c2382f30c1
+$ ic wsk activation result 5ee74025c2384f30a74025c2382f30c1
 {
    "payload": "Hello, Donald from Washington, D.C."
 }
@@ -210,12 +210,12 @@ You can see that the hello action received the event payload and returned the ex
 Activation records for triggers store the rules and actions fired for an event and the event parameters.
 
 ```
-$ bx wsk activation result 5c153c01d76d49dc953c01d76d99dc34
+$ ic wsk activation result 5c153c01d76d49dc953c01d76d99dc34
 {
     "name": "Donald",
     "place": "Washington, D.C."
 }
-$ bx wsk activation logs 5c153c01d76d49dc953c01d76d99dc34
+$ ic wsk activation logs 5c153c01d76d49dc953c01d76d99dc34
 {"statusCode":0,"success":true,"activationId":"5ee74025c2384f30a74025c2382f30c1","rule":"user@host.com_dev/myRule","action":"user@host.com_dev/hello"}
 ```
 
@@ -226,8 +226,8 @@ You can create multiple rules that associate the same trigger with different act
 You can also use rules with sequences. For example, one can create an action sequence `recordLocationAndHello`that is activated by the rule `anotherRule`.
 
 ```
-$ bx wsk action create recordLocationAndHello --sequence /whisk.system/utils/echo,hello
-$ bx wsk rule create anotherRule locationUpdate recordLocationAndHello
+$ ic wsk action create recordLocationAndHello --sequence /whisk.system/utils/echo,hello
+$ ic wsk rule create anotherRule locationUpdate recordLocationAndHello
 ```
 
 #### Disabling Rules
@@ -237,20 +237,20 @@ Rules are enabled upon creation but can be disabled and re-enabled using the com
 1. Disable the rule connecting the `locationUpdate` trigger and `hello` action.
 
 ```
-$ bx wsk rule disable myRule
+$ ic wsk rule disable myRule
 ```
 
 2. Fire the trigger again.
 
 ```
-$ bx wsk trigger fire locationUpdate --param name Donald --param place "Washington, D.C."
+$ ic wsk trigger fire locationUpdate --param name Donald --param place "Washington, D.C."
 ok: triggered /_/locationUpdate with id 53f85c39087d4c15b85c39087dac1571
 ```
 
 3. Check the activation list there are no new activation records.
 
 ```
-$ bx wsk activation list --limit 2
+$ ic wsk activation list --limit 2
 activations
 5ee74025c2384f30a74025c2382f30c1 hello
 5c153c01d76d49dc953c01d76d99dc34 locationUpdate
@@ -271,7 +271,7 @@ This example shows how to use a feed in the [Alarms package](https://github.com/
 1. Get a description of the feeds in the `/whisk.system/alarms` package.
 
 ```
-$ bx wsk package get --summary /whisk.system/alarms
+$ ic wsk package get --summary /whisk.system/alarms
 package /whisk.system/alarms: Alarms and periodic utility
    (parameters: *apihost, *trigger_payload)
  feed   /whisk.system/alarms/interval: Fire trigger at specified interval
@@ -285,7 +285,7 @@ package /whisk.system/alarms: Alarms and periodic utility
 2. Retrieve the details for the `alarms/interval` feed.
 
 ```
-$ bx wsk action get --summary /whisk.system/alarms/interval
+$ ic wsk action get --summary /whisk.system/alarms/interval
 action /whisk.system/alarms/interval: Fire trigger at specified interval
    (parameters: *apihost, *isInterval, minutes, startDate, stopDate, *trigger_payload)
 ```
@@ -298,7 +298,7 @@ The `/whisk.system/alarms/interval` feed has the following parameters we need to
 3. Create a trigger that fires every minute using this feed.
 
 ```
-$ bx wsk trigger create everyMinute --feed /whisk.system/alarms/interval -p minutes 1 -p trigger_payload "{\"name\":\"Mork\", \"place\":\"Ork\"}"
+$ ic wsk trigger create everyMinute --feed /whisk.system/alarms/interval -p minutes 1 -p trigger_payload "{\"name\":\"Mork\", \"place\":\"Ork\"}"
 ok: invoked /whisk.system/alarms/interval with id b2b4c3cb38224f44b4c3cb38228f44be
 ...
 ok: created trigger everyMinute
@@ -307,14 +307,14 @@ ok: created trigger everyMinute
 4. Connect this trigger to the `hello` action with a new rule.
 
 ```
-$ bx wsk rule create everyMinuteRule everyMinute hello
+$ ic wsk rule create everyMinuteRule everyMinute hello
 ok: created rule everyMinuteRule
 ```
 
 5. Check that the action is being invoked every minute by polling for activation logs.
 
 ```
-$ bx wsk activation poll
+$ ic wsk activation poll
 Activation: 'hello' (b2fc4b00c7be4143bc4b00c7bed1431c)
 []
 Activation: 'everyMinute' (cec7eb38739c4d4287eb38739ccd42ef)
@@ -328,8 +328,8 @@ You should see activations every minute the trigger and the action. The action r
 **IMPORTANT: Let's delete the trigger and rule or this event will be running forever!**
 
 ```
-$ bx wsk trigger delete everyMinute
-$ bx wsk rule delete everyMinuteRule
+$ ic wsk trigger delete everyMinute
+$ ic wsk rule delete everyMinuteRule
 ```
 
 🎉🎉🎉 **Understanding triggers and rules allows you to build event-driven applications on OpenWhisk. Create some actions, hook up events and let the platform take care of everything else, what could be easier?** 🎉🎉🎉

@@ -61,14 +61,14 @@ Let's turn the `hello` action into a web action. Once it has been converted, we 
 1. Update the action to set the `—web` flag to `true`.
 
 ```
-$ bx wsk action update hello --web true
+$ ic wsk action update hello --web true
 ok: updated action hello
 ```
 
 2. Retrieve the web action URL exposed by the platform for this action.
 
 ```
-$ bx wsk action get hello --url
+$ ic wsk action get hello --url
 ok: got action hello
 https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/hello
 ```
@@ -85,7 +85,7 @@ $ curl "https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/
 4. Disable web action support.
 
 ```
-$ bx wsk action update hello --web false
+$ ic wsk action update hello --web false
 ok: updated action hello
 ```
 
@@ -150,7 +150,7 @@ function main() {
 ```
 
 ```
-$ bx wsk action create redirect action.js --web true
+$ ic wsk action create redirect action.js --web true
 ok: created action redirect
 ```
 
@@ -166,14 +166,14 @@ func main(args: [String:Any]) -> [String:Any] {
 ```
 
 ```
-$ bx wsk action create redirect action.swift --web true
+$ ic wsk action create redirect action.swift --web true
 ok: created action redirect
 ```
 
 2. Retrieve URL for new web action
 
 ```
-$ bx wsk action get redirect --url
+$ ic wsk action get redirect --url
 ok: got action redirect
 https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/redirect
 ```
@@ -210,7 +210,7 @@ function main() {
 ```
 
 ```
-$ bx wsk action create html action.js --web true
+$ ic wsk action create html action.js --web true
 ok: created action html
 ```
 
@@ -228,14 +228,14 @@ func main(args: [String:Any]) -> [String:Any] {
 ```
 
 ```
-$ bx wsk action create html action.swift --web true
+$ ic wsk action create html action.swift --web true
 ok: created action html
 ```
 
 1. Retrieve URL for new web action
 
 ```swift
-$ bx wsk action get html --url
+$ ic wsk action get html --url
 ok: got action html
 https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/html
 ```
@@ -270,7 +270,7 @@ function main() {
 ```
 
 ```
-$ bx wsk action create image action.js --web true
+$ ic wsk action create image action.js --web true
 ok: created action image
 ```
 
@@ -289,14 +289,14 @@ func main(args: [String:Any]) -> [String:Any] {
 ```
 
 ```
-$ bx wsk action create image action.swift --web true
+$ ic wsk action create image action.swift --web true
 ok: created action image
 ```
 
 3. Retrieve URL for new web action.
 
 ```
-$ bx wsk action get image --url
+$ ic wsk action get image --url
 ok: got action image
 https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/image
 ```
@@ -322,7 +322,7 @@ function main(params) {
 ```
 
 ```
-$ bx wsk action create manual action.js --web true
+$ ic wsk action create manual action.js --web true
 ok: created action manual
 ```
 
@@ -346,7 +346,7 @@ ok: created action manual
 2. Retrieve URL for new web action
 
 ```
-$ bx wsk action get manual --url
+$ ic wsk action get manual --url
 ok: got action manual
 https://openwhisk.ng.bluemix.net/api/v1/web/user%40host.com_dev/default/manual
 ```
@@ -407,14 +407,14 @@ Let's look a short example of using the API Gateway service…
 1. Ensure the `hello` action is enabled as a web action.
 
 ```
-$ bx wsk action update hello --web true
+$ ic wsk action update hello --web true
 ok: updated action hello
 ```
 
 2. Create a new API Gateway endpoint for the web action.
 
 ```
-$ bx wsk api create /api/hello get hello --response-type json --apiname "hello-world"
+$ ic wsk api create /api/hello get hello --response-type json --apiname "hello-world"
 ok: created API /api/hello GET for action /_/hello
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello
 ```
@@ -438,7 +438,7 @@ $ curl -XPOST "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UU
 5. Enable other endpoints and verbs.
 
 ```
-$ bx wsk api create /api/hello/world get hello --response-type json --apiname "hello-world"
+$ ic wsk api create /api/hello/world get hello --response-type json --apiname "hello-world"
 ok: created API /api/hello/world GET for action /_/hello
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello/world
 $ curl "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello/world?name=Bernie"
@@ -448,7 +448,7 @@ $ curl "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api
 ```
 
 ```
-$ bx wsk api create /api/hello post hello --response-type json --apiname "hello-world"
+$ ic wsk api create /api/hello post hello --response-type json --apiname "hello-world"
 ok: created API /api/hello POST for action /_/hello
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello
 $ curl -XPOST "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello?name=Bernie"
@@ -462,26 +462,26 @@ $ curl -XPOST "https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UU
 1. List all the exposed API endpoints.
 
 ```
-$ bx wsk api list
+$ ic wsk api list
 ```
 
 2. Export the API definitions to a Swagger file.
 
 ```
-$ bx wsk api get / > swagger.json
+$ ic wsk api get / > swagger.json
 ```
 
 3. Delete all the API definitions.
 
 ```
-$ bx wsk api delete /
+$ ic wsk api delete /
 ok: deleted API /
 ```
 
 4. Check there are no more APIs defined.
 
 ```
-$ bx wsk api list
+$ ic wsk api list
 ok: APIs
 Action                            Verb             API Name  URL
 ```
@@ -489,13 +489,13 @@ Action                            Verb             API Name  URL
 5. Restore from Swagger file.
 
 ```
-$ bx wsk api create --config-file swagger.json
+$ ic wsk api create --config-file swagger.json
 ```
 
 6. Confirm the APIs have been re-created.
 
 ```
-$ bx wsk api list
+$ ic wsk api list
 ```
 
 ### API Management Features
@@ -536,7 +536,7 @@ If the key has been created correctly the table should now display the newly ena
 Let's try out calling one of our API endpoints without an API key.
 
 ```
-$ bx wsk api list
+$ ic wsk api list
 ok: APIs
 Action                                Verb     API Name  URL
 /user@host.com_dev/hello     get  hello-world  https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/hello
