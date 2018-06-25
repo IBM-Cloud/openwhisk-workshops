@@ -21,6 +21,7 @@ Once this exercise is finished, we can start to develop event-driven serverless 
   * [Testing Rules](#testing-rules)
   * [Disabling Rules](#disabling-rules)
 * [Connecting Trigger Feeds](#connecting-trigger-feeds)
+* [EXERCISES](#exercises)
 
 ## Instructions
 
@@ -333,3 +334,61 @@ $ ic wsk rule delete everyMinuteRule
 ```
 
 🎉🎉🎉 **Understanding triggers and rules allows you to build event-driven applications on OpenWhisk. Create some actions, hook up events and let the platform take care of everything else, what could be easier?** 🎉🎉🎉
+
+#### EXERCISES
+
+Let's try out your new SERVERLESS SUPERPOWERS 💪 to build a real serverless application. 
+
+***Can you use triggers & feeds to build a notification system when new users are added to a system?***
+
+#### Background
+
+Users are stored in a Cloudant database. When a new user is added to the database, we need to send them a welcome message. Users might provide an email address and/or phone number during registration. Welcome messages should be sent on all available channels.
+
+#### Resources
+
+IBM Cloud provides a free instance of the [Cloudant database](https://console.bluemix.net/catalog/services/cloudant) to Lite account users.
+
+Apache OpenWhisk supports listening to the [`changes` feed](http://docs.couchdb.org/en/2.0.0/api/database/changes.html) for a Cloudant database using this trigger feed: https://github.com/apache/incubator-openwhisk-package-cloudant
+
+SendGrid [provides an API](https://sendgrid.com/docs/API_Reference/Web_API_v3/index.html) for sending emails. Twilio [provides an API](https://www.twilio.com/sms/api) for sending SMS messages.
+
+Triggers can be fired programatically from an action using the [JavaScript client library.](https://github.com/apache/incubator-openwhisk-client-js#fire-trigger)
+
+#### Architecture
+
+This serverless application will have three actions: `user_changes`, `send_welcome_email` and `send_welcome_sms`. It will also have three triggers: `db_changes`, `new_user_email` and `new_user_sms`. `db_changes` will be connected to the Cloudant trigger feed.
+
+`user_changes` will listen for database update using the `db_changes` trigger feed. When a new user record is received, it will check the record for email and phone number values. If either of those values exist, it will fire a custom trigger (`new_user_email` and `new_user_sms`) for each event type with the parameter value.
+
+`send_welcome_email` will be connected to the `new_user_email` trigger. It will send a welcome email to the email address from the event.
+
+`send_welcome_sms` will be connected to the `new_user_sms` trigger. It will send a welcome SMS message to the phone number from the event.
+
+#### Tests
+
+Test the email action by firing a trigger and checking for the email message.
+
+```
+$ ic wsk trigger fire new_user_email -p address "blah@blah.com"
+```
+
+Test the SMS action by firing a trigger and checking for the SMS message.
+
+```
+$ ic wsk trigger fire new_user_sms -p phone_number "XXXXX"
+```
+
+Test the DB listener action by firing a trigger with a sample database document. Provide a sample JSON document in the `doc.json` file.
+
+```
+$ ic wsk trigger fire db_changes -P doc.jsonTest with correct password.
+```
+
+Create some new user documents in the database and with contact details and check the welcome messages are received.
+
+#### Hint & Tips
+
+Start with building & testing the sms and email actions. Once you have tested and verified they work, move onto the database listener action.
+
+Don't create the trigger rules until you have verified all the actions work individually.

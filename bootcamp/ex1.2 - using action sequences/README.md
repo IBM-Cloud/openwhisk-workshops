@@ -16,6 +16,7 @@ Once this exercise is finished, we will be able to use action sequences on IBM C
 * [Action Sequences](#action-sequences)
   * [Creating Sequence Actions](#creating-sequence-actions)
   * [Handling Errors](#handling-errors)
+* [EXERCISES](#exercises)
 
 ## Instructions
 
@@ -145,13 +146,13 @@ $ ic wsk action invoke join --result --param words '["hello", "world"]'
 }
 ```
 
-1. Create the following action sequence.
+2. Create the following action sequence.
 
 ```
 $ ic wsk action create reverse_words --sequence split,reverse,join
 ```
 
-1. Test out the action sequence.
+3. Test out the action sequence.
 
 ```
 $ ic wsk action invoke reverse_words --result --param text "hello world"
@@ -168,53 +169,49 @@ What if you want to stop processing functions in a sequence? This might be due t
 
 If any action within the sequences returns an error, the platform returns immediately. The action error is returned as the response. No further actions within the sequence will be invoked.
 
-Let's look at how this work using the authentication example from above....
+Let's look at how this work...
 
 ##### Node.js
 
 1. Create the file (`funcs.js`) with the following contents:
 
 ```javascript
-function authentication (params) {
-  if (params.password !== 'mysecret') {
-      throw new Error("Password incorrect.")
+function fail (params) {
+  if (params.fail) {
+      throw new Error("stopping sequence and returning.")
   }
     
   return params  
 }
 
-function rot13 (params) {
-  const source = params.encrypted.replace(/[a-zA-Z]/g, function (c){
-    return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26)}
-  )
-
-  return { decrypted: source }
+function end (params) {  
+  return { message: "sequence finished." }
 }
 ```
 
 2. Create the following three actions
 
 ```
-$ ic wsk action create authentication funcs.js --main authentication
-$ ic wsk action create rot13 funcs.js --main rot13
-$ ic wsk action create decrypt --sequence authentication,rot13
+$ ic wsk action create fail funcs.js --main fail
+$ ic wsk action create end funcs.js --main end
+$ ic wsk action create example --sequence fail,end
 ```
 
-3. Test out the action sequence with an incorrect password.
+3. Test out the action sequence without `fail` parameter.
 
 ```
-$ ic wsk action invoke decrypt -r -p password "somethingelse"
+$ ic wsk action invoke example -r
 {
-    "error": "An error has occurred: Error: Password incorrect."
+    "message": "sequence finished."
 }
 ```
 
-4. Test out the action sequence with the correct password.
+4. Test out the action sequence with `fail` parameter.
 
 ```
-$ bx wsk action invoke decrypt -r -p password "mysecret" -p encrypted "Uryyb Jbeyq"
+$ ic wsk action invoke example -r -p fail true
 {
-    "decrypted": "Hello World"
+    "error": "An error has occurred: Error: stopping sequence and returning."
 }
 ```
 
@@ -222,6 +219,48 @@ $ bx wsk action invoke decrypt -r -p password "mysecret" -p encrypted "Uryyb Jbe
 
 🎉🎉🎉 **Sequences are an "advanced" OpenWhisk technique. Congratulations for getting this far! Now let's move on to something all together different, connecting functions to external event sources…** 🎉🎉🎉
 
+####EXERCISES
 
+Let's try out your new SERVERLESS SUPERPOWERS 💪 to build a real serverless function. 
 
-#### 
+***Can you use sequence error handling to add authentication to the existing `reverse_words` serverless  function?***
+
+#### Input
+
+The new `reverse_words_with_password` sequence action should take two parameters, `password` and `text`. `password` is authentication value, `text` is the sentence to reverse words in.
+
+#### Output
+
+Return the JSON from the existing `reverse_words` action.
+
+```json
+{
+  "text": "olleh dlrow"
+}
+```
+
+If the `password` parameter does match an expected value (`mysecret`), return an error.
+
+#### Resources
+
+Create a new action to handle checking the password. Join this with the `reverse_words` action using a new sequence.
+
+#### Tests
+
+Test with correct password.
+
+```
+$ ic wsk action invoke reverse_words_with_password -r -p password "mysecret" -p text "hello world"
+{
+    "text": "olleh dlrow"
+}
+```
+
+Test with incorrect password.
+
+```
+$ ic wsk action invoke reverse_words_with_password -r -p text "hello world"
+{
+    "error": "An error has occurred: Error: Password incorrect."
+}
+```

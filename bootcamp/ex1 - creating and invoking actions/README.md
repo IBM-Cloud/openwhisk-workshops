@@ -7,8 +7,6 @@ This exercise will introduce the concepts needed to create and use actions with 
 - **Created and invoked actions.**
 - **Understood how to pass parameters to actions.**
 - **Created actions which return asynchronous results.**
-- **Included external libraries and dependencies in action deployments.**
-- **Used sequences to compose actions**
 
 Once this exercise is finished, we will be able to create simple serverless functions using IBM Cloud Functions!
 
@@ -33,11 +31,7 @@ Once this exercise is finished, we will be able to create simple serverless func
   * [Returning asynchronous results (Node.js)](#returning-asynchronous-results-(node.js))
   * [Returning asynchronous results (Swift)](#returning-asynchronous-results-(swift))
   * [Using actions to call an external API](#using-actions-to-call-an-external-api)
-* [Packaging an action as a Node.js module](#packaging-an-action-as-a-nodejs-module)
-* [Using Action Sequences](#using-action-sequences)
-  * [Node.js](#node.js)
-  * [Swift](#swift)
-  * [Creating Sequence Actions](#creating-sequence-actions)
+* [EXERCISES](#exercises)
 
 ## Instructions
 
@@ -695,208 +689,78 @@ $ ic wsk action invoke asyncAction --result
 
 🎉🎉🎉 **Asynchronous actions are necessary for calling other APIs or cloud services. Don't forget about that timeout though! Let's have a look at using an asynchronous action to invoke another API…** 🎉🎉🎉
 
-#### Using actions to call an external API
+### EXERCISES
 
-The examples so far have been simple functions. You can also create an action that call external APIs and services.
+Let's try out your new SERVERLESS SUPERPOWERS 💪 to build a real serverless function. 
 
-This example invokes a Yahoo Weather service to get the current conditions at a specific location.
+***Can you create a new action which takes a price and currency and returns a message contains the equivalent amount of Bitcoin?***
 
-##### Node.js
+#### Input
 
-1. Save the following content in a file called `weather.js`.
+The action should take two parameters, `amount` and `currency`. `amount` is a number, `currency` is a three letter [currency code](https://www.iban.com/currency-codes.html).
 
-```javascript
-var request = require('request');
+#### Output
 
-function main(params) {
-    var location = params.location || 'Vermont';
-    var url = 'https://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text="' + location + '")&format=json';
+Return the following JSON template with the input parameters and bitcoin amounts.
 
-    return new Promise(function(resolve, reject) {
-        request.get(url, function(error, response, body) {
-            if (error) {
-                reject(error);
-            }
-            else {
-                var condition = JSON.parse(body).query.results.channel.item.condition;
-                var text = condition.text;
-                var temperature = condition.temp;
-                var output = 'It is ' + temperature + ' degrees in ' + location + ' and ' + text;
-                resolve({msg: output});
-            }
-        });
-    });
+```json
+{ 
+  "amount": 1.5,
+  "message": "10000 USD is worth 1.5 bitcoins."
 }
 ```
 
-Note that the action in the example uses the JavaScript `request` library to make an HTTP request to the Yahoo Weather API, and extracts fields from the JSON result. The [References](https://github.com/apache/incubator-openwhisk/blob/master/docs/reference.md#javascript-runtime-environments) detail the Node.js packages that you can use in your actions.
+If either the `amount` or `currency` parameters are missing, return an error with details.
 
-This example also shows the need for asynchronous actions. The action returns a Promise to indicate that the result of this action is not available yet when the function returns. Instead, the result is available in the `request` callback after the HTTP call completes, and is passed as an argument to the `resolve()` function.
+#### Resources
 
-1. Run the following commands to create the action and invoke it:
+This [Coindesk API](https://api.coindesk.com/v1/bpi/currentprice.json) returns real-time bitcoin prices. This includes rates for the `USD`, `GBP` and `EUR` currencies.
+
+This [Currency Converter API](https://free.currencyconverterapi.com/) returns exchanges rates between traditional currencies.
+
+Use the `request-promise` [module](https://www.npmjs.com/package/request-promise) to make external API requests. It comes pre-installed in the runtime.
+
+#### Tests
+
+Test with currencies in the Coindeck API response.
 
 ```
-$ ic wsk action create weather weather.js
-```
-
-```
-$ ic wsk action invoke --result weather --param location "Brooklyn, NY"
+$ bx wsk action invoke bitcoin -r -p amount 1000 -p currency USD
 {
- "msg": "It is 28 degrees in Brooklyn, NY and Cloudy"
-}   
-```
-
-##### Swift
-
-1. Save the following contents in a file called `weather.swift`.
-
-```swift
-import KituraNet
-import Foundation
-import SwiftyJSON
-
-func httpRequestOptions(location: String) -> [ClientRequest.Options] {
-  let query = "q=select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text=\"\(location)\")&format=json"
-  let escaped = query.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
-
-  let request: [ClientRequest.Options] = [
-    .method("GET"),
-    .schema("https://"),
-    .hostname("query.yahooapis.com"),
-    .path("/v1/public/yql?\(escaped!)")
-  ]
-
-  return request
+    "amount": "0.160814",
+    "label": "1000 USD is worth 0.160814 bitcoins."
 }
-
-func getWeatherJSON(location: String) -> JSON? {
-  var json: JSON = nil
-  let req = HTTP.request(httpRequestOptions(location: location)) { resp in
-    if let resp = resp, resp.statusCode == HTTPStatusCode.OK {
-      do {
-        var data = Data()
-        try resp.readAllData(into: &data)
-        json = JSON(data: data)
-      } catch {
-        print("Error \(error)")
-      }
-    } else {
-      print("Status error code or nil reponse received from server.")
-    }
-  }
-  req.end()
-
-  return json
-}
-
-func main(args: [String:Any]) -> [String:Any] {
-  var location = "Vermont"
-  if let userLocation = args["location"] as? String {
-    location = userLocation
-  }
-
-  guard let weather = getWeatherJSON(location: location) else {
-    return [ "error": "Unable to retrieve weather." ]
-  }
-
-  guard let report = weather["query"]["results"]["channel"]["item"]["condition"]["text"].string else {
-    return [ "error": "Weather report for location not found." ]
-  }
-
-  guard let temp = weather["query"]["results"]["channel"]["item"]["condition"]["temp"].string else {
-    return [ "error": "Current temperature for location not found." ]
-  }
-
-  return ["msg": "It is \(temp) degress in \(location) and \(report)."]
-}
-```
-
-Note that the action in the example uses the Swift `Kitura-net` library to make an HTTP request to the Yahoo Weather API, and extracts fields from the JSON result. The [References](https://github.com/apache/incubator-openwhisk/blob/master/docs/reference.md#swift-actions) detail the Swift libraries that are pre-installed for use by your actions.
-
-1. Run the following commands to create the action and invoke it:
-
-```
-$ bx wsk action create weather weather.swift
-```
-
-```
-$ bx wsk action invoke --result weather --param location "Brooklyn, NY"
+$ bx wsk action invoke bitcoin -r -p amount 1000 -p currency EUR
 {
- "msg": "It is 28 degrees in Brooklyn, NY and Cloudy"
-}   
-```
-
-🎉🎉🎉 **This is more like a real-word example. This action could be invoked thousands of times in parallel and it would just work! No having to manage infrastructure to build a scalable cloud API.** 🎉🎉🎉
-
-### Packaging an action as a Node.js module
-
-***This step requires you to have the [Node.js](https://nodejs.org/en/) and [NPM](https://www.npmjs.com/) development tools installed.***
-
-As an alternative to writing all your action code in a single JavaScript source file, you can write an action as a `npm` package. Consider as an example a directory with the following files:
-
-First, `package.json`:
-
-```
+    "amount": "0.187235",
+    "label": "1000 EUR is worth 0.187235 bitcoins."
+}
+$ bx wsk action invoke bitcoin -r -p amount 1000 -p currency GBP
 {
-  "name": "my-action",
-  "main": "index.js",
-  "dependencies" : {
-    "left-pad" : "1.1.3"
-  }
+    "amount": "0.213012",
+    "label": "1000 GBP is worth 0.213012 bitcoins."
 }
 ```
 
-Then, `index.js`:
+Test with currencies not in the Coindeck API response.
 
 ```
-function myAction(args) {
-    const leftPad = require("left-pad")
-    const lines = args.lines || [];
-    return { padded: lines.map(l => leftPad(l, 30, ".")) }
-}
-
-exports.main = myAction;
-```
-
-Note that the action is exposed through `exports.main`; the action handler itself can have any name, as long as it conforms to the usual signature of accepting an object and returning an object (or a `Promise` of an object). Per Node.js convention, you must either name this file `index.js` or specify the file name you prefer as the `main`property in package.json.
-
-To create an OpenWhisk action from this package:
-
-1. Install first all dependencies locally
-
-```
-$ npm install
-```
-
-2. Create a `.zip` archive containing all files (including all dependencies):
-
-```
-$ zip -r action.zip *
-```
-
-> Please note: Using the Windows Explorer action for creating the zip file will result in an incorrect structure. OpenWhisk zip actions must have `package.json` at the root of the zip, while Windows Explorer will put it inside a nested folder. The safest option is to use the command line `zip` command as shown above.
-
-3. Create the action:
-
-```
-$ ic wsk action create packageAction action.zip --kind nodejs:default
-```
-
-Note that when creating an action from a `.zip` archive using the CLI tool, you must explicitly provide a value for the `--kind` flag.
-
-4. You can invoke the action like any other:
-
-```
-$ ic wsk action invoke --result packageAction --param lines "[\"and now\", \"for something completely\", \"different\" ]"
+$ bx wsk action invoke bitcoin -r -p amount 1000 -p currency AUD
 {
-    "padded": [
-        ".......................and now",
-        "......for something completely",
-        ".....................different"
-    ]
+    "amount": "0.10814",
+    "label": "1000 AUD is worth 0.10814 bitcoins."
 }
 ```
 
-Finally, note that while most `npm` packages install JavaScript sources on `npm install`, some also install and compile binary artifacts. The archive file upload currently does not support binary dependencies but rather only JavaScript dependencies. Action invocations may fail if the archive includes binary dependencies.
+Test with missing parameters.
 
-🎉🎉🎉 **Node.js has a huge ecosystem of third-party packages which can be used on OpenWhisk with this method. The platform does come built-in with popular packages listed [here](https://github.com/apache/incubator-openwhisk/blob/master/docs/reference.md#javascript-runtime-environments) This method also works for any other runtime.** 🎉🎉🎉
+```
+$ bx wsk action invoke bitcoin -r -p amount 1000
+{
+    "error": "Missing mandatory argument: currency"
+}
+$ bx wsk action invoke bitcoin -r  -p currency GBP
+{
+    "error": "Missing mandatory argument: amount"
+}
+```
