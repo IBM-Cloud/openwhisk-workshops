@@ -219,7 +219,7 @@ $ ic wsk action invoke example -r -p fail true
 
 🎉🎉🎉 **Sequences are an "advanced" OpenWhisk technique. Congratulations for getting this far! Now let's move on to something all together different, connecting functions to external event sources…** 🎉🎉🎉
 
-####EXERCISES
+### EXERCISES
 
 Let's try out your new SERVERLESS SUPERPOWERS 💪 to build a real serverless function. 
 
