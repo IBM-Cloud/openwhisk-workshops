@@ -221,7 +221,7 @@ The input parameters are passed as a Dictionary (`String:Any`) to the `main` fun
 1. Update the `hello` action with the new source code.
 
 ```
-$ bx wsk action update hello hello.swift
+$ ic wsk action update hello hello.swift
 ```
 
 #### Invoking action with parameters
@@ -535,7 +535,7 @@ func main(args: [String:Any]) -> [String:Any] {
 This Swift file is included in the runtime to provide a small utility for invoking platform APIs: [https://github.com/apache/incubator-openwhisk-runtime-swift/blob/master/core/swift3.1.1Action/spm-build/_Whisk.swift](https://github.com/apache/incubator-openwhisk-runtime-swift/blob/master/core/swift3.1.1Action/spm-build/_Whisk.swift)
 
 ```
-$ bx wsk action create proxy proxy.swift
+$ ic wsk action create proxy proxy.swift
 ```
 
 2. Invoke the proxy with an incorrect password.
@@ -725,17 +725,17 @@ Use the `request-promise` [module](https://www.npmjs.com/package/request-promise
 Test with currencies in the Coindeck API response.
 
 ```
-$ bx wsk action invoke bitcoin -r -p amount 1000 -p currency USD
+$ ic wsk action invoke bitcoin -r -p amount 1000 -p currency USD
 {
     "amount": "0.160814",
     "label": "1000 USD is worth 0.160814 bitcoins."
 }
-$ bx wsk action invoke bitcoin -r -p amount 1000 -p currency EUR
+$ ic wsk action invoke bitcoin -r -p amount 1000 -p currency EUR
 {
     "amount": "0.187235",
     "label": "1000 EUR is worth 0.187235 bitcoins."
 }
-$ bx wsk action invoke bitcoin -r -p amount 1000 -p currency GBP
+$ ic wsk action invoke bitcoin -r -p amount 1000 -p currency GBP
 {
     "amount": "0.213012",
     "label": "1000 GBP is worth 0.213012 bitcoins."
@@ -745,7 +745,7 @@ $ bx wsk action invoke bitcoin -r -p amount 1000 -p currency GBP
 Test with currencies not in the Coindeck API response.
 
 ```
-$ bx wsk action invoke bitcoin -r -p amount 1000 -p currency AUD
+$ ic wsk action invoke bitcoin -r -p amount 1000 -p currency AUD
 {
     "amount": "0.10814",
     "label": "1000 AUD is worth 0.10814 bitcoins."
@@ -755,11 +755,11 @@ $ bx wsk action invoke bitcoin -r -p amount 1000 -p currency AUD
 Test with missing parameters.
 
 ```
-$ bx wsk action invoke bitcoin -r -p amount 1000
+$ ic wsk action invoke bitcoin -r -p amount 1000
 {
     "error": "Missing mandatory argument: currency"
 }
-$ bx wsk action invoke bitcoin -r  -p currency GBP
+$ ic wsk action invoke bitcoin -r  -p currency GBP
 {
     "error": "Missing mandatory argument: amount"
 }
