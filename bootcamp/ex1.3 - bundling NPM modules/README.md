@@ -6,9 +6,9 @@ This exercise will explain how to use external NPM modules from Node.js actions 
 
 *Once you have completed this exercise, you will have…*
 
-- **Understood what action sequences do and how they work.**
-- **Created, deployed and invoked a sample action sequence.**
-- **Used deliberate errors to stop processing the action sequence.**
+- **Understood how to use zip files for actions.**
+- **Packaged Node.js module as an action.**
+- **Added NPM modules to deployment package.**
 
 Once this exercise is finished, you will know how to bundle external dependencies when creating actions.
 
