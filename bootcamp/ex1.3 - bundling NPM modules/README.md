@@ -57,13 +57,13 @@ $  zip -r action.zip *
 4. Create a new action from the `wsk` CLI. The `kind` property needs to be set when using zip files.
 
 ```
-$ ic wsk action create hello_world --kind nodejs:default action.zip
+$ ibmcloud wsk action create hello_world --kind nodejs:default action.zip
 ```
 
 5. Invoke the action.
 
 ```
-$ ic wsk action invoke hello_world --result
+$ ibmcloud wsk action invoke hello_world --result
 {
     "result": "Hello world"
 }
@@ -122,7 +122,7 @@ $ zip -r action.zip *
 5. Create the action:
 
 ```
-$ ic wsk action create packageAction action.zip --kind nodejs:default
+$ ibmcloud wsk action create packageAction action.zip --kind nodejs:default
 ```
 
 Note that when creating an action from a `.zip` archive using the CLI tool, you must explicitly provide a value for the `--kind` flag.
@@ -130,7 +130,7 @@ Note that when creating an action from a `.zip` archive using the CLI tool, you 
 6. You can invoke the action like any other:
 
 ```
-$ ic wsk action invoke --result packageAction --param lines "[\"and now\", \"for something completely\", \"different\" ]"
+$ ibmcloud wsk action invoke --result packageAction --param lines "[\"and now\", \"for something completely\", \"different\" ]"
 {
     "padded": [
         ".......................and now",

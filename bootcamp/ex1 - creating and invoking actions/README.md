@@ -60,14 +60,14 @@ The JavaScript file might contain additional functions. However, by convention, 
 2. Create an action from the following JavaScript function. For this example, the action is called 'hello'.
 
 ```
-$ ic wsk action create hello hello.js
+$ ibmcloud wsk action create hello hello.js
 ok: created action hello
 ```
 
 3. List the actions that you have created:
 
 ```
-$ ic wsk action list
+$ ibmcloud wsk action list
 actions
 hello       private
 ```
@@ -91,14 +91,14 @@ The Swift file might contain additional functions. However, by convention, a fun
 1. Create an action from the following Swift function. For this example, the action is called 'hello'.
 
 ```
-$ ic wsk action create hello hello.swift
+$ ibmcloud wsk action create hello hello.swift
 ok: created action hello
 ```
 
 1. List the actions that you have created:
 
 ```
-$ ic wsk action list
+$ ibmcloud wsk action list
 actions
 /user@host.com_dev/hello                                     private swift:3.1.1
 ```
@@ -114,7 +114,7 @@ You can invoke actions with a *blocking* invocation (i.e., request/response styl
 1. Invoke the `hello` action using the command-line as a blocking activation.
 
 ```
-$ ic wsk action invoke --blocking hello
+$ ibmcloud wsk action invoke --blocking hello
 ```
 
 ```
@@ -143,14 +143,14 @@ If you don't need the action result right away, you can omit the `—blocking` f
 2. Invoke the `hello` action using the command-line as a non-blocking activation.
 
 ```
-$ ic wsk action invoke hello
+$ ibmcloud wsk action invoke hello
 ok: invoked hello with id 6bf1f670ee614a7eb5af3c9fde813043
 ```
 
 3. Retrieve the activation result
 
 ```
-$ ic wsk activation result 6bf1f670ee614a7eb5af3c9fde813043
+$ ibmcloud wsk activation result 6bf1f670ee614a7eb5af3c9fde813043
 {
     "payload": "Hello world"
 }
@@ -161,7 +161,7 @@ To access the most recent activation record, activation results or activation lo
 4. Run the following command to get your last activation result.
 
 ```
-$ ic wsk activation result --last
+$ ibmcloud wsk activation result --last
 {
     "payload": "Hello world"
 }
@@ -172,7 +172,7 @@ Note that you should not use an activation ID with the flag `--last`.
 5. If you forget to record the activation ID, you can get a list of activations ordered from the most recent to the oldest. Run the following command to get a list of your activations:
 
 ```
-$ ic wsk activation list
+$ ibmcloud wsk activation list
 activations
 44794bd6aab74415b4e42a308d880e5b         hello
 6bf1f670ee614a7eb5af3c9fde813043         hello
@@ -199,7 +199,7 @@ The input parameters are passed as a JSON object parameter to the `main` functio
 2. Update the `hello` action with the new source code.
 
 ```
-$ ic wsk action update hello hello.js
+$ ibmcloud wsk action update hello hello.js
 ```
 
 #### Passing parameters to an action (Swift)
@@ -221,7 +221,7 @@ The input parameters are passed as a Dictionary (`String:Any`) to the `main` fun
 1. Update the `hello` action with the new source code.
 
 ```
-$ ic wsk action update hello hello.swift
+$ ibmcloud wsk action update hello hello.swift
 ```
 
 #### Invoking action with parameters
@@ -231,7 +231,7 @@ When invoking actions through the command-line, parameter values can be passed a
 3. Invoke the `hello` action using explicit command-line parameters.
 
 ```
-$ ic wsk action invoke --result hello --param name Bernie --param place Vermont
+$ ibmcloud wsk action invoke --result hello --param name Bernie --param place Vermont
 {
     "payload": "Hello, Bernie from Vermont"
 }
@@ -249,7 +249,7 @@ $ ic wsk action invoke --result hello --param name Bernie --param place Vermont
 5. Invoke the `hello` action using parameters from a JSON file.
 
 ```
-$ ic wsk action invoke --result hello --param-file parameters.json
+$ ibmcloud wsk action invoke --result hello --param-file parameters.json
 {
     "payload": "Hello, Bernie from Vermont"
 }
@@ -288,7 +288,7 @@ Now the action expects a single `person` parameter to have fields `name` and `pl
 7. Invoke the action with a single `person` parameter that is valid JSON.
 
 ```
-$ ic wsk action invoke --result hello-person -p person '{"name": "Bernie", "place": "Vermont"}'
+$ ibmcloud wsk action invoke --result hello-person -p person '{"name": "Bernie", "place": "Vermont"}'
 ```
 
 The result is the same because the CLI automatically parses the `person` parameter value into the structured object that the action now expects:
@@ -312,7 +312,7 @@ Let's use the `hello` action from our previous example and bind a default value 
 1. Update the action by using the `—param` option to bind default parameter values.
 
 ```
-$ ic wsk action update hello --param place Vermont
+$ ibmcloud wsk action update hello --param place Vermont
 ```
 
 Passing parameters from a file requires the creation of a file containing the desired content in JSON format. The filename must then be passed to the `-param-file` flag:
@@ -326,13 +326,13 @@ Example parameter file called parameters.json:
 ```
 
 ```
-$ ic wsk action update hello --param-file parameters.json
+$ ibmcloud wsk action update hello --param-file parameters.json
 ```
 
 2. Invoke the action, passing only the `name` parameter this time.
 
 ```
-$ ic wsk action invoke --result hello --param name Bernie
+$ ibmcloud wsk action invoke --result hello --param name Bernie
 ```
 
 ```
@@ -346,7 +346,7 @@ Notice that you did not need to specify the place parameter when you invoked the
 3. Invoke the action, passing both `name` and `place` values. The latter overwrites the value that is bound to the action.
 
 ```
-$ ic wsk action invoke --result hello --param name Bernie --param place "Washington, DC"
+$ ibmcloud wsk action invoke --result hello --param name Bernie --param place "Washington, DC"
 {  
     "payload": "Hello, Bernie from Washington, DC"
 }
@@ -373,7 +373,7 @@ function main(params) {
 ```
 
 ```
-$ ic wsk action create logs logs.js
+$ ibmcloud wsk action create logs logs.js
 ok: created action logs
 ```
 
@@ -399,14 +399,14 @@ func main(args: [String:Any]) -> [String:Any] {
 ````
 
 ```
-$ ic wsk action create logs logs.swift
+$ ibmcloud wsk action create logs logs.swift
 ok: created action logs
 ```
 
 2. Invoke the `logs` action to generate some logs.
 
 ```
-$ ic wsk action invoke -r logs -p hello world
+$ ibmcloud wsk action invoke -r logs -p hello world
 {
     "result": true
 }
@@ -417,7 +417,7 @@ $ ic wsk action invoke -r logs -p hello world
 1. Retrieve activation record to verify logs have been recorded.
 
 ```
-$ ic wsk activation get --last
+$ ibmcloud wsk activation get --last
 ok: got activation 9fc044881705479580448817053795bd
 {    
     ...   
@@ -432,7 +432,7 @@ ok: got activation 9fc044881705479580448817053795bd
 3. Logs can also be retrieved without showing the whole activation record, using the `activation logs` command.
 
 ```
-$ ic wsk activation logs --last
+$ ibmcloud wsk activation logs --last
 2018-03-02T09:49:03.021404683Z stdout: function called with params { hello: 'world' }
 2018-03-02T09:49:03.021816473Z stderr: this is an error message
 ```
@@ -444,7 +444,7 @@ Activation logs can be monitored in real-time, rather than manually retrieving i
 1. Run the following command to monitor logs from the `logs` actions.
 
 ```
-$ ic wsk activation poll
+$ ibmcloud wsk activation poll
 Enter Ctrl-c to exit.
 Polling for activation logs
 ```
@@ -452,7 +452,7 @@ Polling for activation logs
 2. In another terminal, run the following command multiple times.
 
 ```
-$ ic wsk action invoke logs -p hello world
+$ ibmcloud wsk action invoke logs -p hello world
 ok: invoked /_/logs with id 0e8d715393504f628d715393503f6227
 ```
 
@@ -511,7 +511,7 @@ function main(params) {
 *The JavaScript library for Apache OpenWhisk is here: [https://github.com/apache/incubator-openwhisk-client-js/](https://github.com/apache/incubator-openwhisk-client-js/).* *This library is pre-installed in the IBM Cloud Functions runtime and does not need to be manually included.*
 
 ```
-$ ic wsk action create proxy proxy.js
+$ ibmcloud wsk action create proxy proxy.js
 ```
 
 ##### Swift
@@ -535,13 +535,13 @@ func main(args: [String:Any]) -> [String:Any] {
 This Swift file is included in the runtime to provide a small utility for invoking platform APIs: [https://github.com/apache/incubator-openwhisk-runtime-swift/blob/master/core/swift3.1.1Action/spm-build/_Whisk.swift](https://github.com/apache/incubator-openwhisk-runtime-swift/blob/master/core/swift3.1.1Action/spm-build/_Whisk.swift)
 
 ```
-$ ic wsk action create proxy proxy.swift
+$ ibmcloud wsk action create proxy proxy.swift
 ```
 
 2. Invoke the proxy with an incorrect password.
 
 ```
-$ ic wsk action invoke proxy -p password wrong -r
+$ ibmcloud wsk action invoke proxy -p password wrong -r
 {
     "error": "Password is incorrect!"
 }
@@ -550,7 +550,7 @@ $ ic wsk action invoke proxy -p password wrong -r
 3. Invoke the proxy with the correct password.
 
 ```
-$ ic wsk action invoke proxy -p password secret -p name Bernie -p place Vermont -r
+$ ibmcloud wsk action invoke proxy -p password secret -p name Bernie -p place Vermont -r
 {
     "greeting": "Hello Bernie from Vermont"
 }
@@ -559,7 +559,7 @@ $ ic wsk action invoke proxy -p password secret -p name Bernie -p place Vermont 
 4. Review the activations list to show both actions were invoked.
 
 ```
-$ ic wsk activation list -l 2
+$ ibmcloud wsk activation list -l 2
 activations
 8387302c81dc4d2d87302c81dc4d2dc6 hello
 e0c603c242c646978603c242c6c6977f proxy
@@ -623,13 +623,13 @@ Other approaches to blocking on asynchronous results in Swift include semaphores
 1. Run the following commands to create the action and invoke it:
 
 ```
-$ ic wsk action create asyncAction asyncAction.js
+$ ibmcloud wsk action create asyncAction asyncAction.js
 // OR....
-$ ic wsk action create asyncAction asyncAction.swift
+$ ibmcloud wsk action create asyncAction asyncAction.swift
 ```
 
 ```
-$ ic wsk action invoke --result asyncAction
+$ ibmcloud wsk action invoke --result asyncAction
 {
     "done": true
 }
@@ -640,7 +640,7 @@ Notice that you performed a blocking invocation of an asynchronous action.
 2. Fetch the last activation log to see how long the async activation took to complete:
 
 ```
-$ ic wsk activation get --last
+$ ibmcloud wsk activation get --last
 {
      "duration": 2026,
      ...
@@ -656,14 +656,14 @@ Let's look at what happens when an action invocation takes longer than the `time
 1. Update the `asyncAction` timeout to 1000ms.
 
 ```
-$ ic wsk action update asyncAction --timeout 1000
+$ ibmcloud wsk action update asyncAction --timeout 1000
 ok: updated action asyncAction
 ```
 
 2. Invoke the action and block on the result.
 
 ```
-$ ic wsk action invoke asyncAction --result
+$ ibmcloud wsk action invoke asyncAction --result
 {
     "error": "The action exceeded its time limits of 1000 milliseconds."
 }
@@ -674,14 +674,14 @@ The error message returned by the platform indicates the action didn't return a 
 1. Update the `asyncAction` timeout to 10000ms.
 
 ```
-$ ic wsk action update asyncAction --timeout 10000
+$ ibmcloud wsk action update asyncAction --timeout 10000
 ok: updated action asyncAction
 ```
 
 2. Invoke the action and block on the result.
 
 ```
-$ ic wsk action invoke asyncAction --result
+$ ibmcloud wsk action invoke asyncAction --result
 {
     "done": true
 }
@@ -725,17 +725,17 @@ Use the `request-promise` [module](https://www.npmjs.com/package/request-promise
 Test with currencies in the Coindeck API response.
 
 ```
-$ ic wsk action invoke bitcoin -r -p amount 1000 -p currency USD
+$ ibmcloud wsk action invoke bitcoin -r -p amount 1000 -p currency USD
 {
     "amount": "0.160814",
     "label": "1000 USD is worth 0.160814 bitcoins."
 }
-$ ic wsk action invoke bitcoin -r -p amount 1000 -p currency EUR
+$ ibmcloud wsk action invoke bitcoin -r -p amount 1000 -p currency EUR
 {
     "amount": "0.187235",
     "label": "1000 EUR is worth 0.187235 bitcoins."
 }
-$ ic wsk action invoke bitcoin -r -p amount 1000 -p currency GBP
+$ ibmcloud wsk action invoke bitcoin -r -p amount 1000 -p currency GBP
 {
     "amount": "0.213012",
     "label": "1000 GBP is worth 0.213012 bitcoins."
@@ -745,7 +745,7 @@ $ ic wsk action invoke bitcoin -r -p amount 1000 -p currency GBP
 Test with currencies not in the Coindeck API response.
 
 ```
-$ ic wsk action invoke bitcoin -r -p amount 1000 -p currency AUD
+$ ibmcloud wsk action invoke bitcoin -r -p amount 1000 -p currency AUD
 {
     "amount": "0.10814",
     "label": "1000 AUD is worth 0.10814 bitcoins."
@@ -755,11 +755,11 @@ $ ic wsk action invoke bitcoin -r -p amount 1000 -p currency AUD
 Test with missing parameters.
 
 ```
-$ ic wsk action invoke bitcoin -r -p amount 1000
+$ ibmcloud wsk action invoke bitcoin -r -p amount 1000
 {
     "error": "Missing mandatory argument: currency"
 }
-$ ic wsk action invoke bitcoin -r  -p currency GBP
+$ ibmcloud wsk action invoke bitcoin -r  -p currency GBP
 {
     "error": "Missing mandatory argument: amount"
 }

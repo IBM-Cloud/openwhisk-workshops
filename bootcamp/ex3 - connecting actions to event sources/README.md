@@ -83,14 +83,14 @@ The three rules establish the following behavior: images in both tweets and uplo
 Let's create a trigger to send *location updates*:
 
 ```
-$ ic wsk trigger create locationUpdate
+$ ibmcloud wsk trigger create locationUpdate
 ok: created trigger locationUpdate
 ```
 
 You can check that the trigger has been created like this:
 
 ```
-$ ic wsk trigger list
+$ ibmcloud wsk trigger list
 triggers
 locationUpdate                         private
 ```
@@ -100,16 +100,16 @@ So far we have only created a named channel to which events can be fired.
 Let's now fire the trigger by specifying its name and parameters:
 
 ```
-$ ic wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
+$ ibmcloud wsk trigger fire locationUpdate -p name "Donald" -p place "Washington, D.C"
 ok: triggered locationUpdate
 ```
 
 Triggers also support default parameters. Firing this trigger without any parameters will pass in the default values.
 
 ```
-$ ic wsk trigger update locationUpdate -p name "Donald" -p place "Washington, D.C"
+$ ibmcloud wsk trigger update locationUpdate -p name "Donald" -p place "Washington, D.C"
 ok: updated trigger locationUpdate
-$ ic wsk trigger fire locationUpdate
+$ ibmcloud wsk trigger fire locationUpdate
 ok: triggered locationUpdate
 ```
 
@@ -128,7 +128,7 @@ As an example, create a rule that calls the `hello` action whenever a location u
 1. Check the `hello` action exists and responds to the correct event parameters.
 
 ```
-$ ic wsk action invoke --result hello --param name Bernie --param place Vermont
+$ ibmcloud wsk action invoke --result hello --param name Bernie --param place Vermont
 {
     "payload": "Hello, Bernie from Vermont"
 }
@@ -137,7 +137,7 @@ $ ic wsk action invoke --result hello --param name Bernie --param place Vermont
 2. Check the trigger exists.
 
 ```
-$ ic wsk trigger get locationUpdate
+$ ibmcloud wsk trigger get locationUpdate
 ok: got trigger a
 {
     "namespace": "user@host.com_dev",
@@ -151,14 +151,14 @@ ok: got trigger a
 3. Create the rule using the command-line. The three parameters are the name of the rule, the trigger, and the action.
 
 ```
-$ ic wsk rule create myRule locationUpdate hello
+$ ibmcloud wsk rule create myRule locationUpdate hello
 ok: created rule myRule
 ```
 
 4. Retrieve rule details to show the trigger and action bound by this rule.
 
 ```
-$ ic wsk rule get myRule
+$ ibmcloud wsk rule get myRule
 ok: got rule myRule
 {
     "namespace": "user@host.com_dev",
@@ -182,14 +182,14 @@ ok: got rule myRule
 1. Fire the `locationUpdate` trigger. Each time that you fire the trigger with an event, the `hello` action is called with the event parameters.
 
 ```
-$ ic wsk trigger fire locationUpdate --param name Donald --param place "Washington, D.C."
+$ ibmcloud wsk trigger fire locationUpdate --param name Donald --param place "Washington, D.C."
 ok: triggered /_/locationUpdate with id 5c153c01d76d49dc953c01d76d99dc34
 ```
 
 2. Verify that the action was invoked by checking the activations list.
 
 ```
-$ ic wsk activation list --limit 2
+$ ibmcloud wsk activation list --limit 2
 activations
 5ee74025c2384f30a74025c2382f30c1 hello
 5c153c01d76d49dc953c01d76d99dc34 locationUpdate
@@ -200,7 +200,7 @@ We can see the trigger activation (`5c153c01d76d49dc953c01d76d99dc34`) is record
 3. Retrieving the trigger activation record will show the actions and rules invoked from this activation.
 
 ```
-$ ic wsk activation result 5ee74025c2384f30a74025c2382f30c1
+$ ibmcloud wsk activation result 5ee74025c2384f30a74025c2382f30c1
 {
    "payload": "Hello, Donald from Washington, D.C."
 }
@@ -211,12 +211,12 @@ You can see that the hello action received the event payload and returned the ex
 Activation records for triggers store the rules and actions fired for an event and the event parameters.
 
 ```
-$ ic wsk activation result 5c153c01d76d49dc953c01d76d99dc34
+$ ibmcloud wsk activation result 5c153c01d76d49dc953c01d76d99dc34
 {
     "name": "Donald",
     "place": "Washington, D.C."
 }
-$ ic wsk activation logs 5c153c01d76d49dc953c01d76d99dc34
+$ ibmcloud wsk activation logs 5c153c01d76d49dc953c01d76d99dc34
 {"statusCode":0,"success":true,"activationId":"5ee74025c2384f30a74025c2382f30c1","rule":"user@host.com_dev/myRule","action":"user@host.com_dev/hello"}
 ```
 
@@ -227,8 +227,8 @@ You can create multiple rules that associate the same trigger with different act
 You can also use rules with sequences. For example, one can create an action sequence `recordLocationAndHello`that is activated by the rule `anotherRule`.
 
 ```
-$ ic wsk action create recordLocationAndHello --sequence /whisk.system/utils/echo,hello
-$ ic wsk rule create anotherRule locationUpdate recordLocationAndHello
+$ ibmcloud wsk action create recordLocationAndHello --sequence /whisk.system/utils/echo,hello
+$ ibmcloud wsk rule create anotherRule locationUpdate recordLocationAndHello
 ```
 
 #### Disabling Rules
@@ -238,20 +238,20 @@ Rules are enabled upon creation but can be disabled and re-enabled using the com
 1. Disable the rule connecting the `locationUpdate` trigger and `hello` action.
 
 ```
-$ ic wsk rule disable myRule
+$ ibmcloud wsk rule disable myRule
 ```
 
 2. Fire the trigger again.
 
 ```
-$ ic wsk trigger fire locationUpdate --param name Donald --param place "Washington, D.C."
+$ ibmcloud wsk trigger fire locationUpdate --param name Donald --param place "Washington, D.C."
 ok: triggered /_/locationUpdate with id 53f85c39087d4c15b85c39087dac1571
 ```
 
 3. Check the activation list there are no new activation records.
 
 ```
-$ ic wsk activation list --limit 2
+$ ibmcloud wsk activation list --limit 2
 activations
 5ee74025c2384f30a74025c2382f30c1 hello
 5c153c01d76d49dc953c01d76d99dc34 locationUpdate
@@ -272,7 +272,7 @@ This example shows how to use a feed in the [Alarms package](https://github.com/
 1. Get a description of the feeds in the `/whisk.system/alarms` package.
 
 ```
-$ ic wsk package get --summary /whisk.system/alarms
+$ ibmcloud wsk package get --summary /whisk.system/alarms
 package /whisk.system/alarms: Alarms and periodic utility
    (parameters: *apihost, *trigger_payload)
  feed   /whisk.system/alarms/interval: Fire trigger at specified interval
@@ -286,7 +286,7 @@ package /whisk.system/alarms: Alarms and periodic utility
 2. Retrieve the details for the `alarms/interval` feed.
 
 ```
-$ ic wsk action get --summary /whisk.system/alarms/interval
+$ ibmcloud wsk action get --summary /whisk.system/alarms/interval
 action /whisk.system/alarms/interval: Fire trigger at specified interval
    (parameters: *apihost, *isInterval, minutes, startDate, stopDate, *trigger_payload)
 ```
@@ -299,7 +299,7 @@ The `/whisk.system/alarms/interval` feed has the following parameters we need to
 3. Create a trigger that fires every minute using this feed.
 
 ```
-$ ic wsk trigger create everyMinute --feed /whisk.system/alarms/interval -p minutes 1 -p trigger_payload "{\"name\":\"Mork\", \"place\":\"Ork\"}"
+$ ibmcloud wsk trigger create everyMinute --feed /whisk.system/alarms/interval -p minutes 1 -p trigger_payload "{\"name\":\"Mork\", \"place\":\"Ork\"}"
 ok: invoked /whisk.system/alarms/interval with id b2b4c3cb38224f44b4c3cb38228f44be
 ...
 ok: created trigger everyMinute
@@ -308,14 +308,14 @@ ok: created trigger everyMinute
 4. Connect this trigger to the `hello` action with a new rule.
 
 ```
-$ ic wsk rule create everyMinuteRule everyMinute hello
+$ ibmcloud wsk rule create everyMinuteRule everyMinute hello
 ok: created rule everyMinuteRule
 ```
 
 5. Check that the action is being invoked every minute by polling for activation logs.
 
 ```
-$ ic wsk activation poll
+$ ibmcloud wsk activation poll
 Activation: 'hello' (b2fc4b00c7be4143bc4b00c7bed1431c)
 []
 Activation: 'everyMinute' (cec7eb38739c4d4287eb38739ccd42ef)
@@ -329,8 +329,8 @@ You should see activations every minute the trigger and the action. The action r
 **IMPORTANT: Let's delete the trigger and rule or this event will be running forever!**
 
 ```
-$ ic wsk trigger delete everyMinute
-$ ic wsk rule delete everyMinuteRule
+$ ibmcloud wsk trigger delete everyMinute
+$ ibmcloud wsk rule delete everyMinuteRule
 ```
 
 🎉🎉🎉 **Understanding triggers and rules allows you to build event-driven applications on OpenWhisk. Create some actions, hook up events and let the platform take care of everything else, what could be easier?** 🎉🎉🎉
@@ -370,19 +370,19 @@ This serverless application will have three actions: `user_changes`, `send_welco
 Test the email action by firing a trigger and checking for the email message.
 
 ```
-$ ic wsk trigger fire new_user_email -p address "blah@blah.com"
+$ ibmcloud wsk trigger fire new_user_email -p address "blah@blah.com"
 ```
 
 Test the SMS action by firing a trigger and checking for the SMS message.
 
 ```
-$ ic wsk trigger fire new_user_sms -p phone_number "XXXXX"
+$ ibmcloud wsk trigger fire new_user_sms -p phone_number "XXXXX"
 ```
 
 Test the DB listener action by firing a trigger with a sample database document. Provide a sample JSON document in the `doc.json` file.
 
 ```
-$ ic wsk trigger fire db_changes -P doc.jsonTest with correct password.
+$ ibmcloud wsk trigger fire db_changes -P doc.jsonTest with correct password.
 ```
 
 Create some new user documents in the database and with contact details and check the welcome messages are received.

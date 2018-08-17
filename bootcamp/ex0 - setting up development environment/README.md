@@ -81,7 +81,7 @@ Follow these instructions to check which default region your lite account has be
 1. Use this command to authenticate the IBM Cloud CLI with your account credentials.
 
    ```
-   $ ic login
+   $ ibmcloud login
    ```
 
 2. Choose an API endpoint from the list.
@@ -124,7 +124,7 @@ Follow these instructions to check which default region your lite account has be
 4. Run the following command to configure the organisation and space the CLI is targeting.
 
    ```
-   $ ic target --cf
+   $ ibmcloud target --cf
    Targeted org user@email.com
    Targeted space dev
 
@@ -142,7 +142,7 @@ Follow these instructions to check which default region your lite account has be
 1. Use this command to install the Cloud Functions plugin for the IBM Cloud CLI.
 
    ```
-   $ ic plugin install cloud-functions
+   $ ibmcloud plugin install cloud-functions
    Looking up 'cloud-functions' from repository 'Bluemix'...
    Plug-in 'cloud-functions 1.0.7' found in repository 'Bluemix'
    Attempting to download the binary file...
@@ -160,7 +160,7 @@ Follow these instructions to check which default region your lite account has be
 1. Run the following command to invoke a test function from the command-line.
 
    ```
-   $ ic wsk action invoke whisk.system/utils/echo -p message hello --result
+   $ ibmcloud wsk action invoke whisk.system/utils/echo -p message hello --result
    {
        "message": "hello"
    }

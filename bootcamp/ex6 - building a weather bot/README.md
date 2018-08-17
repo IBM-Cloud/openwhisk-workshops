@@ -156,14 +156,14 @@ func main(args: [String:Any]) -> [String:Any] {
 Let's deploy the action the way you learned it earlier:
 
 ```
-$ ic wsk action create location_to_latlong location_to_latlong.xxx
+$ ibmcloud wsk action create location_to_latlong location_to_latlong.xxx
 ok: created action location_to_latlong
 ```
 
 Next, let's test the action:
 
 ```
-$ ic wsk action invoke location_to_latlong -b -r -p text "London"
+$ ibmcloud wsk action invoke location_to_latlong -b -r -p text "London"
 {
     "lat": 51.5073509,
     "lng": -0.1277583
@@ -302,9 +302,9 @@ Notice that the service expects four parameters, `lat` and `lng` coordinates alo
 Let's deploy this service and verify it's working…
 
 ```
-$ ic wsk action create forecast_from_latlong forecast_from_latlong.xyz
+$ ibmcloud wsk action create forecast_from_latlong forecast_from_latlong.xyz
 ok: created action forecast_from_latlong
-$ ic wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p username $WEATHER_USER -p password $WEATHER_PASS -b -r
+$ ibmcloud wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12" -p username $WEATHER_USER -p password $WEATHER_PASS -b -r
 {
     "text": "Partly cloudy. Lows overnight in the low 60s."
 }
@@ -315,9 +315,9 @@ Yep, looks good.
 We don't want to pass in the API credentials with every request, so let's bind them as default parameters to the action. This means we only need to invoke the service with the latitude and longitude parameters, which matches the output from the previous service.
 
 ```
-$ ic wsk action update forecast_from_latlong -p username $WEATHER_USER -p password $WEATHER_PASS
+$ ibmcloud wsk action update forecast_from_latlong -p username $WEATHER_USER -p password $WEATHER_PASS
 ok: updated action forecast_from_latlong
-$ ic wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12"  -b -r
+$ ibmcloud wsk action invoke forecast_from_latlong -p lat "51.50" -p lng "-0.12"  -b -r
 {
     "text": "Partly cloudy. Lows overnight in the low 60s."
 }
@@ -364,7 +364,7 @@ packages
 Looks like there's a Slack integration already. Retrieving the package summary will tell us more. 
 
 ```
-$ ic wsk package get --summary /whisk.system/slack
+$ ibmcloud wsk package get --summary /whisk.system/slack
 package /whisk.system/slack: This package interacts with the Slack messaging service
    (parameters: channel, token, url, username)
  action /whisk.system/slack/post: Post a message to Slack
@@ -374,7 +374,7 @@ package /whisk.system/slack: This package interacts with the Slack messaging ser
 The `/whisk.system/slack/post` action allows us to post messages to Slack without writing any code. 
 
 ```
-$ ic wsk action invoke /whisk.system/slack/post -p text "Hello" -p channel $CHANNEL -p url $WEBHOOK_URL
+$ ibmcloud wsk action invoke /whisk.system/slack/post -p text "Hello" -p channel $CHANNEL -p url $WEBHOOK_URL
 ok: invoked /whisk.system/slack/post with id 78070fe2acb54c70ae49c0fa047aee51
 ```
 
@@ -383,14 +383,14 @@ Seeing the message pop-up in our Slack channel verifies this works.
 We need to bind default parameters to configure the URL, channel, bot name and icon. This requires us to copy the action to over local workspace.
 
 ```
-$ ic wsk action create --copy webhook /whisk.system/slack/post -p url $WEBHOOK -p channel $CHANNEL -p username "Weather Bot" -p icon_emoji ":sun_with_face:"
+$ ibmcloud wsk action create --copy webhook /whisk.system/slack/post -p url $WEBHOOK -p channel $CHANNEL -p username "Weather Bot" -p icon_emoji ":sun_with_face:"
 ok: created action webhook
 ```
 
 This customised Slack service can be invoked with just the _text_ parameter and gives us a friendly bot message in the #weather channel.
 
 ```
-$ ic wsk action invoke webhook -p text "Hello"
+$ ibmcloud wsk action invoke webhook -p text "Hello"
 ```
 
 ![Test Bot](./images/test_bot.png)
@@ -406,7 +406,7 @@ Sequences allow you to define actions that are composed by executing other actio
 Let's define a new sequence for our bot to join these services together.
 
 ```
-$ ic wsk action create location_forecast --sequence location_to_latlong,forecast_from_latlong,webhook
+$ ibmcloud wsk action create location_forecast --sequence location_to_latlong,forecast_from_latlong,webhook
 ok: created action location_forecast
 ```
 
@@ -415,7 +415,7 @@ With this meta-service defined, we can invoke the `location_forecast` action wit
 Let's test this. The result should look similar to this:
 
 ```
-$ ic wsk action invoke location_forecast -p text "London" -b
+$ ibmcloud wsk action invoke location_forecast -p text "London" -b
 ok: invoked location_forecast with id d63b40bb36c54cfbaf8262b6f7e5c2e9
 {
     "activationId": "d63b40bb36c54cfbaf8262b6f7e5c2e9",
@@ -451,14 +451,14 @@ Exposing the Weather Bot service as an public API endpoint allows us to handle w
 1. Update the `location_forecast` action to be a Web Action.
 
 ```
-$ ic wsk action update location_forecast --web true
+$ ibmcloud wsk action update location_forecast --web true
 ok: updated action location_forecast
 ```
 
 2. Create a new API endpoint (`/api/bot`) for this service that responds to POST requests.
 
 ```
-$ ic wsk api create /api/bot POST location_forecast -n "weather bot"
+$ ibmcloud wsk api create /api/bot POST location_forecast -n "weather bot"
 ok: created API /api/bot POST for action /_/location_forecast
 https://service.us.apiconnect.ibmcloud.com/gws/apigateway/api/<UUID>/api/bot
 ```
@@ -503,13 +503,13 @@ Actions can be bound to Triggers using Rules. When a Trigger is fired, the Actio
 Let's now look at binding the bot service to a sample trigger and invoke it indirectly by firing that trigger:
 
 ```
-$ ic wsk trigger create forecast
+$ ibmcloud wsk trigger create forecast
 ok: created trigger forecast
 
-$ ic wsk rule create forecast_rule forecast location_forecast
+$ ibmcloud wsk rule create forecast_rule forecast location_forecast
 ok: created rule forecast_rule
 
-$ ic wsk trigger fire forecast -p text "London"
+$ ibmcloud wsk trigger fire forecast -p text "London"
 ok: triggered forecast with id 49914a20416d416d8c90282d59eebee3
 ```
 
@@ -530,15 +530,15 @@ One of those public trigger feeds is in the Alarm package. This alarm feed execu
 Let's do that now...
 
 ```
-$ ic wsk package get /whisk.system/alarms --summary
+$ ibmcloud wsk package get /whisk.system/alarms --summary
 package /whisk.system/alarms: Alarms and periodic utility
    (parameters: cron trigger_payload)
  feed   /whisk.system/alarms/alarm: Fire trigger when alarm occurs
 
-$ ic wsk trigger create regular_forecast --feed /whisk.system/alarms/alarm -p cron "*/10 * * * * *" -p trigger_payload "{\"text\":\"London\"}"
+$ ibmcloud wsk trigger create regular_forecast --feed /whisk.system/alarms/alarm -p cron "*/10 * * * * *" -p trigger_payload "{\"text\":\"London\"}"
 ok: created trigger feed regular_forecast
 
-$ ic wsk rule create regular_forecast_rule regular_forecast location_forecast
+$ ibmcloud wsk rule create regular_forecast_rule regular_forecast location_forecast
 ok: created rule regular_forecast_rule
 ```
 
@@ -547,6 +547,6 @@ The trigger schedule is provided by the `cron` parameter, which we've set up to 
 Okay, that's great but let's turn off this alarm before it drives us mad:
 
 ```
-$ ic wsk rule disable regular_forecast_rule
+$ ibmcloud wsk rule disable regular_forecast_rule
 ok: rule regular_forecast_rule is inactive
 ```
