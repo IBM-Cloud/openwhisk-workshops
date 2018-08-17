@@ -37,7 +37,7 @@ OpenWhisk supports a kind of action called a "sequence". Sequence actions are cr
 Here's an example of defining a sequence (`my_sequence`) which will invoke three actions (`a, b, c`).
 
 ```
-$ ic wsk action create my_sequence --sequence a,b,c
+$ ibmcloud wsk action create my_sequence --sequence a,b,c
 ```
 
 *Sequences behave like normal actions, you create, invoke and manage them as normal through the CLI.*
@@ -73,9 +73,9 @@ function join(params) {
 1. Create the following three actions
 
 ```
-$ ic wsk action create split funcs.js --main split
-$ ic wsk action create reverse funcs.js --main reverse
-$ ic wsk action create join funcs.js --main join
+$ ibmcloud wsk action create split funcs.js --main split
+$ ibmcloud wsk action create reverse funcs.js --main reverse
+$ ibmcloud wsk action create join funcs.js --main join
 ```
 
 #### Swift
@@ -126,21 +126,21 @@ $ bx wsk action create join funcs.swift --main join
 1. Test each action to verify it is working
 
 ```
-$ ic wsk action invoke split --result --param text "Hello world"
+$ ibmcloud wsk action invoke split --result --param text "Hello world"
 {
     "words": [
         "Hello",
         "world"
     ]
 }
-$ ic wsk action invoke reverse --result --param words '["hello", "world"]'
+$ ibmcloud wsk action invoke reverse --result --param words '["hello", "world"]'
 {
     "words": [
         "olleh",
         "dlrow"
     ]
 }
-$ ic wsk action invoke join --result --param words '["hello", "world"]'
+$ ibmcloud wsk action invoke join --result --param words '["hello", "world"]'
 {
     "text": "hello world"
 }
@@ -149,13 +149,13 @@ $ ic wsk action invoke join --result --param words '["hello", "world"]'
 2. Create the following action sequence.
 
 ```
-$ ic wsk action create reverse_words --sequence split,reverse,join
+$ ibmcloud wsk action create reverse_words --sequence split,reverse,join
 ```
 
 3. Test out the action sequence.
 
 ```
-$ ic wsk action invoke reverse_words --result --param text "hello world"
+$ ibmcloud wsk action invoke reverse_words --result --param text "hello world"
 {
     "text": "olleh dlrow"
 }
@@ -192,15 +192,15 @@ function end (params) {
 2. Create the following three actions
 
 ```
-$ ic wsk action create fail funcs.js --main fail
-$ ic wsk action create end funcs.js --main end
-$ ic wsk action create example --sequence fail,end
+$ ibmcloud wsk action create fail funcs.js --main fail
+$ ibmcloud wsk action create end funcs.js --main end
+$ ibmcloud wsk action create example --sequence fail,end
 ```
 
 3. Test out the action sequence without `fail` parameter.
 
 ```
-$ ic wsk action invoke example -r
+$ ibmcloud wsk action invoke example -r
 {
     "message": "sequence finished."
 }
@@ -209,7 +209,7 @@ $ ic wsk action invoke example -r
 4. Test out the action sequence with `fail` parameter.
 
 ```
-$ ic wsk action invoke example -r -p fail true
+$ ibmcloud wsk action invoke example -r -p fail true
 {
     "error": "An error has occurred: Error: stopping sequence and returning."
 }
@@ -250,7 +250,7 @@ Create a new action to handle checking the password. Join this with the `reverse
 Test with correct password.
 
 ```
-$ ic wsk action invoke reverse_words_with_password -r -p password "mysecret" -p text "hello world"
+$ ibmcloud wsk action invoke reverse_words_with_password -r -p password "mysecret" -p text "hello world"
 {
     "text": "olleh dlrow"
 }
@@ -259,7 +259,7 @@ $ ic wsk action invoke reverse_words_with_password -r -p password "mysecret" -p 
 Test with incorrect password.
 
 ```
-$ ic wsk action invoke reverse_words_with_password -r -p text "hello world"
+$ ibmcloud wsk action invoke reverse_words_with_password -r -p text "hello world"
 {
     "error": "An error has occurred: Error: Password incorrect."
 }
